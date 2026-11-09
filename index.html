@@ -411,6 +411,7 @@ input[type=range]{accent-color:var(--amber);width:100%}
 </div>
 
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<script src="https://unpkg.com/mqtt@5.10.1/dist/mqtt.min.js"></script>
 <script>
 (function(){
 'use strict';
@@ -686,6 +687,64 @@ async function getIce(){
 }
 function setStage(t){net.stage=t;if(screen==='lobby'&&!S)renderLobby()}
 const MAX_PLAYERS=6;
+/* relay fallback: players whose network blocks direct P2P reach the host through a public MQTT broker */
+const MQ_BROKERS=['wss://broker.hivemq.com:8884/mqtt','wss://broker.emqx.io:8084/mqtt'];
+const MQ_BASE='tlprotocol/v2/';
+const ID_RE=/^[A-Za-z0-9_-]{4,64}$/;
+const hasMqtt=()=>!!(window.mqtt&&typeof window.mqtt.connect==='function');
+function mqConnect(url){return window.mqtt.connect(url,{clientId:'tl'+Math.random().toString(36).slice(2,12),keepalive:30,reconnectPeriod:3000,connectTimeout:8000,clean:true})}
+function hostMqtt(code){
+  if(!hasMqtt())return;net.mq=[];
+  MQ_BROKERS.forEach(url=>{let c;try{c=mqConnect(url)}catch(e){return}net.mq.push(c);
+    c.on('connect',()=>{try{c.subscribe(MQ_BASE+code+'/u/+')}catch(e){}});
+    c.on('message',(topic,payload)=>{let d;try{d=JSON.parse(payload.toString())}catch(e){return}const id=String(topic).split('/').pop();if(ID_RE.test(id))hostMq(c,code,id,d)});
+    c.on('error',()=>{});
+  });
+}
+function hostMq(client,code,id,d){
+  if(!d||typeof d!=='object'||!isHost)return;
+  let conn=net.conns.get(id);
+  if(d.k==='leave'){if(conn&&conn.mq){net.conns.delete(id);delete net.pres[id];net.peersDirty=true}return}
+  if(!conn){
+    if(d.k!=='hello')return;
+    const send=o=>{try{client.publish(MQ_BASE+code+'/d/'+id,JSON.stringify(o))}catch(e){}};
+    if(net.conns.size>=MAX_PLAYERS-1){send({k:'bye',r:'full'});return}
+    conn={peer:id,open:true,mq:true,client,seen:now(),send,close(){}};
+    net.conns.set(id,conn);net.pres[id]=net.pres[id]||{};net.peersDirty=true;
+    if(S)conn.send({k:'msg',t:'state',d:S,f:ME});
+  }
+  if(!conn.mq||conn.client!==client)return;
+  conn.seen=now();
+  if(d.k==='ping')return;
+  hostRecv(conn,d);
+}
+setInterval(()=>{
+  if(isHost&&!net.offline){for(const [id,c] of net.conns)if(c.mq&&now()-c.seen>15000){net.conns.delete(id);delete net.pres[id];net.peersDirty=true}}
+  const hc=net.hostConn;
+  if(!isHost&&hc&&hc.mq&&!net.leaving){hc.send({k:'ping'});if(now()-(net.lastHost||0)>15000){toast('호스트와 연결이 끊겼습니다','bad');leaveGame()}}
+},3000);
+function clientMqtt(code,onOk,onFail){
+  if(!hasMqtt()){onFail();return}
+  if(!ME||!ID_RE.test(ME))ME='m'+Math.random().toString(36).slice(2,12);
+  const id=ME,up=MQ_BASE+code+'/u/'+id;let idx=0,done=false;
+  const tryNext=()=>{
+    if(done||net.leaving)return;if(idx>=MQ_BROKERS.length){done=true;onFail();return}
+    const url=MQ_BROKERS[idx++];let c,ok=false,hello=null;
+    try{c=mqConnect(url)}catch(e){tryNext();return}
+    net.mqc=c;
+    const giveUp=setTimeout(()=>{if(!ok){clearInterval(hello);try{c.end(true)}catch(_){}tryNext()}},10000);
+    c.on('connect',()=>{try{c.subscribe(MQ_BASE+code+'/d/'+id)}catch(e){}
+      const say=()=>{try{c.publish(up,JSON.stringify({k:'hello',p:localPres}))}catch(e){}};say();clearInterval(hello);hello=setInterval(()=>{if(ok)clearInterval(hello);else say()},1500)});
+    c.on('message',(t,payload)=>{let d;try{d=JSON.parse(payload.toString())}catch(e){return}
+      if(net.mqc!==c)return;
+      if(!ok){ok=true;done=true;clearTimeout(giveUp);clearInterval(hello);
+        const hc={open:true,mq:true,send(o){try{c.publish(up,JSON.stringify(o))}catch(e){}},close(){}};
+        net.hostConn=hc;net.lastHost=now();onOk(hc)}
+      net.lastHost=now();clientRecv(d)});
+    c.on('error',()=>{});
+  };
+  tryNext();
+}
 function gemit(topic,data){
   if(net.offline){setTimeout(()=>dispatch(topic,{peer:ME,data,isMe:true,sameTab:true}),0);return}
   if(!net.peer)return;
@@ -720,7 +779,7 @@ setInterval(()=>{
   }else if(!isHost&&net.hostConn&&net.hostConn.open&&Object.keys(net.presOut).length){
     try{net.hostConn.send({k:'pres',p:net.presOut})}catch(e){}net.presOut={};
   }
-},50);
+},80);
 function onPeersChanged(){if(screen==='lobby')renderLobby()}
 function hostRecv(conn,d){
   if(!d||typeof d!=='object')return;const id=conn.peer;
@@ -758,7 +817,7 @@ async function hostGame(mode){
   const tryOpen=n=>{
     const code=genCode(),p=new window.Peer(PEER_PREFIX+code,opts);let opened=false;
     p.on('open',id=>{opened=true;net.peer=p;ME=id;net.code=code;
-      p.on('connection',conn=>acceptConn(conn));
+      p.on('connection',conn=>acceptConn(conn));hostMqtt(code);
       setPres({n:myName,c:myCol,pr:'',pt:0});becomeHost(newLobby(mode));buildList();show('lobby');renderLobby()});
     p.on('error',e=>{
       if(!opened&&e&&e.type==='unavailable-id'&&n<4){try{p.destroy()}catch(_){}tryOpen(n+1);return}
@@ -771,6 +830,7 @@ async function hostGame(mode){
 }
 function acceptConn(conn){
   conn.on('open',()=>{
+    const ex=net.conns.get(conn.peer);if(ex&&ex.mq){try{conn.close()}catch(_){}return}
     if(net.conns.size>=MAX_PLAYERS-1){try{conn.send({k:'bye',r:'full'})}catch(_){}setTimeout(()=>{try{conn.close()}catch(_){}},400);return}
     net.conns.set(conn.peer,conn);net.pres[conn.peer]=net.pres[conn.peer]||{};net.peersDirty=true;
     if(S){S.v=(S.v||0)+1;try{conn.send({k:'msg',t:'state',d:S,f:ME})}catch(_){}}
@@ -780,30 +840,47 @@ function acceptConn(conn){
   conn.on('close',gone);conn.on('error',gone);
 }
 async function joinGame(code){
-  if(typeof window.Peer!=='function')return toast('온라인 라이브러리를 불러오지 못했습니다','bad');
+  if(typeof window.Peer!=='function'&&!hasMqtt())return toast('온라인 라이브러리를 불러오지 못했습니다','bad');
   code=String(code||'').toLowerCase().trim().replace(/^#/,'');
   if(!/^[a-z0-9]{4,8}$/.test(code))return toast('초대 코드는 영문 소문자와 숫자 4–8자입니다','bad');
   closeNet();resetLocal();net.offline=false;net.code=code;show('lobby');setStage('연결 설정을 준비하는 중…');
+  setPres({n:myName,c:myCol,pr:'',pt:0});
+  let done=false,opened=false;
+  const fail=msg=>{if(done)return;done=true;clearTimeout(timer);toast(msg,'bad');closeNet();show('menu')};
+  const timer=setTimeout(()=>fail('호스트에 연결하지 못했습니다. 방이 아직 열려 있는지 확인하고 다시 시도하세요'),45000);
+  const ready=()=>{done=true;clearTimeout(timer);net.presOut={};renderLobby()};
+  const goRelay=()=>{
+    if(done||net.relayTried)return;net.relayTried=true;
+    if(!hasMqtt())return fail('호스트와 직접 연결하지 못했고 중계 서버도 쓸 수 없습니다. 다른 네트워크(와이파이)로 접속해 보세요');
+    const old=net.hostConn;net.hostConn=null;if(old&&!old.mq){try{old.close()}catch(_){}}
+    setStage('직접 연결이 막혀 중계 서버로 연결하는 중… (최대 20초)');
+    clientMqtt(code,()=>{if(done)return;ready();toast('직접 연결 대신 중계 서버로 연결했습니다. 움직임이 조금 늦게 보일 수 있습니다')},
+      ()=>fail('직접 연결과 중계 연결 모두 실패했습니다. 방 코드가 맞는지, 방이 아직 열려 있는지 확인하세요'));
+  };
+  if(typeof window.Peer!=='function'){goRelay();return}
   const opts=await getIce();
-  const p=new window.Peer(opts);net.peer=p;setStage('중계 서버에 접속하는 중…');
-  let done=false;
-  const fail=msg=>{if(done)return;done=true;toast(msg,'bad');closeNet();show('menu')};
-  const timer=setTimeout(()=>fail('호스트와 직접 연결하지 못했습니다. 한쪽이 휴대폰 데이터나 회사·학교 네트워크라면 와이파이를 바꿔 보거나, TURN 중계 설정이 필요합니다'),20000);
+  if(done)return;
+  const p=new window.Peer(opts);net.peer=p;setStage('연결 서버에 접속하는 중…');
+  const openTimer=setTimeout(()=>{if(!opened)goRelay()},7000);
   p.on('open',id=>{
-    if(net.peer!==p)return;ME=id;setStage('방을 찾았습니다. 호스트와 직접 연결하는 중… (최대 20초)');
+    if(net.peer!==p||net.relayTried)return;opened=true;clearTimeout(openTimer);ME=id;setStage('방을 찾았습니다. 호스트와 직접 연결하는 중…');
     const conn=p.connect(PEER_PREFIX+code,{reliable:true,serialization:'json'});net.hostConn=conn;
-    conn.on('open',()=>{done=true;clearTimeout(timer);setPres({n:myName,c:myCol,pr:'',pt:0});try{conn.send({k:'hello',p:localPres})}catch(_){}net.presOut={};renderLobby()});
-    conn.on('data',clientRecv);
+    const p2pTimer=setTimeout(()=>{if(net.hostConn===conn&&!conn.open)goRelay()},8000);
+    conn.on('open',()=>{if(net.hostConn!==conn||done){try{conn.close()}catch(_){}return}clearTimeout(p2pTimer);try{conn.send({k:'hello',p:localPres})}catch(_){}ready()});
+    conn.on('data',d=>{if(net.hostConn===conn)clientRecv(d)});
     conn.on('close',()=>{if(net.hostConn===conn&&!net.leaving&&done){toast('호스트와 연결이 끊겼습니다','bad');leaveGame()}});
   });
   p.on('error',e=>{
-    if(e&&e.type==='peer-unavailable'){clearTimeout(timer);fail('코드 '+code+' 인 방이 없습니다. 코드를 확인하세요');return}
-    if(!done){clearTimeout(timer);fail('연결하지 못했습니다: '+errText(e));return}
-    toast('연결 문제: '+errText(e),'bad');
+    if(e&&e.type==='peer-unavailable'){fail('코드 '+code+' 인 방이 없습니다. 코드를 확인하세요');return}
+    if(!done){goRelay();return}
+    if(net.hostConn&&!net.hostConn.mq)toast('연결 문제: '+errText(e),'bad');
   });
   p.on('disconnected',()=>{if(net.peer===p&&!net.leaving){try{p.reconnect()}catch(_){}}});
 }
 function closeNet(){
+  const hc=net.hostConn;if(hc&&hc.mq&&!isHost){hc.send({k:'leave'})}
+  const mqs=(net.mq||[]).concat(net.mqc?[net.mqc]:[]);net.mq=[];net.mqc=null;net.relayTried=false;net.lastHost=0;
+  if(mqs.length)setTimeout(()=>{mqs.forEach(c=>{try{c.end(true)}catch(_){}})},300);
   const p=net.peer;net.peer=null;net.hostConn=null;net.conns=new Map();net.pres={};net.list=[];net.presOut={};net.peersDirty=false;
   if(p)setTimeout(()=>{try{p.destroy()}catch(_){}},250);
 }
