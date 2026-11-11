@@ -159,7 +159,7 @@ h1,h2,h3{text-wrap:balance}
 .abil button:disabled{opacity:.5;cursor:not-allowed}
 .abil button.on{border-color:var(--amber);color:var(--amber)}
 .prompt{position:absolute;z-index:3;left:50%;transform:translateX(-50%);bottom:calc(120px + env(safe-area-inset-bottom,0px));background:var(--amber);color:var(--amber-ink);font-weight:700;border-radius:4px;padding:6px 12px;border:0;white-space:nowrap}
-.toasts{position:absolute;z-index:20;top:calc(56px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:grid;gap:6px;justify-items:center;pointer-events:none;width:min(440px,calc(100vw - 32px))}
+.toasts{position:absolute;z-index:20;top:calc(84px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:grid;gap:6px;justify-items:center;pointer-events:none;width:min(440px,calc(100vw - 32px))}
 .toast{background:rgba(9,16,23,.94);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:4px;padding:8px 12px;font-size:13px;animation:tin .25s ease-out}
 .toast.bad{border-left-color:var(--alert)}
 .toast.good{border-left-color:var(--ok)}
@@ -257,6 +257,10 @@ input[type=range]{accent-color:var(--amber);width:100%}
 .readings b,.mtable b{font-family:var(--f-mono);color:var(--amber)}
 .mtable span{font-family:var(--f-mono);letter-spacing:.15em}
 .formula{font-size:20px;text-align:center;background:var(--void);border-radius:4px;padding:14px;line-height:1.5}
+.vote-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;width:100%}
+.vote-list button{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:10px;display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:center;text-align:left}
+.vote-list button small{grid-column:2;color:var(--dim);font-size:12px}
+.vote-list button[aria-pressed="true"]{border-color:var(--alert);background:#2a1414}
 .shake{animation:shake .3s}
 @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
 .brief .rname{font-family:var(--f-display);font-weight:400;font-size:40px;margin:0;line-height:1}
@@ -271,12 +275,25 @@ input[type=range]{accent-color:var(--amber);width:100%}
 @media (max-width:900px){.adm{grid-template-columns:minmax(0,1fr)}}
 .adm-mon{display:grid;gap:8px;align-content:start;min-width:0}
 .mon-h{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:12px;color:var(--dim)}
-#mon{width:100%;aspect-ratio:11/9;height:auto;max-width:100%;display:block;border:1px solid var(--line);border-radius:6px;background:#000}
-.cams{display:flex;gap:6px;flex-wrap:wrap}
-.cams button{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:6px 10px;font-size:12px;display:grid;text-align:left}
-.cams button small{font-family:var(--f-mono);color:var(--dim)}
-.cams button[aria-pressed="true"]{border-color:var(--amber)}
-.cams button.broken small{color:var(--alert)}
+.camgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:600px){.camgrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.camtile{margin:0;display:grid;gap:4px;cursor:pointer;min-width:0}
+.camtile figcaption{display:flex;justify-content:space-between;gap:6px;font-family:var(--f-mono);font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden}
+.camtile figcaption span{overflow:hidden;text-overflow:ellipsis}
+.camtile figcaption b{color:var(--ok);font-weight:600}
+.camtile.bad figcaption b{color:var(--alert)}
+.camtile canvas{width:100%;aspect-ratio:11/9;height:auto;display:block;border:1px solid var(--line);border-radius:4px;background:#000}
+.camtile.sel canvas{border-color:var(--amber)}
+.inv-card{display:grid;gap:8px}
+.inv-card .row{align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.inv-count{font-family:var(--f-mono);font-size:22px;font-weight:600;color:var(--alert)}
+.btn.danger{background:var(--alert);color:#1c0505}
+.adm .hint{font-size:12px;color:var(--dim);margin:0;line-height:1.5}
+.invbar{position:absolute;z-index:3;top:calc(46px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);background:var(--alert);color:#1c0505;font-weight:700;border-radius:4px;padding:5px 12px;font-size:13px;white-space:nowrap;pointer-events:none;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+.stun{position:absolute;z-index:5;inset:0;display:grid;place-items:center;pointer-events:none;background:rgba(40,6,6,.45)}
+.stun div{text-align:center;display:grid;gap:6px;padding:0 16px}
+.stun b{font-family:var(--f-display);font-weight:400;font-size:clamp(44px,9vw,80px);color:var(--alert);line-height:1}
+.stun span{color:var(--ink);font-size:15px}
 .adm-side{display:grid;gap:10px;align-content:start;min-width:0}
 .energy{display:grid;gap:6px}
 .energy .top{display:flex;justify-content:space-between;font-size:13px}
@@ -300,7 +317,47 @@ input[type=range]{accent-color:var(--amber);width:100%}
 .end p{margin:0;color:var(--dim);line-height:1.55}
 .end .stats{display:flex;gap:18px;flex-wrap:wrap;justify-content:center;font-family:var(--f-mono);font-size:13px}
 
-@media (prefers-reduced-motion:reduce){.toast,.shake{animation:none}}
+/* chain stages, traces, hints */
+.stage-bar{display:flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:12px;color:var(--dim)}
+.stage-bar i{width:22px;height:6px;border-radius:3px;background:var(--panel-2);border:1px solid var(--line)}
+.stage-bar i.on{background:var(--ok);border-color:var(--ok)} .stage-bar i.cur{background:var(--amber);border-color:var(--amber)}
+.enc{font-family:var(--f-mono);font-size:34px;letter-spacing:.28em;text-align:center;background:var(--void);border-radius:4px;padding:14px;color:var(--ink)}
+.flip180{display:block;transform:rotate(180deg)}
+.pointer{background:var(--void);border:1px dashed var(--amber);border-radius:4px;padding:12px 14px;line-height:1.8;font-size:15px}
+.pointer b{color:var(--amber)}
+.ref{display:grid;gap:6px;background:var(--void);border-radius:4px;padding:12px;text-align:center}
+.ref .big{font-family:var(--f-mono);font-size:26px;color:var(--amber)}
+.ref-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.ref-grid span{background:var(--panel-2);border-radius:4px;padding:6px;font-family:var(--f-mono);font-size:14px}
+.ref-grid span b{display:block;font-size:18px;color:var(--amber)}
+.stamp{border:2px solid var(--alert);color:var(--alert);font-family:var(--f-mono);font-weight:700;letter-spacing:.08em;text-align:center;padding:6px;border-radius:3px;transform:rotate(-1.5deg);background:rgba(255,93,93,.08)}
+.hint-btn{justify-self:start;background:transparent;border:1px dashed var(--info);color:var(--info);border-radius:4px;padding:6px 12px;font-size:13px}
+.hint-btn:disabled{opacity:.4;cursor:not-allowed}
+.hint-box{border-left:3px solid var(--info);padding:6px 10px;background:rgba(92,200,230,.07)}
+.fx-fake{position:relative}
+.fx-fake::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 1px,transparent 1px 3px);animation:fakeJit 2.6s steps(1) infinite}
+@keyframes fakeJit{0%,86%,100%{transform:none;opacity:.6}88%{transform:translateX(1px);opacity:1}92%{transform:translateX(-1px);opacity:.9}}
+#trc{width:100%;height:auto;border-radius:6px;background:var(--void);display:block}
+.tr-attr{display:flex;gap:8px;flex-wrap:wrap}
+.tr-attr span{font-size:12px;font-family:var(--f-mono);border:1px solid var(--line);border-radius:3px;padding:2px 8px;color:var(--ink)}
+.tamper{color:var(--alert);font-family:var(--f-mono);font-size:12px;font-weight:700}
+/* manual */
+.manual .sheet{width:min(760px,100%);gap:12px}
+.man-tabs{display:flex;gap:6px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.man-tabs button{background:var(--panel-2);border:1px solid var(--line);border-radius:4px;padding:6px 12px;font-size:13px}
+.man-tabs button[aria-pressed="true"]{border-color:var(--amber);color:var(--amber)}
+.man-body{display:grid;gap:10px;line-height:1.65;font-size:14px}
+.man-body h4{margin:8px 0 0;font-size:15px;color:var(--amber)}
+.man-body p{margin:0;color:var(--ink)}
+.man-body ul{margin:0;padding-left:18px;display:grid;gap:4px;color:var(--ink)}
+.man-body li b,.man-body p b{color:var(--amber)}
+.man-body table{border-collapse:collapse;width:100%;font-size:13px}
+.man-body td,.man-body th{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+.man-body th{color:var(--dim);font-weight:600;background:var(--panel-2)}
+.man-body td:first-child,.man-body th{white-space:nowrap}.man-body td{word-break:keep-all}
+.man-link{background:transparent;border:0;color:var(--info);text-decoration:underline;padding:0;font-size:13px;justify-self:start}
+
+@media (prefers-reduced-motion:reduce){.toast,.shake,.fx-fake::after{animation:none}}
 </style>
 </head>
 <body>
@@ -330,6 +387,7 @@ input[type=range]{accent-color:var(--amber);width:100%}
           <label for="in-code">초대 코드</label>
           <div class="row"><input id="in-code" type="text" maxlength="8" placeholder="예: k7q2m" autocomplete="off"><button class="btn" id="btn-join">참가</button></div>
           <button class="btn ghost" id="btn-solo">혼자 연습하기</button>
+          <button class="btn ghost" data-open-manual>게임 설명서</button>
           <p class="share-note">혼자 연습은 협동 모드를 오프라인으로 실행합니다. 모든 장치를 혼자 조작할 수 있어 규칙을 익히기 좋습니다.</p>
         </div>
       </div>
@@ -355,7 +413,7 @@ input[type=range]{accent-color:var(--amber);width:100%}
       <div class="card">
         <h3>작전 설정</h3>
         <div id="lb-host"></div>
-        <div class="lobby-actions"><button class="btn ghost" id="btn-leave-lobby">나가기</button></div>
+        <div class="lobby-actions"><button class="btn ghost" data-open-manual>게임 설명서</button><button class="btn ghost" id="btn-leave-lobby">나가기</button></div>
       </div>
     </div>
   </section>
@@ -364,11 +422,13 @@ input[type=range]{accent-color:var(--amber);width:100%}
   <section id="scr-game" class="screen game" hidden>
     <canvas id="cv" aria-label="게임 화면"></canvas>
     <div class="sign" id="sign"><span class="code" id="sign-code">A-01</span><span class="nm" id="sign-nm">시작실 A</span><span class="hz" id="sign-hz" hidden></span></div>
+    <div class="invbar" id="invbar" hidden></div>
+    <div class="stun" id="stun" hidden><div><b>기절</b><span id="stun-t"></span></div></div>
     <div class="hud hud-tl"><div class="plate obj" id="hud-obj"></div></div>
     <div class="hud hud-tr">
       <div class="plate timer" id="hud-timer"><span class="tag" id="hud-mode">CO-OP</span><b id="tl">10:00</b></div>
       <canvas id="mini" aria-label="미니맵"></canvas>
-      <div class="row"><button class="icon-btn" id="btn-help">브리핑</button><button class="icon-btn" id="btn-quit">나가기</button></div>
+      <div class="row"><button class="icon-btn" id="btn-help">브리핑</button><button class="icon-btn" data-open-manual>설명서</button><button class="icon-btn" id="btn-quit">나가기</button></div>
     </div>
     <div class="hud hud-bl"><div class="plate role-card" id="hud-role"></div></div>
     <div class="hud hud-br"><div class="plate chat-dock" id="game-chat-slot"></div></div>
@@ -381,9 +441,9 @@ input[type=range]{accent-color:var(--amber);width:100%}
     </div>
     <div class="adm" id="adm" hidden>
       <div class="adm-mon">
-        <div class="mon-h"><span id="mon-title">CAM</span><span id="mon-state"></span></div>
-        <canvas id="mon"></canvas>
-        <div class="cams" id="cams"></div>
+        <div class="mon-h"><span>CCTV 전체 화면 · 카메라를 누르면 그 방이 선택됩니다</span><span id="mon-state"></span></div>
+        <div class="camgrid" id="camgrid"></div>
+        <div class="plate inv-card" id="inv-card"></div>
       </div>
       <div class="adm-side">
         <div class="plate energy"><div class="top"><span>제어 에너지</span><b id="en-val">0</b></div><div class="bar"><i id="en-bar"></i></div></div>
@@ -399,6 +459,7 @@ input[type=range]{accent-color:var(--amber);width:100%}
     <div class="modal end" id="end" hidden><div class="sheet" id="end-sheet"></div></div>
   </section>
 
+  <div class="modal manual" id="manual" hidden style="position:fixed;z-index:40"><div class="sheet" id="manual-sheet"></div></div>
   <div class="toasts" id="toasts" aria-live="polite"></div>
   <!-- shared chat component (moved between lobby and game) -->
   <div id="chat-holder" hidden><div class="chat" id="chat">
@@ -433,9 +494,9 @@ function fmt(ms){ms=Math.max(0,ms);const s=Math.ceil(ms/1000);return Math.floor(
 
 /* ================= game data ================= */
 const MODES={
-  coop:{tag:'CO-OP',n:'협동 탈출',ppl:'1–4인',min:'10분',tl:600000,desc:'전원이 한 팀입니다. 서로 다른 방에서 시작해 정보를 나눠 세 시스템을 복구하고 탈출 게이트를 엽니다.'},
-  vs22:{tag:'VERSUS 2:2',n:'팀 대전',ppl:'4인 · 2인 2팀',min:'10분',tl:600000,desc:'레드와 블루가 대칭 구역에서 시스템을 복구합니다. 먼저 중앙의 메인 코어를 동기화한 팀이 이깁니다.'},
-  vs12:{tag:'VERSUS 1:2',n:'비대칭 대전',ppl:'3인 · 관리자 1, 탈출자 2',min:'9분',tl:540000,desc:'관리자는 CCTV와 시설 제어로 시간을 끕니다. 탈출자 둘은 사각지대를 이용해 시간 안에 탈출해야 합니다.'}
+  coop:{tag:'CO-OP',n:'협동 탈출',ppl:'1–4인',min:'10–30분',tl:600000,desc:'전원이 한 팀입니다. 서로 다른 방에서 시작해 정보를 나눠 세 시스템을 복구하고 탈출 게이트를 엽니다.'},
+  vs22:{tag:'VERSUS 2:2',n:'팀 대전',ppl:'4인 · 2인 2팀',min:'10–30분',tl:600000,desc:'레드와 블루가 대칭 구역에서 시스템을 복구합니다. 먼저 중앙의 메인 코어를 동기화한 팀이 이깁니다.'},
+  vs12:{tag:'VERSUS 1:2',n:'비대칭 대전',ppl:'3인 · 관리자 1, 탈출자 2',min:'9–27분',tl:540000,desc:'관리자는 CCTV와 시설 제어로 시간을 끕니다. 탈출자 둘은 사각지대를 이용해 시간 안에 탈출해야 합니다.'}
 };
 const ROLE={
   ENG:{n:'기술자',e:'ENGINEER',ab:'수동 개방',cd:35,info:'회로·전력·잠금장치 담당. 전력 배선반과 보안 콘솔을 조작합니다.',abInfo:'가까운 잠긴 문을 엽니다. 시간 잠금은 바로 풀고, 보라색 보안 문과 파란색 스위치 문은 10초 동안 엽니다. 탈출구 봉쇄는 열 수 없습니다.'},
@@ -446,11 +507,12 @@ const ROLE={
 };
 const ROLE_ORDER={coop:['ENG','ANA','SCO','OPE'],vs12:['ADM','ENG','ANA'],vs22:['ENG','ANA']};
 /* who may operate/read each device: first role in the list that is present on the team */
-const DUTY={clue_w:['SCO','ANA'],op_w:['ENG'],clue_c:['ANA'],op_c:['ENG'],clue_s:['OPE','ENG'],op_s:['ANA']};
+const DUTY={clue_w:['SCO','ANA'],op_w:['ENG'],clue_c:['ANA'],op_c:['ENG'],clue_s:['OPE','ENG'],op_s:['ANA'],clue_k:['OPE','ENG'],op_k:['SCO','ANA']};
 const KIND={
   clue_w:{n:'단서 장치',sys:'w',clue:1},op_w:{n:'조작 장치',sys:'w'},
   clue_c:{n:'단서 장치',sys:'c',clue:1},op_c:{n:'조작 장치',sys:'c'},
   clue_s:{n:'단서 장치',sys:'s',clue:1},op_s:{n:'조작 장치',sys:'s',pw:1},
+  clue_k:{n:'단서 장치',sys:'k',clue:1},op_k:{n:'조작 장치',sys:'k'},
   gate:{n:'탈출 게이트 코드',sys:'g'},levA:{n:'게이트 레버 A',lev:1},levB:{n:'게이트 레버 B',lev:1},
   block:{n:'구역 봉쇄 패널'},spy:{n:'감시 단말'},sw:{n:'원격 문 스위치'}
 };
@@ -469,17 +531,28 @@ const SHAPES=['사인파','사각파','삼각파'];
 const XF=['좌우로 뒤집힌','위아래로 뒤집힌','시계 방향으로 90° 돌린','180° 돌린'];
 const OSY=['◆','▲','●','■','★'];
 const CARD_COL='#b48cff';
-const SYSN={w:'전력 복구',c:'보안 해제',s:'데이터 추출',g:'게이트 코드'};
+const SYSN={w:'전력 복구',c:'보안 해제',s:'데이터 추출',k:'냉각 제어',g:'게이트 코드'};
+const SKN={w:'전력',c:'보안',s:'데이터',k:'냉각'};
+const sysKeys=()=>(S&&S.sk)||['w','c','s'];
+const allSys=sys=>sysKeys().every(k=>sys&&sys[k]);
+const fragOrder=()=>sysKeys().map((k,i)=>'#'+(i+1)+' '+SKN[k]).join(', ');
 const TEAMN=['레드','블루'];
 const WCOL=[['빨강','#ff5d5d'],['파랑','#4a8dff'],['노랑','#f2d14a'],['초록','#5fd38d']];
 const SYMS=['△','○','□','☆','◇'];
 const GLYPH=['◆','▲','●','■','✚','◐','★','♣','♠','♥'];
 const ITEM={flash:{n:'손전등',d:'어두운 방(보관실·실험 복도)과 정전된 방에서 장치를 쓰려면 꼭 들고 있어야 합니다. 내려놓아 동료에게 넘길 수 있습니다.'},key:{n:'키카드',d:'보라색 보안 문 근처에서 쓰면 그 문이 영구히 열립니다. 시간 잠금도 풀 수 있습니다. 1회용.'},emp:{n:'EMP',d:'1:2에서는 현재 방 CCTV를 25초 끄고, 2:2에서는 근처 상대 장치를 15초 교란합니다. 1회용.'}};
 const ADMOP={
-  lock:{n:'문 잠금',c:25,d:12000,cd:30000},dark:{n:'조명 차단',c:15,d:20000,cd:25000},
-  gas:{n:'환기 역류',c:20,d:15000,cd:25000},pwr:{n:'전력 차단',c:35,d:15000,cd:40000},
-  scan:{n:'전체 스캔',c:45,d:4000,cd:60000,unlock:180000},fix:{n:'카메라 수리',c:10,cd:0}
+  lock:{n:'문 잠금',c:20,d:18000,cd:25000},dark:{n:'조명 차단',c:12,d:25000,cd:20000},
+  gas:{n:'환기 역류',c:15,d:20000,cd:20000},pwr:{n:'전력 차단',c:30,d:20000,cd:35000},
+  scan:{n:'전체 스캔',c:40,d:5000,cd:50000,unlock:90000},fix:{n:'카메라 수리',c:8,cd:0},
+  reset:{n:'암호 교체',c:50,cd:90000,unlock:120000},
+  jam:{n:'통신 교란',c:20,d:10000,cd:45000},fake:{n:'가짜 단서',c:30,d:20000,cd:60000,unlock:60000}
 };
+const ADM_GLOBAL=['scan','reset','jam'];
+const garble=t=>[...t].map(ch=>/\s/.test(ch)||Math.random()>.5?ch:'■').join('');
+/* direct intervention (1:2): the overseer walks into the facility and can stun escapees */
+const INV_MAX=3,INV_MS=20000,STUN_MS=15000,IMM_MS=18000,HIT_CD=2500,HIT_R=60;
+const STUN_BLOCKED=['solve','lever','pick','use','unlock','esc','sw','drop','block','spy'];
 const PCOL=['#f2b134','#5cc8e6','#8fd16a','#c792ea','#ff7a9a','#f0e15a','#7aa2ff','#ff9a5a'];
 const STD_NAMES=['시작실 A','서버실','시작실 B','발전실','중앙 통제실','연구실','보관실','실험 복도','탈출구'];
 const STD_SHORT=['시작A','서버','시작B','발전','통제','연구','보관','복도','탈출'];
@@ -489,49 +562,73 @@ const VS_SHORT=['레드숙소','보급','블루숙소','레드발전','코어','
 const VS_CODE=['R-01','N-02','B-03','R-04','N-05','B-06','R-07','N-08','B-09'];
 
 /* ================= map ================= */
-const TS=32,RW=9,RH=7,GW=31,GH=25;
-const rc=i=>i%3, rr=i=>Math.floor(i/3);
+const TS=32,RW=9,RH=7;
+let NC=3,NR=3,NROOM=9,GW=31,GH=25;
+const rc=i=>i%NC, rr=i=>Math.floor(i/NC);
 const ox=i=>1+rc(i)*10, oy=i=>1+rr(i)*8;
-const DOORS=[];
-for(let r=0;r<3;r++)for(let c=0;c<3;c++){const i=r*3+c;
-  if(c<2){const x=10*(c+1);DOORS.push({a:i,b:i+1,h:1,t:[[x,oy(i)+2],[x,oy(i)+3],[x,oy(i)+4]]})}
-  if(r<2){const y=8*(r+1);DOORS.push({a:i,b:i+3,h:0,t:[[ox(i)+3,y],[ox(i)+4,y],[ox(i)+5,y]]})}}
-const GRID=[];for(let y=0;y<GH;y++)GRID.push(new Array(GW).fill(-1));
-for(let i=0;i<9;i++)for(let y=0;y<RH;y++)for(let x=0;x<RW;x++)GRID[oy(i)+y][ox(i)+x]=0;
-DOORS.forEach((d,k)=>d.t.forEach(([x,y])=>{GRID[y][x]=100+k}));
+const DOORS=[],GRID=[];
+/* the map is a grid of rooms; 3x3 normally, 4x3 for a 4-player co-op */
+function setGrid(nc,nr){
+  if(nc===NC&&nr===NR&&GRID.length)return;
+  NC=nc;NR=nr;NROOM=nc*nr;GW=nc*10+1;GH=nr*8+1;DOORS.length=0;GRID.length=0;
+  for(let r=0;r<NR;r++)for(let c=0;c<NC;c++){const i=r*NC+c;
+    if(c<NC-1){const x=10*(c+1);DOORS.push({a:i,b:i+1,h:1,t:[[x,oy(i)+2],[x,oy(i)+3],[x,oy(i)+4]]})}
+    if(r<NR-1){const y=8*(r+1);DOORS.push({a:i,b:i+NC,h:0,t:[[ox(i)+3,y],[ox(i)+4,y],[ox(i)+5,y]]})}}
+  for(let y=0;y<GH;y++)GRID.push(new Array(GW).fill(-1));
+  for(let i=0;i<NROOM;i++)for(let y=0;y<RH;y++)for(let x=0;x<RW;x++)GRID[oy(i)+y][ox(i)+x]=0;
+  DOORS.forEach((d,k)=>d.t.forEach(([x,y])=>{GRID[y][x]=100+k}));
+}
+setGrid(3,3);
+const allRooms=()=>[...Array(NROOM).keys()];
 const doorBetween=(a,b)=>DOORS.findIndex(d=>(d.a===a&&d.b===b)||(d.a===b&&d.b===a));
-const roomAt=(px,py)=>clamp(Math.floor((py/TS-.5)/8),0,2)*3+clamp(Math.floor((px/TS-.5)/10),0,2);
+const roomAt=(px,py)=>clamp(Math.floor((py/TS-.5)/8),0,NR-1)*NC+clamp(Math.floor((px/TS-.5)/10),0,NC-1);
 const tc=(i,lx,ly)=>({x:(ox(i)+lx+.5)*TS,y:(oy(i)+ly+.5)*TS});
 const doorMid=i=>{const m=DOORS[i].t[1];return{x:(m[0]+.5)*TS,y:(m[1]+.5)*TS}};
 
-function buildLayout(mode){
-  const L={mode,stations:[],vents:[],spots:[],cams:[],sysDoors:[],sensor:[],hatch:null,spawn:{},teamDoors:[[],[]],dark:[],cardFixed:[],cardCand:[],swDoors:[],
-    names:mode==='vs22'?VS_NAMES:STD_NAMES,short:mode==='vs22'?VS_SHORT:STD_SHORT,codes:mode==='vs22'?VS_CODE:STD_CODE};
+/* named rooms; their positions are shuffled every game */
+const LROOM={
+  server:{n:'서버실',sh:'서버',c:'S',st:['clue_w','op_s']},power:{n:'발전실',sh:'발전',c:'P',st:['op_w']},
+  control:{n:'중앙 통제실',sh:'통제',c:'C',st:['op_c']},lab:{n:'연구실',sh:'연구',c:'R',st:[]},
+  storage:{n:'보관실',sh:'보관',c:'W',st:['clue_s']},corridor:{n:'실험 복도',sh:'복도',c:'X',st:['clue_c']},
+  cooling:{n:'냉각실',sh:'냉각',c:'K',st:['op_k']},observe:{n:'관측실',sh:'관측',c:'O',st:['clue_k']},depot:{n:'자재 창고',sh:'창고',c:'D',st:[]}
+};
+const CAMCOV={server:[3,0,9,7],power:[0,0,9,5],control:[0,0,9,7],corridor:[0,0,6,7]};
+function buildLayout(mode,seed,big){
+  const L={mode,big:!!big,key:mode+':'+(seed|0)+':'+(big?1:0),stations:[],vents:[],spots:[],cams:[],sysDoors:[],sensor:[],hatch:null,spawn:{},teamDoors:[[],[]],dark:[],cardFixed:[],cardCand:[],swDoors:[],
+    names:[],short:[],codes:[],exit:-1,startA:0,startB:2,slotOf:{}};
   const st=(k,tm,rm,lx,ly,n)=>L.stations.push({id:k+tm+'_'+rm,k,tm,rm,lx,ly,n:n||KIND[k].n});
   if(mode!=='vs22'){
-    st('clue_w',0,1,1,1); st('op_s',0,1,7,1);
-    st('op_w',0,3,1,1);
-    st('clue_s',0,6,1,1);
-    st('op_c',0,4,1,1);
-    st('clue_c',0,7,7,1);
-    st('gate',0,8,1,1); st('levA',0,8,1,5); st('levB',0,8,7,1);
-    L.hatch={rm:8,lx:6,ly:4};
-    L.vents=[[{rm:1,lx:1,ly:5},{rm:7,lx:1,ly:5}],[{rm:5,lx:7,ly:5},{rm:6,lx:7,ly:5}]];
-    L.spots=[{rm:1,lx:4,ly:4},{rm:3,lx:4,ly:3},{rm:4,lx:6,ly:4},{rm:5,lx:2,ly:5},{rm:6,lx:5,ly:4},{rm:7,lx:4,ly:4},{rm:5,lx:6,ly:2},{rm:3,lx:6,ly:5}];
-    L.sysDoors=[doorBetween(7,8),doorBetween(5,8)];
-    L.dark=mode==='vs12'?[6]:[6,7];
-    L.cardFixed=[doorBetween(0,1),doorBetween(1,2)];
-    L.cardCand=[doorBetween(1,4),doorBetween(3,4),doorBetween(4,5),doorBetween(4,7),doorBetween(3,6),doorBetween(6,7)];
-    const swA=doorBetween(0,3),swB=doorBetween(2,5);
+    setGrid(big?4:3,3);
+    const A=0,B=NC-1,E=NROOM-1;L.startA=A;L.startB=B;L.exit=E;
+    const free=allRooms().filter(i=>i!==A&&i!==B&&i!==E);
+    const logical=big?['server','power','control','lab','storage','corridor','cooling','observe','depot']:['server','power','control','lab','storage','corridor'];
+    const R=rng((seed*7+11)>>>0),order=shuffle(logical,R);
+    const name=(i,n,sh,c)=>{L.names[i]=n;L.short[i]=sh;L.codes[i]=c+'-'+String(i+1).padStart(2,'0')};
+    name(A,'시작실 A','시작A','A');name(B,'시작실 B','시작B','A');name(E,'탈출구','탈출','E');
+    free.forEach((slot,n)=>{const id=order[n],R2=LROOM[id];L.slotOf[id]=slot;name(slot,R2.n,R2.sh,R2.c);
+      R2.st.forEach((k,j)=>st(k,0,slot,j?7:1,1));
+      L.spots.push({rm:slot,lx:4,ly:4},{rm:slot,lx:3,ly:5})});
+    st('gate',0,E,1,1); st('levA',0,E,1,5); st('levB',0,E,7,1);
+    L.hatch={rm:E,lx:6,ly:4};
+    L.vents=big?[[{rm:1,lx:1,ly:5},{rm:9,lx:1,ly:5}],[{rm:6,lx:7,ly:5},{rm:8,lx:7,ly:5}]]
+               :[[{rm:1,lx:1,ly:5},{rm:7,lx:1,ly:5}],[{rm:5,lx:7,ly:5},{rm:6,lx:7,ly:5}]];
+    L.sysDoors=[doorBetween(E-1,E),doorBetween(E-NC,E)];
+    L.dark=(mode==='vs12'?['storage']:['storage','corridor']).map(id=>L.slotOf[id]);
+    L.cardFixed=[doorBetween(A,A+1),doorBetween(B-1,B)];
+    L.cardCand=DOORS.map((d,i)=>i).filter(i=>free.includes(DOORS[i].a)&&free.includes(DOORS[i].b));
+    const swA=doorBetween(A,A+NC),swB=doorBetween(B,B+NC);
     L.swDoors=[swA,swB];
-    L.stations.push({id:'sw0_2',k:'sw',tm:0,rm:2,lx:1,ly:1,n:'원격 문 스위치',door:swA});
-    L.stations.push({id:'sw0_0',k:'sw',tm:0,rm:0,lx:7,ly:1,n:'원격 문 스위치',door:swB});
-    L.spawn={ENG:0,ANA:2,SCO:5,OPE:3};
+    L.stations.push({id:'sw0_'+B,k:'sw',tm:0,rm:B,lx:1,ly:1,n:'원격 문 스위치',door:swA});
+    L.stations.push({id:'sw0_'+A,k:'sw',tm:0,rm:A,lx:7,ly:1,n:'원격 문 스위치',door:swB});
+    L.spawn={ENG:A,ANA:B,SCO:L.slotOf.lab,OPE:big?L.slotOf.depot:L.slotOf.power};
     if(mode==='vs12'){
-      L.cams=[{rm:1,cov:[3,0,9,7]},{rm:3,cov:[0,0,9,5]},{rm:4,cov:[0,0,9,7]},{rm:7,cov:[0,0,6,7]},{rm:8,cov:[0,0,9,7]}];
-      L.sensor=DOORS.map((d,i)=>i).filter(i=>[4,8].includes(DOORS[i].a)||[4,8].includes(DOORS[i].b));
+      L.cams=['server','power','control','corridor'].map(id=>({rm:L.slotOf[id],cov:CAMCOV[id]})).concat([{rm:E,cov:[0,0,9,7]}]);
+      const watch=[L.slotOf.control,E];
+      L.sensor=DOORS.map((d,i)=>i).filter(i=>watch.includes(DOORS[i].a)||watch.includes(DOORS[i].b));
     }
   } else {
+    setGrid(3,3);
+    L.names=VS_NAMES.slice();L.short=VS_SHORT.slice();L.codes=VS_CODE.slice();
     for(const tm of [0,1]){
       const c=tm?2:0,T=c,M=3+c,B=6+c,mx=x=>tm?8-x:x;
       st('clue_c',tm,T,mx(1),1); st('op_s',tm,T,mx(1),5);
@@ -554,7 +651,8 @@ let localPres={};
 const me={x:0,y:0,f:1,w:0,ph:0};
 const smooth={};
 let panel=null;
-const loc={cd:0,scan:0,dash:0,peekMode:false,peek:-1,peekUntil:0,escSent:false,ventUntil:0,ventTo:null,chan:'team'};
+const loc={rvFx:{},rvPrev:{},rvRound:-1,cd:0,scan:0,dash:0,peekMode:false,peek:-1,peekUntil:0,escSent:false,ventUntil:0,ventTo:null,chan:'team'};
+let invRef={v:0,at:0,stun:{}};
 let chatLog=[],seenEv=-1,tlRef={tl:0,at:0},lastPhKey='',lastSent={};
 const H={bc:0,dirty:false,nextEv:80000,nextCam:70000};
 const PZ={};
@@ -568,7 +666,7 @@ const ALLP=perms([0,1,2,3,4]);
 function xform(P,t){const o=Array(16).fill(0);for(let r=0;r<4;r++)for(let c=0;c<4;c++){let v;
   if(t===0)v=P[r*4+(3-c)];else if(t===1)v=P[(3-r)*4+c];else if(t===2)v=P[(3-c)*4+r];else v=P[(3-r)*4+(3-c)];o[r*4+c]=v}return o}
 /* the real-math puzzle (calc) appears every game; the other two systems draw from the rest of the pool */
-function ptypes(){const key='T'+S.seed;if(PZ[key])return PZ[key];const R=rng((S.seed*13+7)>>>0);const t=shuffle(Object.keys(PTYPE).filter(k=>k!=='calc'),R).slice(0,2);t.splice(Math.floor(R()*3),0,'calc');return PZ[key]={w:t[0],c:t[1],s:t[2]}}
+function ptypes(){const n=sysKeys().length,key='T'+S.seed+':'+n;if(PZ[key])return PZ[key];const R=rng((S.seed*13+7)>>>0);const pool=shuffle(Object.keys(PTYPE).filter(k=>k!=='calc'),R);const t=pool.slice(0,n-1);t.splice(Math.floor(R()*n),0,'calc');if(n===3)t.push(pool[3]);return PZ[key]={w:t[0],c:t[1],s:t[2],k:t[3]}}
 function stName(s){const k=KIND[s.k];if(k&&k.sys&&k.sys!=='g'&&S&&S.seed){const t=PTYPE[ptypes()[k.sys]];return k.clue?t.clue:t.op}return s.n}
 function genPuzzle(type,R){
   if(type==='wire'){const g=Math.floor(R()*5),cols=shuffle([0,1,2,3],R);let j=0;const ans=[0,1,2,3,4].map(i=>i===g?-1:cols[j++]);return{ans,pOrd:shuffle([0,1,2,3,4],R),cOrd:shuffle([0,1,2,3,4],R)}}
@@ -617,22 +715,110 @@ function genPuzzle(type,R){
     return{labels,vals,text:F[0],ans:String(F[1])};
   }
 }
+/* ================= chain stages (difficulty) =================
+   stage 0 of every system is the typed puzzle above. Harder difficulties add stages:
+   the operator device shows an encoded message (out), the clue device shows the key (ref).
+   Exactly one stage per team is a trace stage: three look-alike objects in three rooms,
+   the operator's sentence names two criteria and exactly one object meets both. */
+const DIFF=[{n:'보통',d:'시스템마다 1단계 · 설명 모두 표시'},{n:'어려움',d:'시스템마다 2단계 · 설명 숨김 · 흔적 단서 1개'},{n:'지옥',d:'시스템마다 3단계 · 설명 숨김 · 흔적 단서 1개'}];
+const LOCKS=[8000,20000,45000];
+const dfv=()=>clamp((S&&S.df)|0,0,2);
+const nStg=()=>dfv()+1;
+const stg=(tm,k)=>(S&&S.stg&&S.stg[tm]&&S.stg[tm][k])|0;
+const BLOCKS=['phone','roman','shift','a1z','mirror'];
+const BLKN={phone:'전화 키패드',roman:'로마 숫자',shift:'다이얼 회전',a1z:'알파벳 순번',mirror:'뒤집힌 표시',trace:'흔적 판독'};
+const WORDS=['BOX','CAT','DOG','KEY','MAP','SUN','RUN','JAM','FOX','OWL','GAS','HUB','LAB','ZIP','WAX','EXIT','DOOR','LOCK','CODE','SAFE','FUSE','PUMP','VENT','WIRE','GATE','HELP','BOLT','DUST'];
+const PHONE={2:'ABC',3:'DEF',4:'GHI',5:'JKL',6:'MNO',7:'PQRS',8:'TUV',9:'WXYZ'};
+const phoneDigit=ch=>Object.keys(PHONE).find(d=>PHONE[d].includes(ch))||'';
+function toRoman(n){let s='';for(const[v,r]of[[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']])while(n>=v){s+=r;n-=v}return s}
+const flip180=s=>[...s].reverse().map(c=>c==='6'?'9':c==='9'?'6':c).join('');
+function genBlock(b,R){
+  if(b==='phone'){const w=WORDS[Math.floor(R()*WORDS.length)];return{b,w,ans:[...w].map(phoneDigit).join('')}}
+  if(b==='roman'){const n=14+Math.floor(R()*186);return{b,r:toRoman(n),ans:String(n),num:1}}
+  if(b==='shift'){const k=2+Math.floor(R()*7),d=[0,1,2,3].map(()=>Math.floor(R()*10));return{b,k,d,ans:d.map(x=>(x+k)%10).join(''),len:4}}
+  if(b==='a1z'){const L3=[0,1,2].map(()=>Math.floor(R()*26));return{b,l:L3.map(i=>String.fromCharCode(65+i)),ans:String(L3.reduce((a,i)=>a+i+1,0)),num:1}}
+  /* mirror: the operator sees the answer rotated 180°; read naively it gives the wrong number */
+  let a;do{a=[0,1,2,3].map(()=>'01689'[Math.floor(R()*5)]).join('')}while(flip180(a)===a);
+  return{b:'mirror',s:a,ans:a,len:4};
+}
+const TRK={
+  clock:{n:'벽시계',d:[['테두리 색',['빨강','파랑','은색']],['초침',['움직임','멈춤']]],fx:'시계 바늘이 미친 듯이 돌았습니다'},
+  lamp:{n:'램프 패널',d:[['패널 표식',['△','○','□']],['상단 경고등',['켜짐','꺼짐']]],fx:'램프가 깜빡였습니다'},
+  gauge:{n:'압력 계기',d:[['바늘 색',['빨강','초록','흰색']],['유리',['금 감','멀쩡함']]],fx:'계기 바늘이 튀었습니다'},
+  crate:{n:'상자 더미',d:[['테이프 색',['노랑','빨강','파랑']],['맨 위 상자',['열림','닫힘']]],fx:'상자가 덜컹이며 먼지가 일었습니다'},
+  board:{n:'전광판',d:[['글자 색',['초록','주황','흰색']],['테두리',['점멸','고정']]],fx:'전광판에 노이즈가 흘렀습니다'}
+};
+const TRCOL={'빨강':'#ff5d5d','파랑':'#4a8dff','은색':'#c9d3db','초록':'#5fd38d','흰색':'#f4f7fa','노랑':'#f2d14a','주황':'#ff9a3c'};
+const TROP={
+  clock:{t:()=>'시 × 분',f:v=>Math.floor(v/100)*(v%100),val:v=>Math.floor(v/100)+':'+String(v%100).padStart(2,'0')},
+  lamp:{t:p=>'램프 값 + '+p,f:(v,p)=>v+p,val:v=>String(v)},
+  gauge:{t:p=>'눈금 + '+p,f:(v,p)=>v+p,val:v=>String(v)},
+  crate:{t:p=>'상자 수 × '+p,f:(v,p)=>v*p,val:v=>String(v)},
+  board:{t:p=>'표시 숫자 − '+p,f:(v,p)=>v-p,val:v=>String(v)}
+};
+function trVal(kind,R){
+  if(kind==='clock')return(1+Math.floor(R()*12))*100+5*(1+Math.floor(R()*11));
+  if(kind==='lamp')return 3+Math.floor(R()*28);
+  if(kind==='gauge')return 10*(1+Math.floor(R()*9));
+  if(kind==='crate')return 3+Math.floor(R()*7);
+  return 100+Math.floor(R()*900);
+}
+const trMatch=(a,cr)=>cr.every(c=>c.neg?a[c.d]!==c.v:a[c.d]===c.v);
+/* rooms that hold this team's three trace objects, and a free tile in each */
+function traceSpots(tm,R){
+  if(!L)return[];
+  const rooms=S.mode==='vs22'?(tm?[2,5,8]:[0,3,6]):shuffle(allRooms().filter(i=>i!==L.exit),R).slice(0,3);
+  return rooms.map(rm=>{
+    const busy=[].concat(L.stations.filter(s=>s.rm===rm),L.spots.filter(s=>s.rm===rm),[].concat(...L.vents).filter(v=>v.rm===rm),L.hatch&&L.hatch.rm===rm?[L.hatch]:[],[{lx:4,ly:3}]);
+    const c=[[4,1],[6,3],[2,3],[5,5],[3,1]].find(([x,y])=>busy.every(b=>Math.hypot(b.lx-x,b.ly-y)>=1.5))||[4,1];
+    return{rm,lx:c[0],ly:c[1]}});
+}
+function genTrace(kind,tm,R0,Rv){
+  const r0=Math.floor(R0()*3),r1=Math.floor(R0()*2),neg=R0()<.5,x=neg?(r0+1+Math.floor(R0()*2))%3:r0;
+  const crit=[{d:0,v:x,neg},{d:1,v:r1}];
+  const aA=neg?x:(r0+1+Math.floor(R0()*2))%3;                 // fails only ①
+  const okB=[0,1,2].filter(v=>neg?v!==x:v===x),aB=okB[Math.floor(R0()*okB.length)]; // fails only ②
+  const attrs=[[r0,r1],[aA,r1],[aB,1-r1]],order=shuffle([0,1,2],R0),spots=traceSpots(tm,R0);
+  const p=kind==='clock'?0:kind==='crate'?2+Math.floor(R0()*7):kind==='board'?11+Math.floor(R0()*39):11+Math.floor(R0()*39);
+  const vals=[];while(vals.length<3){const v=trVal(kind,Rv);if(!vals.includes(v))vals.push(v)}
+  const objs=order.map((ai,j)=>Object.assign({a:attrs[ai],real:ai===0,v:vals[j]},spots[j]||{rm:0,lx:4,ly:1}));
+  const real=objs.find(o=>o.real);
+  return{b:'trace',kind,tm,crit,fcrit:[{d:0,v:aA,neg:false},{d:1,v:r1}],p,objs,ans:String(TROP[kind].f(real.v,p)),num:1};
+}
+function chainDefs(tm,rv){
+  const n=nStg(),keys=sysKeys(),ch={};keys.forEach(k=>{ch[k]=[]});if(n<2)return{ch,trace:null};
+  const RT=rng((S.seed*41+9)>>>0),trK=keys[Math.floor(RT()*keys.length)],kind=Object.keys(TRK)[Math.floor(RT()*5)];
+  const perm=shuffle(BLOCKS,rng((S.seed*43+1)>>>0));let trace=null;
+  keys.forEach((k,ki)=>{for(let j=1;j<n;j++){
+    const Rv=rng((S.seed*59+tm*7919+ki*104729+j*15485863+(rv[k]|0)*7727)>>>0);
+    if(k===trK&&j===1){trace=genTrace(kind,tm,rng((S.seed*61+tm*977+3)>>>0),Rv);trace.k=k;ch[k].push(trace)}
+    else ch[k].push(genBlock(perm[(ki*2+j-1)%5],Rv));}});
+  return{ch,trace};
+}
 function puz(tm){
-  const key=S.seed+':'+tm;if(PZ[key])return PZ[key];
-  const T=ptypes(),R=rng((S.seed*31+tm*7919+3)>>>0);
-  const o={types:T,frag:[0,1,2].map(()=>Math.floor(R()*10))};
-  ['w','c','s'].forEach(k=>{o[k]=genPuzzle(T[k],R)});
+  const rv=(S&&S.rv)||{},key=S.seed+':'+tm+':'+sysKeys().length+':'+dfv()+':'+(rv.w|0)+'.'+(rv.c|0)+'.'+(rv.s|0)+'.'+(rv.k|0)+':'+(L?L.key:'');if(PZ[key])return PZ[key];
+  const T=ptypes(),FR=rng((S.seed*17+tm*31+5)>>>0);
+  const o={types:T,frag:[0,1,2,3].map(()=>Math.floor(FR()*10))};
+  ['w','c','s','k'].forEach((k,n)=>{o[k]=genPuzzle(T[k],rng((S.seed*31+tm*7919+3+n*104729+(rv[k]|0)*7727)>>>0))});
+  Object.assign(o,chainDefs(tm,rv));
   return PZ[key]=o;
 }
+const curDef=(tm,k)=>{const j=stg(tm,k);return j?puz(tm).ch[k][j-1]:null};
 function check(k,tm,ans){
-  const P=puz(tm);if(k==='gate')return String(ans)===P.frag.join('');
+  const P=puz(tm);if(k==='gate')return String(ans)===P.frag.slice(0,sysKeys().length).join('');
   const K=KIND[k];if(!K||!K.sys||K.clue)return false;
+  const d=curDef(tm,K.sys);
+  if(d)return d.num?String(ans).length>0&&Number(ans)===Number(d.ans):String(ans)===d.ans;
   const q=P[K.sys],t=P.types[K.sys];
   if(t==='wire')return Array.isArray(ans)&&ans.length===5&&ans.every((c,i)=>c===q.ans[i]);
   if(t==='sig')return !!ans&&ans.f===q.f&&ans.a===q.a&&ans.w===q.w;
   if(t==='math'||t==='calc')return String(ans).length>0&&Number(ans)===Number(q.ans);
   return String(ans)===q.ans;
 }
+/* every trace object on the map (one set per team in 2:2) */
+function allTraces(){if(!S||!S.seed||dfv()<1||!L)return[];const out=[];(S.mode==='vs22'?[0,1]:[0]).forEach(tm=>{const t=puz(tm).trace;if(t)out.push(t)});return out}
+const hinted=(tm,k)=>dfv()===0||!!(S.hint&&S.hint[tm]&&S.hint[tm].includes(k+':'+stg(tm,k)));
+const rvMark=k=>!!(S&&S.rvT&&S.rvT[k]!=null&&S.el-S.rvT[k]<30000);
 
 /* ================= rules helpers ================= */
 function gamePeers(){
@@ -645,7 +831,7 @@ const myP=()=>S&&S.pl?S.pl[ME]:null;
 function teamRoles(tm){const pr=presentSet();return Object.keys(S.pl||{}).filter(p=>S.pl[p].tm===tm&&S.pl[p].ro!=='ADM'&&pr.has(p)).map(p=>S.pl[p].ro)}
 function needRole(k,tm){const list=DUTY[k];if(!list)return null;const roles=teamRoles(tm);return list.find(r=>roles.includes(r))||null}
 function allowed(k,tm,ro){const n=needRole(k,tm);return !n||n===ro}
-function sysLocked(i){if(!S||!S.sys||!L||!L.sysDoors.includes(i))return false;const s=S.sys[0]||{};return !(s.w&&s.c&&s.s)}
+function sysLocked(i){if(!S||!S.sys||!L||!L.sysDoors.includes(i))return false;return !allSys(S.sys[0]||{})}
 function doorLocked(i){if(sysLocked(i))return true;if(!S||!S.dr)return false;if(S.dr[i]>0)return true;return !!(((S.dc&&S.dc[i])||(S.ds&&S.ds[i]))&&!(S.do&&S.do[i]>0))}
 function doorColor(i){if(sysLocked(i)||(S.dr&&S.dr[i]>0))return COL.alert;if(S.dc&&S.dc[i])return CARD_COL;return COL.info}
 function isDark(rm){return !!(L&&L.dark&&L.dark.includes(rm))||!!(S&&S.rd&&S.rd[rm]>0)}
@@ -658,7 +844,7 @@ function stnBlock(s,tm){
   if(S.jam[s.id]>0)return'EMP 교란 중';
   if((S.lo[s.id]||0)>0)return'오입력 잠금 ('+Math.ceil(S.lo[s.id]/1000)+'초)';
   if(KIND[s.k].pw&&!sys.w)return'전력 미공급 — 먼저 전력을 복구하세요';
-  if(s.k==='gate'&&!(sys.w&&sys.c&&sys.s))return'세 시스템을 먼저 복구해야 합니다';
+  if(s.k==='gate'&&!allSys(sys))return'모든 시스템을 먼저 복구해야 합니다';
   if(KIND[s.k].lev&&!sys.g)return'먼저 '+(S.mode==='vs22'?'코어 동기화 코드':'게이트 코드')+'를 입력하세요';
   return'';
 }
@@ -754,7 +940,7 @@ function gemit(topic,data){
     else if(topic==='chat'){dispatch('chat',{peer:ME,data,isMe:true,sameTab:true});sendAll({k:'msg',t:'chat',d:data,f:ME})}
   }else if(net.hostConn&&net.hostConn.open){try{net.hostConn.send({k:'emit',t:topic,d:data})}catch(e){}}
 }
-function dispatch(topic,m){if(topic==='state')onState(m);else if(topic==='act'){if(isHost)hostAct(m.peer,m.data)}else if(topic==='chat')onChat(m)}
+function dispatch(topic,m){if(topic==='secret'){const d=m.data;if(!isHost&&d&&d.tr&&(!S||m.peer===S.host)){const first=loc.trRound!==d.r;loc.trRound=d.r;if(first&&S&&S.ph==='play'&&S.round===d.r)showBrief()}return}if(topic==='state')onState(m);else if(topic==='act'){if(isHost)hostAct(m.peer,m.data)}else if(topic==='chat')onChat(m)}
 function sendAll(obj){for(const c of net.conns.values()){if(c.open){try{c.send(obj)}catch(e){}}}}
 function setPres(patch){
   for(const k in patch){if(patch[k]===null)delete localPres[k];else localPres[k]=patch[k]}
@@ -889,13 +1075,13 @@ function enterOffline(){
   localPres={};setPres({n:myName,c:myCol,pr:'',pt:0});
   becomeHost(newLobby('coop'));show('lobby');renderLobby();
 }
-function resetLocal(){S=null;L=null;STN={};isHost=false;lastPhKey='';seenEv=-1;chatLog=[];renderChat();closePanel();localPres={};lastSent={}}
+function resetLocal(){loc.trRound=-1;S=null;L=null;STN={};isHost=false;lastPhKey='';seenEv=-1;chatLog=[];renderChat();closePanel();localPres={};lastSent={}}
 function leaveGame(){
   net.leaving=true;
   if(isHost&&!net.offline)sendAll({k:'bye',r:'closed'});
   closeNet();resetLocal();net.offline=false;net.leaving=false;show('menu');
 }
-function newLobby(mode){return{ph:'lobby',mode,host:ME,v:0,pl:{},seed:0,evn:0,ev:[],round:0}}
+function newLobby(mode){return{ph:'lobby',mode,host:ME,v:0,pl:{},seed:0,evn:0,ev:[],round:0,opt:{traitor:false,diff:1}}}
 function becomeHost(state){isHost=true;S=state;S.host=ME;sync();broadcast()}
 function onState(m){
   const d=m.data;if(!d||typeof d!=='object'||d.host!==m.peer||isHost)return;
@@ -906,7 +1092,14 @@ function onState(m){
 function dirty(){H.dirty=true}
 function broadcast(){if(!isHost||!S)return;S.v=(S.v||0)+1;if(S.ev&&S.ev.length>5)S.ev=S.ev.slice(-5);gemit('state',S);H.bc=0;H.dirty=false}
 function ev(t,a){S.evn=(S.evn||0)+1;S.ev=S.ev||[];S.ev.push({i:S.evn,t,a});if(S.ev.length>5)S.ev.shift()}
-function finish(w,m){S.ph='end';S.res={w,m,el:S.el};dirty()}
+function finish(w,m){S.inv=0;S.stun={};S.imm={};S.hitcd=0;
+  if(S.mode==='coop'&&S.trOn&&H.traitor&&S.ph==='play'){S.ph='vote';S.vote={t:30000,v:{}};S.pend={w,m,el:S.el};dirty();return}
+  S.ph='end';S.res={w,m,el:S.el};dirty()}
+function finalizeVote(){
+  const tally={};Object.values(S.vote.v).forEach(t=>{tally[t]=(tally[t]||0)+1});
+  let top=null,max=0,tie=false;for(const k in tally){if(tally[k]>max){max=tally[k];top=k;tie=false}else if(tally[k]===max)tie=true}
+  S.ph='end';S.res={w:S.pend.w,m:S.pend.m,el:S.pend.el,tr:H.traitor,caught:!tie&&top===H.traitor,top:tie?null:top,tally};dirty();
+}
 setInterval(()=>{
   if(!isHost||!S)return;
   hostTick(100);H.bc+=100;
@@ -914,37 +1107,44 @@ setInterval(()=>{
   if((H.dirty&&H.bc>=100)||H.bc>=cad){broadcast();sync()}
 },100);
 function hostTick(dt){
+  if(S.ph==='vote'){S.vote.t-=dt;const pr=presentSet(),voters=Object.keys(S.pl).filter(q=>pr.has(q));if(S.vote.t<=0||voters.every(q=>S.vote.v[q]))finalizeVote();return}
   if(S.ph!=='play')return;
   S.tl-=dt;S.el+=dt;
   const dec=a=>{for(let i=0;i<a.length;i++)if(a[i]>0)a[i]=Math.max(0,a[i]-dt)};
   [S.dr,S.do,S.rd,S.rg,S.rp,S.cb,S.sp,S.tc.blk,S.tc.spy].forEach(dec);
-  for(const m of [S.lo,S.jam,S.acd])for(const k in m){m[k]-=dt;if(m[k]<=0)delete m[k]}
+  if(S.cj>0)S.cj=Math.max(0,S.cj-dt);
+  for(const m of [S.lo,S.jam,S.acd,S.stun||{},S.imm||{},S.fk||{}])for(const k in m){m[k]-=dt;if(m[k]<=0)delete m[k]}
+  if(S.hitcd>0)S.hitcd=Math.max(0,S.hitcd-dt);
+  if(S.inv>0){S.inv-=dt;if(S.inv<=0){S.inv=0;ev('관리자가 관리자실로 복귀했습니다',-1)}}
   if(S.scan>0)S.scan=Math.max(0,S.scan-dt);
   S.sys.forEach(sys=>{if(sys.lv)for(const k in sys.lv){sys.lv[k][0]-=dt;if(sys.lv[k][0]<=0)delete sys.lv[k]}});
   if(S.mode==='vs12'){
-    S.en=Math.min(100,S.en+dt*0.0012);
+    S.en=Math.min(100,S.en+dt*[0.0016,0.0011,0.0009][dfv()]);
     H.nextCam-=dt;
-    if(H.nextCam<=0){H.nextCam=80000+Math.random()*40000;const ok=L.cams.map((c,i)=>i).filter(i=>!(S.cb[i]>0));if(ok.length){const i=ok[Math.floor(Math.random()*ok.length)];S.cb[i]=20000;ev('카메라 오작동: '+L.names[L.cams[i].rm],'adm')}}
+    if(H.nextCam<=0){H.nextCam=150000+Math.random()*60000;const ok=L.cams.map((c,i)=>i).filter(i=>!(S.cb[i]>0));if(ok.length){const i=ok[Math.floor(Math.random()*ok.length)];S.cb[i]=12000;ev('카메라 오작동: '+L.names[L.cams[i].rm],'adm')}}
   }
   if(S.mode==='coop'){
     H.nextEv-=dt;
     if(H.nextEv<=0){H.nextEv=75000+Math.random()*35000;
-      if(Math.random()<.5){const r=[0,1,2,3,4,5,6,7][Math.floor(Math.random()*8)];S.rd[r]=25000;ev('정전 발생: '+L.names[r]+' (25초)',-1)}
+      if(Math.random()<.5){const rs=allRooms().filter(i=>i!==L.exit),r=rs[Math.floor(Math.random()*rs.length)];S.rd[r]=25000;ev('정전 발생: '+L.names[r]+' (25초)',-1)}
       else{const ok=DOORS.map((d,i)=>i).filter(i=>!L.sysDoors.includes(i)&&!S.dc[i]&&!S.ds[i]);const i=ok[Math.floor(Math.random()*ok.length)];S.dr[i]=15000;ev('보안 오작동: '+doorName(i)+' 문 잠김 (15초)',-1)}}
   }
   if(S.tl<=0){S.tl=0;
     if(S.mode==='coop')finish('fail','시간 초과. 시설이 완전히 봉쇄되었습니다.');
     else if(S.mode==='vs12')finish('adm','시간 초과. 관리자가 탈출을 막아냈습니다.');
-    else{const sc=t=>{const s=S.sys[t];return(s.w?1:0)+(s.c?1:0)+(s.s?1:0)+(s.g?1:0)};const a=sc(0),b=sc(1);let w=null;
+    else{const sc=t=>{const s=S.sys[t];return sysKeys().reduce((a,k)=>a+(s[k]?nStg():stg(t,k)),0)+(s.g?nStg():0)};const a=sc(0),b=sc(1);let w=null;
       if(a!==b)w=a>b?0:1;else if(a>0&&S.sys[0].t!==S.sys[1].t)w=S.sys[0].t<S.sys[1].t?0:1;
-      finish(w==null?'draw':'t'+w,w==null?'시간 초과. 진행도가 같아 무승부입니다.':'시간 초과. 진행도가 높은 '+TEAMN[w]+' 팀이 이겼습니다 ('+Math.max(a,b)+' 대 '+Math.min(a,b)+').')}
+      finish(w==null?'draw':'t'+w,w==null?'시간 초과. 진행도가 같아 무승부입니다.':'시간 초과. 진행도가 높은 '+TEAMN[w]+' 팀이 이겼습니다 (단계 '+Math.max(a,b)+' 대 '+Math.min(a,b)+').')}
   }
 }
 function doorName(i){const d=DOORS[i];return L.short[d.a]+'↔'+L.short[d.b]}
 function hostAct(peer,d){
-  if(!S||!d||typeof d!=='object'||S.ph!=='play')return;
+  if(!S||!d||typeof d!=='object')return;
+  if(d.a==='vote'){if(S.ph==='vote'&&S.pl[peer]&&typeof d.t==='string'&&S.pl[d.t]){S.vote.v[peer]=d.t;dirty()}return}
+  if(S.ph!=='play')return;
   const P=S.pl[peer];if(!P)return;
   const a=d.a;
+  if(S.stun&&S.stun[peer]>0&&STUN_BLOCKED.includes(a))return;
   if(a==='solve'||a==='lever'){
     const s=STN[d.id];if(!s||P.ro==='ADM')return;
     if(s.tm>=0&&s.tm!==P.tm)return;
@@ -953,14 +1153,20 @@ function hostAct(peer,d){
     const sys=S.sys[tm];
     if(a==='solve'){
       if(check(s.k,tm,d.ans)){
-        const k=KIND[s.k].sys;sys[k]=peer;sys.t=S.el;
+        const k=KIND[s.k].sys;S.wc[s.id]=0;
+        if(k!=='g'&&stg(tm,k)<nStg()-1){S.stg[tm][k]=stg(tm,k)+1;sys.t=S.el;
+          ev((S.mode==='vs22'?TEAMN[tm]+' 팀 ':'')+SYSN[k]+' '+S.stg[tm][k]+'/'+nStg()+' 단계 통과'+(S.mode==='vs22'?'':'. 조작 장치에 다음 신호가 들어왔습니다'),S.mode==='vs22'?-1:tm);
+          if(S.mode==='vs12')ev('경보: '+SYSN[k]+' 장치가 다음 단계로 넘어갔습니다','adm');
+          dirty();return}
+        sys[k]=peer;sys.t=S.el;
         if(s.k==='gate')ev(s.n+' 승인. 두 레버를 동시에 당기세요',tm);
         else ev((S.mode==='vs22'?TEAMN[tm]+' 팀 ':'')+SYSN[k]+' 완료',-1);
-        if(S.mode!=='vs22'&&k!=='g'&&sys.w&&sys.c&&sys.s)ev('세 시스템 복구 완료. 탈출구 봉쇄가 풀렸습니다',-1);
+        if(S.mode!=='vs22'&&k!=='g'&&allSys(sys))ev('모든 시스템 복구 완료. 탈출구 봉쇄가 풀렸습니다',-1);
       }else{
-        S.lo[s.id]=8000;
-        if(S.mode==='coop'){S.tl-=10000;ev('오입력: '+s.n+' 8초 잠김, 남은 시간 -10초',tm)}
-        else ev('오입력: '+s.n+' 8초 잠김',tm);
+        const wc=S.wc[s.id]=(S.wc[s.id]|0)+1,lt=LOCKS[Math.min(wc,3)-1];S.lo[s.id]=lt;
+        if(S.mode==='coop'){S.tl-=10000;ev('오입력: '+s.n+' '+lt/1000+'초 잠김, 남은 시간 -10초',tm)}
+        else ev('오입력: '+s.n+' '+lt/1000+'초 잠김',tm);
+        if(S.mode==='vs12')ev('경보: '+L.names[s.rm]+' 장치에서 오입력 감지','adm');
       }
     }else{
       if(!KIND[s.k].lev)return;
@@ -970,7 +1176,7 @@ function hostAct(peer,d){
       if(teamRoles(tm).length<2||(ot&&ot[0]>0&&ot[1]!==peer)){
         sys.o=1;sys.t=S.el;
         if(S.mode==='vs22')finish('t'+tm,TEAMN[tm]+' 팀이 메인 코어를 먼저 동기화했습니다.');
-        else ev('게이트 개방! 탈출 해치로 이동하세요',-1);
+        else{ev('게이트 개방! 탈출 해치로 이동하세요',-1);if(S.mode==='vs12'){S.fin=1;ev('경보: 관리자에게 최종 추격 1회가 주어졌습니다',-1)}}
       }else ev('레버 '+key+' 당김. 2.5초 안에 다른 요원이 반대 레버를',tm);
     }
   }else if(a==='pick'){
@@ -981,12 +1187,14 @@ function hostAct(peer,d){
     const it=S.it[d.i];if(!it||it.h!==peer||it.u)return;
     if(it.k==='key'){if(S.dc[d.d]){S.dc[d.d]=0;it.u=1;it.h='';ev('키카드로 '+doorName(d.d)+' 보안 문을 영구히 열었습니다',-1)}else if(S.dr[d.d]>0){S.dr[d.d]=0;it.u=1;it.h='';ev('키카드로 '+doorName(d.d)+' 문을 열었습니다',-1)}}
     else if(it.k==='emp'){
-      if(S.mode==='vs12'){const ci=L.cams.findIndex(c=>c.rm===d.rm);if(ci>=0){S.cb[ci]=25000;it.u=1;it.h='';ev('EMP: '+L.names[d.rm]+' 카메라 신호 끊김',-1)}}
+      if(S.mode==='vs12'&&d.adm){const ap=Object.keys(S.pl).find(q=>S.pl[q].ro==='ADM'),a1=ap?presOf(ap):null,b1=presOf(peer);
+        if(S.inv>0&&a1&&b1&&typeof a1.x==='number'&&typeof b1.x==='number'&&Math.hypot(a1.x-b1.x,a1.y-b1.y)<=124){S.inv=0;it.u=1;it.h='';ev('EMP 명중: 관리자가 관리자실로 튕겨났습니다',-1)}}
+      else if(S.mode==='vs12'){const ci=L.cams.findIndex(c=>c.rm===d.rm);if(ci>=0){S.cb[ci]=25000;it.u=1;it.h='';ev('EMP: '+L.names[d.rm]+' 카메라 신호 끊김',-1)}}
       else if(S.mode==='vs22'){const s=STN[d.st];if(s&&s.tm>=0&&s.tm!==P.tm){S.jam[s.id]=15000;it.u=1;it.h='';ev('EMP: '+TEAMN[s.tm]+' 팀 '+s.n+' 15초 교란',-1)}}
     }
   }else if(a==='unlock'){
     if(P.ro!=='ENG'||!DOORS[d.d]||sysLocked(d.d))return;
-    if(S.dr[d.d]>0){S.dr[d.d]=0;ev('기술자가 '+doorName(d.d)+' 문 잠금을 풀었습니다',-1)}
+    if(S.dr[d.d]>0){if(S.mode==='vs12'){if(S.dr[d.d]<=4000)return;S.dr[d.d]=4000;ev('기술자가 '+doorName(d.d)+' 잠금을 해제하는 중 (4초)',-1)}else{S.dr[d.d]=0;ev('기술자가 '+doorName(d.d)+' 문 잠금을 풀었습니다',-1)}}
     else if(S.dc[d.d]||S.ds[d.d]){S.do[d.d]=10000;ev('기술자가 '+doorName(d.d)+' 문을 10초간 강제로 열었습니다',-1)}
   }else if(a==='sw'){
     const s=STN[d.id];if(!s||s.k!=='sw'||P.ro==='ADM')return;
@@ -999,6 +1207,31 @@ function hostAct(peer,d){
     if(!S.esc.includes(peer))S.esc.push(peer);
     if(S.mode==='coop')finish('coop','탈출 해치를 통과했습니다. 전원 탈출 성공!');
     else finish('esc','탈출자가 시설을 빠져나갔습니다.');
+  }else if(a==='sab'){
+    if(S.mode!=='coop'||peer!==H.traitor||(H.sabAt||0)>Date.now())return;H.sabAt=Date.now()+50000;
+    const rm=clamp(d.rm|0,0,NROOM-1);
+    const dl=DOORS.map((x,i)=>i).filter(i=>(DOORS[i].a===rm||DOORS[i].b===rm)&&!L.sysDoors.includes(i)&&!S.dc[i]&&!S.ds[i]&&!(S.dr[i]>0));
+    if(Math.random()<.5||!dl.length){S.rd[rm]=25000;ev('정전 발생: '+L.names[rm]+' (25초)',-1)}
+    else{const i=dl[Math.floor(Math.random()*dl.length)];S.dr[i]=15000;ev('보안 오작동: '+doorName(i)+' 문 잠김 (15초)',-1)}
+  }else if(a==='inv'){
+    if(P.ro!=='ADM'||S.mode!=='vs12'||S.inv>0||!(S.invLeft>0||S.fin===1))return;
+    if(S.invLeft>0)S.invLeft--;else S.fin=2;S.inv=INV_MS;S.invRoom=clamp(d.rm|0,0,NROOM-1);S.hitcd=0;
+    ev('경고: 관리자가 시설 안으로 직접 들어왔습니다 (최대 20초)',-1);
+  }else if(a==='ret'){
+    if(P.ro!=='ADM'||!(S.inv>0))return;S.inv=0;ev('관리자가 관리자실로 복귀했습니다',-1);
+  }else if(a==='hit'){
+    if(P.ro!=='ADM'||!(S.inv>0)||S.hitcd>0)return;S.hitcd=HIT_CD;
+    const tp=typeof d.t==='string'?d.t:'',T=tp?S.pl[tp]:null,ap=presOf(peer),bp=tp?presOf(tp):null;
+    const near=ap&&bp&&typeof ap.x==='number'&&typeof bp.x==='number'&&Math.hypot(ap.x-bp.x,ap.y-bp.y)<=HIT_R+24&&roomAt(ap.x,ap.y)===roomAt(bp.x,bp.y);
+    if(T&&T.ro!=='ADM'&&near&&!(S.stun[tp]>0)&&!(S.imm[tp]>0)){S.stun[tp]=STUN_MS;S.imm[tp]=IMM_MS;ev('관리자의 공격: '+(typeof bp.n==='string'&&bp.n?bp.n:'탈출자')+' 15초 기절',-1)}
+    else ev('공격이 빗나갔습니다','adm');
+  }else if(a==='hint'){
+    const s=STN[d.id];if(!s||P.ro==='ADM'||dfv()<1)return;if(s.tm>=0&&s.tm!==P.tm)return;
+    const tm=stTeam(s,P),k=KIND[s.k].sys;if(!k||k==='g'||S.sys[tm][k])return;
+    const hk=k+':'+stg(tm,k);if(S.hint[tm].includes(hk)||!(S.hl[tm]>0))return;
+    S.hint[tm].push(hk);S.hl[tm]--;
+    if(S.mode==='vs22'){ev('힌트 사용: '+SYSN[k]+' (남은 힌트 '+S.hl[tm]+'개)',tm);ev('상대 '+TEAMN[tm]+' 팀이 힌트를 썼습니다',1-tm)}
+    else{S.tl-=30000;ev('힌트 사용: '+SYSN[k]+' · 남은 시간 −30초 (남은 힌트 '+S.hl[tm]+'개)',S.mode==='vs12'?0:-1);if(S.mode==='vs12')ev('탈출자가 '+SYSN[k]+' 힌트를 썼습니다 (−30초)','adm')}
   }else if(a==='block'){
     if(S.mode!=='vs22'||S.tc.blk[P.tm]>0)return;
     L.teamDoors[P.tm].forEach(i=>{S.dr[i]=10000});S.tc.blk[P.tm]=45000;ev(TEAMN[P.tm]+' 팀이 구역 출입문을 10초간 봉쇄했습니다',-1);
@@ -1006,15 +1239,19 @@ function hostAct(peer,d){
     if(S.mode!=='vs22'||S.tc.spy[P.tm]>0)return;
     S.sp[P.tm]=6000;S.tc.spy[P.tm]=30000;ev('감시 단말 가동: 6초간 상대 위치 표시',P.tm);
   }else if(a==='adm'){
-    if(P.ro!=='ADM'||S.mode!=='vs12')return;
-    const op=ADMOP[d.op];if(!op)return;const t=d.t|0;const key=d.op==='scan'?'scan':d.op+':'+t;
+    if(P.ro!=='ADM'||S.mode!=='vs12'||S.inv>0)return;
+    const op=ADMOP[d.op];if(!op)return;const t=d.t|0;const key=ADM_GLOBAL.includes(d.op)?d.op:d.op+':'+t;
     if(S.en<op.c||S.acd[key]>0||(op.unlock&&S.el<op.unlock))return;
-    if(d.op==='lock'){if(!DOORS[t]||L.sysDoors.includes(t)||S.dr[t]>0||S.dr.filter(v=>v>0).length>=2)return;S.dr[t]=op.d;ev('관리자가 '+doorName(t)+' 문을 잠갔습니다',-1)}
-    else if(d.op==='dark'){if(t<0||t>8)return;S.rd[t]=op.d;ev(L.names[t]+' 조명 차단',-1)}
-    else if(d.op==='gas'){if(t<0||t>8)return;S.rg[t]=op.d;ev(L.names[t]+' 환기 역류: 이동 속도 감소',-1)}
-    else if(d.op==='pwr'){if(t<0||t>8)return;S.rp[t]=op.d;ev(L.names[t]+' 전력 차단: 장치 사용 불가',-1)}
+    if(d.op==='lock'){if(!DOORS[t]||L.sysDoors.includes(t)||S.dr[t]>0||S.dr.filter(v=>v>0).length>=3)return;S.dr[t]=op.d;ev('관리자가 '+doorName(t)+' 문을 잠갔습니다',-1)}
+    else if(d.op==='dark'){if(t<0||t>=NROOM)return;S.rd[t]=op.d;ev(L.names[t]+' 조명 차단',-1)}
+    else if(d.op==='gas'){if(t<0||t>=NROOM)return;S.rg[t]=op.d;ev(L.names[t]+' 환기 역류: 이동 속도 감소',-1)}
+    else if(d.op==='pwr'){if(t<0||t>=NROOM)return;S.rp[t]=op.d;ev(L.names[t]+' 전력 차단: 장치 사용 불가',-1)}
     else if(d.op==='scan'){S.scan=op.d;ev('관리자가 전체 스캔으로 위치를 확인했습니다',-1)}
     else if(d.op==='fix'){if(!(S.cb[t]>0))return;S.cb[t]=0}
+    else if(d.op==='jam'){S.cj=op.d;ev('통신 교란 가동: 10초 동안 탈출자 채팅이 깨집니다','adm')}
+    else if(d.op==='fake'){const k=sysKeys()[t];if(!k||S.sys[0][k])return;S.fk[k]=op.d;S.fq[k]=(S.fq[k]|0)+1;ev('가짜 단서 송출: '+SYSN[k]+(stg(0,k)?(curDef(0,k).b==='trace'?' 흔적 조건':' 조작 장치 신호'):' 단서 장치')+' (20초)','adm')}
+    else if(d.op==='reset'){const k=sysKeys()[t];if(!k||S.sys[0][k]||!(S.rvLeft>0))return;S.rv[k]=(S.rv[k]|0)+1;S.rvLeft--;S.rvT[k]=S.el;
+      const tr=curDef(0,k);ev('경보 · 보안 프로토콜 변경: '+SYSN[k]+(tr&&tr.b==='trace'?' — '+TRK[tr.kind].n+' 값이 모두 바뀌었습니다':' — 지금 단계의 데이터가 갱신되었습니다'),-1)}
     S.en-=op.c;if(op.cd)S.acd[key]=op.cd;
   }
   dirty();
@@ -1047,13 +1284,17 @@ function startGame(){
   if(!isHost||!S)return;
   const list=gamePeers().map(p=>{const pr=p.peer===ME?localPres:(p.presence||{});return{peer:p.peer,pr:typeof pr.pr==='string'?pr.pr:'',pt:pr.pt===1?1:0}}).sort((a,b)=>a.peer<b.peer?-1:1);
   const r=assign(S.mode,list);if(r.err)return toast(r.err,'bad');
-  const mode=S.mode,Lx=buildLayout(mode),seed=Math.floor(Math.random()*2e9);
+  const mode=S.mode,seed=1+Math.floor(Math.random()*2e9),nPl=Object.values(r.pl).filter(v=>v.ro!=='ADM').length,big=mode==='coop'&&nPl>=4;
+  const Lx=buildLayout(mode,seed,big);
+  let traitor=null;
+  if(mode==='coop'&&S.opt&&S.opt.traitor&&nPl>=3){const c=Object.keys(r.pl).filter(q=>r.pl[q].ro!=='ADM');traitor=c[Math.floor(Math.random()*c.length)]}
+  H.traitor=traitor;H.sabAt=0;
   const R2=rng(seed+99),nD=DOORS.length,dc=Array(nD).fill(0),ds=Array(nD).fill(0);
   const tmpS={mode};const spawnOf=v=>mode==='vs22'?(v.ro==='ENG'?(v.tm?2:0):(v.tm?8:6)):(Lx.spawn[v.ro]!=null?Lx.spawn[v.ro]:0);
   const starts=[...new Set(Object.values(r.pl).filter(v=>v.ro!=='ADM').map(spawnOf))];
   if(mode!=='vs22'){
-    Lx.cardFixed.forEach(i=>{dc[i]=1});shuffle(Lx.cardCand,R2).slice(0,2).forEach(i=>{dc[i]=1});
-    if(starts.includes(0)&&starts.includes(2))Lx.swDoors.forEach(i=>{ds[i]=1});
+    Lx.cardFixed.forEach(i=>{dc[i]=1});shuffle(Lx.cardCand,R2).slice(0,big?3:2).forEach(i=>{dc[i]=1});
+    if(starts.includes(Lx.startA)&&starts.includes(Lx.startB))Lx.swDoors.forEach(i=>{ds[i]=1});
   }
   /* rooms reachable without keycards: items are placed there so nobody gets stuck */
   const seen=new Set(starts.length?starts:[0]),qq=[...seen];
@@ -1061,40 +1302,77 @@ function startGame(){
     DOORS.forEach((d,i)=>{if(dc[i]||Lx.sysDoors.includes(i))return;const b=d.a===a?d.b:d.b===a?d.a:-1;if(b>=0&&!seen.has(b)){seen.add(b);qq.push(b)}});
     Lx.vents.forEach(p=>{const ix=p.findIndex(v=>v.rm===a);if(ix>=0&&!seen.has(p[1-ix].rm)){seen.add(p[1-ix].rm);qq.push(p[1-ix].rm)}})}
   const nEsc=Object.values(r.pl).filter(v=>v.ro!=='ADM').length;
-  const kinds={coop:nEsc>=3?['flash','flash','key','key']:['flash','key','key'],vs12:['flash','key','key','emp','emp'],vs22:['emp','key','emp','key']}[mode];
+  const kinds={coop:big?['flash','flash','key','key','key']:nEsc>=3?['flash','flash','key','key']:['flash','key','key'],vs12:['flash','key','key','emp','emp'],vs22:['emp','key','emp','key']}[mode];
   let spots;
   if(mode==='vs22')spots=Lx.spots;
   else{const sh=shuffle(Lx.spots,R2),reach=sh.filter(p=>seen.has(p.rm)),rest=sh.filter(p=>!seen.has(p.rm));
     spots=reach.concat(rest);const fi=kinds.indexOf('flash');if(fi>0){kinds.splice(fi,1);kinds.unshift('flash')}}
   const it=kinds.map((k,i)=>{const c=tc(spots[i].rm,spots[i].lx,spots[i].ly);return{k,x:c.x,y:c.y,h:'',u:0}});
-  S={ph:'play',mode,host:ME,v:S.v||0,seed,pl:r.pl,tl:MODES[mode].tl,el:0,
-    dr:Array(nD).fill(0),dc,ds,do:Array(nD).fill(0),rd:Array(9).fill(0),rg:Array(9).fill(0),rp:Array(9).fill(0),cb:Array(Lx.cams.length).fill(0),
-    it,sys:[{},{}],lo:{},jam:{},acd:{},en:40,scan:0,sp:[0,0],tc:{blk:[0,0],spy:[0,0]},ev:[],evn:S.evn||0,esc:[],res:null,round:(S.round||0)+1};
+  const df=clamp(((S.opt&&S.opt.diff)|0),0,2),invMax=[3,4,5][df];
+  S={ph:'play',mode,host:ME,v:S.v||0,seed,pl:r.pl,tl:MODES[mode].tl*(df+1),el:0,df,stg:[{},{}],wc:{},hint:[[],[]],hl:mode==='vs22'?[2,2]:[3,3],rvLeft:2,rvT:{},invMax,
+    dr:Array(nD).fill(0),dc,ds,do:Array(nD).fill(0),rd:Array(NROOM).fill(0),rg:Array(NROOM).fill(0),rp:Array(NROOM).fill(0),big,sk:big?['w','c','s','k']:['w','c','s'],cb:Array(Lx.cams.length).fill(0),
+    it,sys:[{},{}],lo:{},jam:{},acd:{},en:mode==='vs12'?60:40,scan:0,sp:[0,0],tc:{blk:[0,0],spy:[0,0]},ev:[],evn:S.evn||0,esc:[],res:null,rv:{},inv:0,invLeft:invMax,invRoom:4,stun:{},imm:{},hitcd:0,cj:0,fk:{},fq:{},fin:0,trOn:!!traitor,opt:S.opt||{},round:(S.round||0)+1};
   H.nextEv=80000;H.nextCam=70000;
   ev('봉쇄 프로토콜 발령. 탈출을 시작하세요',-1);
+  if(traitor)ev('이번 판에는 배신자가 한 명 숨어 있습니다',-1);
   dirty();sync();
+  if(traitor){const round=S.round;
+    if(traitor===ME){loc.trRound=round;showBrief()}
+    else[0,1200,3500].forEach(ms=>setTimeout(()=>{const c=net.conns.get(traitor);if(c&&S&&S.round===round)c.send({k:'msg',t:'secret',d:{tr:1,r:round},f:ME})},ms));}
 }
 function toLobby(){if(!isHost||!S)return;S.ph='lobby';S.res=null;dirty();sync()}
 
 /* ================= client sync ================= */
 function sync(){
   if(!S)return;
-  if(!L||L.mode!==S.mode){L=buildLayout(S.mode);STN={};L.stations.forEach(s=>{STN[s.id]=s})}
-  tlRef={tl:S.tl,at:now()};
+  if(!L||L.key!==S.mode+':'+(S.seed|0)+':'+(S.big?1:0)){L=buildLayout(S.mode,S.seed|0,!!S.big);STN={};L.stations.forEach(s=>{STN[s.id]=s})}
+  tlRef={tl:S.tl,at:now()};invRef={v:S.inv|0,at:now(),stun:Object.assign({},S.stun||{})};
   const key=S.ph+':'+(S.round||0);
   if(seenEv<0){seenEv=S.evn||0}
   if(key!==lastPhKey){lastPhKey=key;
     if(S.ph==='lobby'){closePanel();$('#end').hidden=true;show('lobby')}
     else if(S.ph==='play')enterPlay();
     else if(S.ph==='end')showEnd();
+    else if(S.ph==='vote')showVote();
   }
   for(const e of S.ev||[])if(e.i>seenEv){seenEv=e.i;if(evVisible(e)){toast(e.t);if(myP()&&myP().ro==='ADM')admLog(e.t,false)}}
+  if(S.ph==='play'){
+    /* overseer swapped a system's data: animate its objects, stamp its devices, clear any half-typed input */
+    if(loc.rvRound!==S.round){loc.rvRound=S.round;loc.rvPrev=Object.assign({},S.rv||{});loc.rvFx={}}
+    for(const k in (S.rv||{}))if((S.rv[k]|0)!==((loc.rvPrev[k])|0)){loc.rvFx[k]=now();
+      const P=myP();if(P&&P.ro!=='ADM'){beep(330,.25,'sawtooth',.05);setTimeout(()=>beep(250,.3,'sawtooth',.05),280)}
+      if(panel&&!panel.tr){const st=STN[panel.id];if(st&&KIND[st.k].sys===k){Object.assign(panel,{sel:[-1,-1,-1,-1,-1],code:'',sig:{f:1,a:1,w:0},grid:Array(16).fill(0),seq:[]});panel.key=''}}
+      if(panel&&panel.tr)panel.key=''}
+    loc.rvPrev=Object.assign({},S.rv||{});
+  }
   if(screen==='lobby')renderLobby();
+  if(S.ph==='vote')showVote();
+  if(S.ph==='play'){const P=myP();if(P&&P.ro==='ADM'){const on=S.inv>0;if(on!==!!loc.invOn){loc.invOn=on;
+    if(on){const c=tc(S.invRoom|0,2,5);me.x=c.x;me.y=c.y;me.w=0;lastSent={};setPres({x:Math.round(me.x),y:Math.round(me.y),f:1,w:0});closePanel();toast('직접 개입 시작: 근처 탈출자에게 E로 공격하세요','bad')}
+    else{setPres({x:null,y:null});lastSent={};toast('관리자실로 복귀했습니다. CCTV와 시설 제어를 다시 쓸 수 있습니다')}
+    $('#adm').hidden=on;placeChat();}}}
   if(panel)renderPanel(false);
+}
+function invLeftMs(){return S&&S.ph==='play'&&S.inv>0?Math.max(0,invRef.v-(now()-invRef.at)):0}
+function stunMs(peer){const v=invRef.stun[peer];return S&&S.ph==='play'&&v>0?Math.max(0,v-(now()-invRef.at)):0}
+function amInv(){const P=myP();return !!(P&&P.ro==='ADM'&&S&&S.ph==='play'&&S.inv>0)}
+function adminFigure(){
+  if(!S||!(S.inv>0))return null;
+  for(const p of gamePeers()){const P=S.pl[p.peer];if(!P||P.ro!=='ADM'||p.peer===ME)continue;const pr=p.presence||{};if(typeof pr.x!=='number')return null;
+    let sm=smooth[p.peer];const t=now();if(!sm||Math.hypot(sm.x-pr.x,sm.y-pr.y)>160){sm=smooth[p.peer]={x:pr.x,y:pr.y,ph:0,t}}
+    const k=Math.min(1,(t-sm.t)/1000*12);sm.x+=(pr.x-sm.x)*k;sm.y+=(pr.y-sm.y)*k;if(pr.w)sm.ph+=(t-sm.t)/1000*13;sm.t=t;
+    return{peer:p.peer,x:sm.x,y:sm.y,w:pr.w,f:pr.f,ph:sm.ph,c:COL.alert,n:'관리자',ro:'ADM',tm:1,adm:true}}
+  return null;
+}
+function attack(){
+  const t=now();if(t<(loc.hitAt||0))return toast('공격 재정비 중','bad');loc.hitAt=t+HIT_CD;loc.swing=t;
+  const ri=roomAt(me.x,me.y);let best=null,bd=HIT_R;
+  playersList().forEach(p=>{if(roomAt(p.x,p.y)!==ri||stunMs(p.peer)>0||(invRef.stun&&S.imm&&S.imm[p.peer]>0))return;const d=Math.hypot(p.x-me.x,p.y-me.y);if(d<bd){bd=d;best=p}});
+  gemit('act',{a:'hit',t:best?best.peer:''});beep(best?160:320,.15,'sawtooth',.05);
 }
 function enterPlay(){
   closePanel();$('#end').hidden=true;show('game');
-  Object.assign(loc,{cd:0,scan:0,dash:0,peekMode:false,peek:-1,peekUntil:0,escSent:false,ventUntil:0,ventTo:null});
+  Object.assign(loc,{invOn:false,hitAt:0,swing:0,cd:0,scan:0,dash:0,peekMode:false,peek:-1,peekUntil:0,escSent:false,ventUntil:0,ventTo:null});
   admin.last={};admin.flash={};admin.log=[];admin.sel=null;admin.cam=0;
   const P=myP();
   $('#adm').hidden=!(P&&P.ro==='ADM');
@@ -1116,7 +1394,7 @@ function show(name){
   renderChatChan();
 }
 function placeChat(){
-  const chat=$('#chat'),P=myP(),adm=!!(P&&P.ro==='ADM');
+  const chat=$('#chat'),P=myP(),adm=!!(P&&P.ro==='ADM'&&!amInv());
   if(screen==='lobby'){$('#lobby-chat-slot').appendChild(chat)}
   else if(screen==='game'){
     if(adm)$('#adm-chat-slot').appendChild(chat);
@@ -1155,9 +1433,29 @@ function renderLobby(){
   if(S.mode==='vs22')h+=`<div class="seg" style="margin-top:10px"><button data-team="0" aria-pressed="${localPres.pt!==1}">레드 팀</button><button data-team="1" aria-pressed="${localPres.pt===1}">블루 팀</button></div>`;
   setHTML('#lb-pick',h);
   $('#lb-rule').textContent='같은 역할을 고른 사람이 있으면 시작할 때 자동으로 조정됩니다.';
+  const dif=clamp(((S.opt&&S.opt.diff)|0),0,2),difLine=`${DIFF[dif].d} · 제한 시간 ${fmt(MODES[S.mode].tl*(dif+1))}`;
   if(isHost){
-    setHTML('#lb-host',`<div class="seg" style="margin-bottom:12px">${Object.entries(MODES).map(([k,v])=>`<button data-mode="${k}" aria-pressed="${S.mode===k}" ${net.offline&&k!=='coop'?'disabled title="오프라인에서는 협동 모드만 가능합니다"':''}>${v.tag}</button>`).join('')}</div><button class="btn" id="btn-start">작전 시작</button>`);
-  }else setHTML('#lb-host','<p class="rule">호스트가 모드를 정하고 작전을 시작합니다.</p>');
+    setHTML('#lb-host',`<div class="seg" style="margin-bottom:12px;align-items:center"><span class="rule" style="margin-right:4px">난이도</span>${DIFF.map((d,i)=>`<button data-diff="${i}" aria-pressed="${dif===i}">${d.n}</button>`).join('')}<span class="rule">${difLine}</span></div><div class="seg" style="margin-bottom:12px">${Object.entries(MODES).map(([k,v])=>`<button data-mode="${k}" aria-pressed="${S.mode===k}" ${net.offline&&k!=='coop'?'disabled title="오프라인에서는 협동 모드만 가능합니다"':''}>${v.tag}</button>`).join('')}</div>${S.mode==='coop'?`<div class="seg" style="margin-bottom:12px;align-items:center"><button data-opt="traitor" aria-pressed="${!!(S.opt&&S.opt.traitor)}" ${net.offline?'disabled':''}>배신자 모드 ${S.opt&&S.opt.traitor?'켜짐':'꺼짐'}</button><span class="rule">3명 이상이면 한 명이 몰래 시설 편이 됩니다. 끝나면 투표로 찾아냅니다.</span></div>`:''}<button class="btn" id="btn-start">작전 시작</button>`);
+  }else setHTML('#lb-host','<p class="rule">난이도 <b style="color:var(--amber)">'+DIFF[dif].n+'</b> · '+difLine+'</p><p class="rule">호스트가 모드를 정하고 작전을 시작합니다.'+(S.mode==='coop'&&S.opt&&S.opt.traitor?' 이번 판은 <b style="color:var(--alert)">배신자 모드</b>입니다.':'')+'</p>');
+}
+function isTraitor(){return !!(S&&S.trOn&&loc.trRound===S.round)}
+function nameOf(peer){const pr=presOf(peer)||{};return typeof pr.n==='string'&&pr.n?pr.n:'요원'}
+function sabotage(){
+  if(!isTraitor()||!S||S.ph!=='play')return;const t=now();
+  if(t<(loc.sabAt||0))return toast('사보타주 재사용까지 '+Math.ceil((loc.sabAt-t)/1000)+'초','bad');
+  loc.sabAt=t+50000;gemit('act',{a:'sab',rm:roomAt(me.x,me.y)});beep(90,.2,'sawtooth',.03);
+}
+function showVote(){
+  closePanel();$('#brief').hidden=true;
+  const pend=S.pend||{},v=(S.vote&&S.vote.v)||{},mine=v[ME];
+  const cands=Object.keys(S.pl).filter(q=>S.pl[q].ro!=='ADM'),cnt=Object.keys(v).length;
+  const left=Math.max(0,Math.ceil(((S.vote&&S.vote.t)||0)/1000));
+  setHTML('#end-sheet',`<p class="eyebrow">CO-OP · 배신자 투표</p><h2 class="draw">배신자는 누구?</h2>
+    <p>${pend.w==='coop'?'탈출에는 성공했습니다.':'탈출에 실패했습니다.'} 이 중 한 명은 처음부터 시설 편이었습니다. 의심 가는 사람을 고르세요. 투표는 바꿀 수 있습니다.</p>
+    <div class="vote-list">${cands.map(q=>{const pr=presOf(q)||{};return`<button data-vote="${esc(q)}" aria-pressed="${mine===q}"><span class="dot" style="--c:${PCOL[(pr.c|0)%PCOL.length]}"></span><b>${esc(nameOf(q))}</b><small>${ROLE[S.pl[q].ro].n}${q===ME?' · 나':''}</small></button>`}).join('')}</div>
+    <p class="muted mono" id="vote-meta"></p>`);
+  const vm=$('#vote-meta');if(vm)vm.textContent=cnt+'/'+cands.length+'명 투표 · 약 '+left+'초 남음';
+  $('#end').hidden=false;
 }
 function showEnd(){
   closePanel();$('#brief').hidden=true;
@@ -1165,9 +1463,17 @@ function showEnd(){
   if(S.mode==='coop'){if(w==='coop'){cls='win';title='탈출 성공'}else title='탈출 실패'}
   else if(S.mode==='vs12'){if(!P){cls='draw';title=w==='adm'?'관리자 승리':'탈출자 승리'}else if((P.ro==='ADM')===(w==='adm')){cls='win';title='승리'}}
   else{if(w==='draw'){cls='draw';title='무승부'}else if(!P){cls='draw';title=w==='t0'?'레드 승리':'블루 승리'}else if(w==='t'+P.tm){cls='win';title='승리'}}
-  const solved=t=>['w','c','s'].filter(k=>S.sys[t]&&S.sys[t][k]).length;
-  const stats=S.mode==='vs22'?`<span>레드 ${solved(0)}/3</span><span>블루 ${solved(1)}/3</span>`:`<span>복구 ${solved(0)}/3</span>`;
-  $('#end-sheet').innerHTML=`<p class="eyebrow">${MODES[S.mode].tag} · 작전 종료</p><h2 class="${cls}">${title}</h2><p>${esc(S.res?S.res.m:'')}</p><div class="stats"><span>경과 ${fmt(S.res?S.res.el:S.el)}</span>${stats}</div>`+
+  let trLine='';
+  if(S.mode==='coop'&&S.res&&S.res.tr&&S.pl[S.res.tr]){
+    const out=S.res.w==='coop',caught=S.res.caught,tr=S.res.tr;
+    if(tr===ME){cls=out?'lose':'win';title=out?'배신 실패':caught?'배신 성공 · 정체 발각':'배신자 완승'}
+    else{cls=out?'win':'lose';title=out?(caught?'완전 승리':'탈출 성공 · 배신자 놓침'):(caught?'탈출 실패 · 배신자 색출':'배신자 승리')}
+    trLine=`<p>배신자는 <b style="color:var(--alert)">${esc(nameOf(tr))}</b> (${ROLE[S.pl[tr].ro].n})였습니다. ${caught?'투표로 정확히 찾아냈습니다.':S.res.top?'투표는 '+esc(nameOf(S.res.top))+'에게 몰렸습니다.':'투표가 갈렸습니다.'}</p>`;
+  }
+  const solved=t=>sysKeys().filter(k=>S.sys[t]&&S.sys[t][k]).length,NS=sysKeys().length;
+  const stats=S.mode==='vs22'?`<span>레드 ${solved(0)}/${NS}</span><span>블루 ${solved(1)}/${NS}</span>`:`<span>복구 ${solved(0)}/${NS}</span>`;
+  htmlCache['#end-sheet']=null;
+  $('#end-sheet').innerHTML=`<p class="eyebrow">${MODES[S.mode].tag} · 작전 종료</p><h2 class="${cls}">${title}</h2><p>${esc(S.res?S.res.m:'')}</p>${trLine}<div class="stats"><span>경과 ${fmt(S.res?S.res.el:S.el)}</span>${stats}</div>`+
     (isHost?`<div class="lobby-actions" style="justify-content:center"><button class="btn" data-end="again">같은 모드로 다시</button><button class="btn ghost" data-end="lobby">대기실로</button></div>`:`<p>호스트가 다음 작전을 준비합니다.</p>`)+
     `<button class="btn ghost sm" data-end="quit">나가기</button>`;
   $('#end').hidden=false;
@@ -1177,8 +1483,9 @@ function showEnd(){
 /* ================= chat ================= */
 function onChat(m){
   const d=m.data;if(!d||typeof d.t!=='string')return;
-  const t=d.t.slice(0,100).trim();if(!t)return;
+  let t=d.t.slice(0,100).trim();if(!t)return;
   const pr=presOf(m.peer)||{};const P=S&&S.pl?S.pl[m.peer]:null;
+  if(S&&S.ph==='play'&&S.mode==='vs12'&&S.cj>0&&P&&P.ro!=='ADM'&&m.peer!==ME)t=garble(t);
   chatLog.push({n:typeof pr.n==='string'&&pr.n?pr.n.slice(0,12):'요원',c:PCOL[(pr.c|0)%PCOL.length],t,ch:d.ch==='team'?'team':'all',tm:P?P.tm:-1,adm:!!(P&&P.ro==='ADM'),ph:S?S.ph:'lobby',me:m.peer===ME});
   if(chatLog.length>80)chatLog.shift();
   renderChat();
@@ -1226,14 +1533,19 @@ function showBrief(){
   const P=myP();if(!P)return;
   const R=ROLE[P.ro];
   let duties=[];
-  if(P.ro!=='ADM')L.stations.forEach(s=>{if((s.tm===P.tm||s.tm<0)&&DUTY[s.k]&&needRole(s.k,P.tm)===P.ro)duties.push(`<li><b>${s.n}</b> · ${L.names[s.rm]}</li>`)});
+  if(P.ro!=='ADM')L.stations.forEach(s=>{if((s.tm===P.tm||s.tm<0)&&DUTY[s.k]&&needRole(s.k,P.tm)===P.ro)duties.push(`<li><b>${stName(s)}</b> · ${L.names[s.rm]}</li>`)});
   let win='';
   if(S.mode==='coop')win='시작실 A와 B의 출구는 서로 상대 방의 원격 스위치로만 열립니다(파란 문, 20초). 보라색 보안 문은 키카드로만 영구히 열리는데 키카드가 문보다 적으니 경로를 고르세요. 보관실과 실험 복도는 원래 어두워서 손전등 없이는 장치를 쓸 수 없습니다. 퍼즐 종류는 매 판 바뀝니다. 세 시스템을 복구하면 탈출구 봉쇄가 풀리고, 각 시스템을 푼 사람만 코드 조각을 봅니다. 조각 3개로 게이트 코드를 입력하고 두 레버를 함께 당긴 뒤 해치로 나가세요. 오입력은 남은 시간 10초를 깎습니다.';
   else if(S.mode==='vs22')win=`당신은 <b style="color:${P.tm?'var(--blue-team)':'var(--red-team)'}">${TEAMN[P.tm]} 팀</b>입니다. 우리 구역의 세 시스템을 복구해 코드 조각을 모으고, 중앙 메인 코어에서 동기화 코드를 입력한 뒤 두 레버를 함께 당기면 승리합니다. 보급 구역의 EMP로 상대 장치를 교란하고, 봉쇄 패널로 우리 구역 출입을 막을 수 있습니다.`;
-  else if(P.ro==='ADM')win='9분 동안 탈출을 막으면 승리합니다. CCTV는 한 번에 하나만 볼 수 있고, 시작실·연구실·보관실에는 카메라가 없습니다. 중앙 통제실과 탈출구에 붙은 문에는 통과 센서가 있습니다. 에너지는 초당 1.2씩 찹니다. 전체 스캔은 3분 뒤 열립니다. 탈출자의 채팅은 보이지 않으며, 당신의 채팅은 방송으로 모두에게 보입니다.';
-  else win='관리자가 CCTV로 지켜봅니다. 카메라가 없는 방과 사각지대, 소리 없는 환기구를 이용하세요. 시작실 출구는 서로의 원격 스위치로 열리고, 보라색 보안 문은 키카드로만 열립니다. 보관실은 어두워서 손전등이 필요합니다. 세 시스템을 복구하고 게이트를 열어 해치로 나가면 승리합니다. 채팅은 탈출자끼리만 보입니다.';
-  const ctrl=P.ro==='ADM'?'지도에서 방이나 문을 눌러 대상을 고르고 제어 버튼을 누르세요. 카메라 버튼으로 화면을 전환합니다.':
+  else if(P.ro==='ADM')win=Math.round(MODES.vs12.tl*(dfv()+1)/60000)+'분 동안 탈출을 막으면 승리합니다. CCTV 5대가 한 화면에 모두 나옵니다(사각지대는 있음). 시작실·연구실·보관실에는 카메라가 없습니다. 에너지는 60에서 시작해 초당 '+[1.6,1.1,0.9][dfv()]+'씩 찹니다. 문은 3개까지 잠글 수 있고, 기술자가 풀어도 4초는 버팁니다. 2분 뒤 열리는 암호 교체(한 판 2번)는 안 풀린 시스템의 지금 단계 데이터를 새로 만듭니다. 탈출자에게 경보가 울리니 타이밍이 중요합니다. 직접 개입은 한 판에 '+(S.invMax||3)+'번, 최대 20초 동안 시설 안으로 들어가 근거리 공격으로 탈출자를 15초 기절시킵니다. 개입 중에는 CCTV와 시설 제어를 쓸 수 없습니다. 통신 교란(10초 동안 탈출자 채팅 글자가 깨짐)과 가짜 단서(20초 동안 단서 장치에 틀린 내용, 1분 뒤 해금)로 정보를 흔들 수 있습니다. 게이트가 열리면 최종 추격 1회가 추가로 주어집니다. 탈출자의 채팅은 보이지 않으며, 당신의 채팅은 방송으로 모두에게 보입니다.';
+  else win='관리자가 CCTV로 지켜봅니다. 카메라가 없는 방과 사각지대, 소리 없는 환기구를 이용하세요. 시작실 출구는 서로의 원격 스위치로 열리고, 보라색 보안 문은 키카드로만 열립니다. 보관실은 어두워서 손전등이 필요합니다. 세 시스템을 복구하고 게이트를 열어 해치로 나가면 승리합니다. 채팅은 탈출자끼리만 보입니다. 관리자는 한 판에 '+(S.invMax||3)+'번, 최대 20초씩 직접 들어와 공격할 수 있습니다. 맞으면 15초 동안 움직일 수 없지만 채팅은 됩니다. 서로 떨어져 다니면 둘 다 묶이지 않습니다. 관리자가 들어왔을 때 가까이서 EMP를 쓰면 관리자를 즉시 쫓아낼 수 있습니다. 관리자는 통신을 교란하거나 가짜 정보를 띄울 수 있습니다(화면에 미세한 노이즈가 보이면 의심하세요). 암호 교체 경보가 울리면 그 시스템의 지금 단계 정보를 다시 읽어야 합니다. 게이트가 열리면 관리자가 마지막으로 한 번 더 들어올 수 있습니다.';
+  const ctrl=P.ro==='ADM'?'지도에서 방이나 문을 눌러 대상을 고르고 제어 버튼을 누르세요. 직접 개입 중에는 WASD로 이동, E·스페이스로 공격, Q로 복귀합니다.':
     '이동 WASD·방향키 · 조작 E·스페이스 · 능력 Q · 아이템 1, 2 · 채팅 Enter. 휴대폰은 왼쪽 조이스틱과 오른쪽 버튼을 쓰세요.';
+  if(P.ro!=='ADM'&&dfv()>0)win+=` <br><br><b style="color:var(--amber)">난이도 ${DIFF[dfv()].n}</b> · 시스템마다 ${nStg()}단계입니다. 한 단계를 풀면 조작 장치에 다음 단계의 신호가 뜨고, 단서 장치에는 그것을 푸는 열쇠가 뜹니다. 장치 설명은 숨겨져 있습니다. 막히면 장치 화면의 <b>힌트</b>로 설명을 펼치세요(${S.mode==='vs22'?'팀당 2개, 상대에게 알림':'한 판 3개, 1개당 −30초'}). 이번 판에는 <b>흔적 단서</b>가 하나 있습니다. 시설 곳곳의 같은 물체 셋 중 조건에 맞는 진짜 하나를 찾아 E로 살펴보세요. 오입력하면 잠금이 8 → 20 → 45초로 길어집니다.`;
+  if(S.mode==='coop'&&S.trOn){
+    if(isTraitor())win='<b style="color:var(--alert)">당신은 배신자입니다.</b> 팀이 시간 안에 탈출하지 못하게 몰래 방해하세요. 틀린 단서를 불러주거나, 일부러 오입력하거나(남은 시간 −10초), 키카드를 엉뚱한 문에 쓰는 식입니다. <b>R 사보타주</b>(50초마다)는 지금 있는 방에 정전이나 문 오작동을 일으키는데, 무작위 사고와 똑같이 보입니다. 끝나면 투표가 있으니 들키지 마세요.';
+    else win='<b style="color:var(--alert)">이번 판에는 배신자가 한 명 숨어 있습니다.</b> 틀린 정보를 주는 사람이 있을 수 있습니다. 끝나면 투표로 배신자를 고릅니다. '+win;
+  }
   $('#brief-sheet').innerHTML=`<div class="sheet-h"><div><p class="eyebrow">${MODES[S.mode].tag} · 역할 브리핑 · ${R.e}</p><h2 class="rname">${R.n}</h2></div></div>
     <p class="hint">${R.info}</p>
     ${R.ab?`<p class="hint"><b style="color:var(--ink)">능력 · ${R.ab}</b> (재사용 ${R.cd}초): ${R.abInfo}</p>`:''}
@@ -1259,55 +1571,148 @@ function keypadHTML(n,blk,label,variable){
     <button class="btn" data-p="submit" ${blk||!ready?'disabled':''}>${label}</button>`;
 }
 function gridHTML(bits,click){return `<div class="lamp-grid">${bits.map((b,i)=>click?`<button data-p="cell" data-i="${i}" class="${b?'on':''}" aria-label="램프 ${Math.floor(i/4)+1}행 ${i%4+1}열"></button>`:`<span class="${b?'on':''}"></span>`).join('')}</div>`}
-function clueHTML(t,q,sys,tm){
+/* full how-to text when explanations are on (보통, or after a hint), a terse label otherwise */
+const XP=(ex,full,terse)=>ex?`<p class="hint${dfv()?' hint-box':''}">${full}</p>`:terse?`<p class="hint">${terse}</p>`:'';
+function clueHTML(t,q,sys,tm,ex){
   const op=who('op_'+sys,tm);
-  if(t==='wire')return `<p class="hint">배선반의 기호 단자마다 연결할 전선 색입니다. 접지 단자 하나는 반드시 비워야 합니다. 배선반의 기호 배치는 이 목록과 다릅니다. ${op}에게 기호별로 알려 주세요.</p><ul class="wire-list">`+
+  if(t==='wire')return XP(ex,`배선반의 기호 단자마다 연결할 전선 색입니다. 접지 단자 하나는 반드시 비워야 합니다. 배선반의 기호 배치는 이 목록과 다릅니다. ${op}에게 기호별로 알려 주세요.`)+`<ul class="wire-list">`+
     q.cOrd.map(i=>`<li><span class="sym">${SYMS[i]}</span><span class="muted">→</span>${q.ans[i]<0?'<b class="muted">연결 금지 (접지)</b>':`<span class="wchip" style="--c:${WCOL[q.ans[i]][1]}">${WCOL[q.ans[i]][0]}</span>`}</li>`).join('')+'</ul>';
-  if(t==='code')return `<p class="hint">암호문</p><div class="glyphs">${q.base.map(d=>q.glyph[d]).join(' ')}</div><p class="hint">해독표</p><div class="cipher">${q.glyph.map((g,d)=>`<span>${g}<b>${d}</b></span>`).join('')}</div><p class="hint">해독표로 암호문을 네 자리 숫자로 바꿔 ${op}에게 전달하세요. 키패드는 자리마다 다른 보정값을 더한 숫자를 받습니다.</p>`;
-  if(t==='sig')return `<p class="hint">수신 중인 목표 신호입니다. 가로 폭이 1초, 세로 눈금 한 칸이 진폭 1입니다. 파형의 모양, 1초 동안의 파동 수, 진폭을 ${op}에게 알려 주세요.</p><canvas class="scope" id="scope" width="560" height="220"></canvas>`;
-  if(t==='pat')return `<p class="hint">판독기 영상입니다. 켜진 램프의 위치(몇 행 몇 열)를 ${op}에게 정확히 알려 주세요. 이 영상은 원본이 변형된 상태이고, 어떻게 변형됐는지는 램프 패널에만 표시됩니다.</p>${gridHTML(q.shown,false)}`;
-  if(t==='order')return `<p class="hint">시퀀스 콘솔에 넣을 다섯 기호의 순서 기록입니다. 아래 조건을 모두 만족하는 순서는 하나뿐입니다. 함께 추론해서 ${op}에게 전달하세요.</p><ul class="cons">${q.cons.map(c=>`<li>${c}</li>`).join('')}</ul>`;
-  if(t==='morse')return `<p class="hint">표시등이 숫자 세 개를 짧은 빛과 긴 빛으로 반복 송출합니다. 숫자 사이에는 짧은 공백, 한 바퀴가 끝나면 긴 공백이 있습니다. 빛의 순서를 ${op}에게 불러 주세요. 숫자로 바꾸는 표는 해독 단말에만 있습니다.</p><canvas class="lamp" id="lamp" width="560" height="150"></canvas>`;
-  if(t==='calc')return `<p class="hint">수식 기록입니다. 무엇을 계산해야 하는지는 ${op}의 단말에만 나옵니다. 식을 정확히 불러 주세요. 지수나 첨자도 빠뜨리지 마세요.</p><div class="formula">${q.clue}</div>`;
-  if(t==='math')return `<p class="hint">현재 계측값입니다. 계산식은 ${op}만 볼 수 있으니, 필요한 항목을 물어보면 알려 주세요.</p><div class="readings">${q.labels.map((l,i)=>`<span>${l}<b>${q.vals[i]}</b></span>`).join('')}</div>`;
+  if(t==='code')return `<p class="hint">암호문</p><div class="glyphs">${q.base.map(d=>q.glyph[d]).join(' ')}</div><p class="hint">해독표</p><div class="cipher">${q.glyph.map((g,d)=>`<span>${g}<b>${d}</b></span>`).join('')}</div>${XP(ex,`해독표로 암호문을 네 자리 숫자로 바꿔 ${op}에게 전달하세요. 키패드는 자리마다 다른 보정값을 더한 숫자를 받습니다.`)}`;
+  if(t==='sig')return XP(ex,`수신 중인 목표 신호입니다. 가로 폭이 1초, 세로 눈금 한 칸이 진폭 1입니다. 파형의 모양, 1초 동안의 파동 수, 진폭을 ${op}에게 알려 주세요.`,'화면 가로 전체 = 1초')+`<canvas class="scope" id="scope" width="560" height="220"></canvas>`;
+  if(t==='pat')return `${XP(ex,`판독기 영상입니다. 켜진 램프의 위치(몇 행 몇 열)를 ${op}에게 정확히 알려 주세요. 이 영상은 원본이 변형된 상태이고, 어떻게 변형됐는지는 램프 패널에만 표시됩니다.`)}${gridHTML(q.shown,false)}`;
+  if(t==='order')return `${XP(ex,`시퀀스 콘솔에 넣을 다섯 기호의 순서 기록입니다. 아래 조건을 모두 만족하는 순서는 하나뿐입니다. 함께 추론해서 ${op}에게 전달하세요.`)}<ul class="cons">${q.cons.map(c=>`<li>${c}</li>`).join('')}</ul>`;
+  if(t==='morse')return `${XP(ex,`표시등이 숫자 세 개를 짧은 빛과 긴 빛으로 반복 송출합니다. 숫자 사이에는 짧은 공백, 한 바퀴가 끝나면 긴 공백이 있습니다. 빛의 순서를 ${op}에게 불러 주세요. 숫자로 바꾸는 표는 해독 단말에만 있습니다.`)}<canvas class="lamp" id="lamp" width="560" height="150"></canvas>`;
+  if(t==='calc')return `${XP(ex,`수식 기록입니다. 무엇을 계산해야 하는지는 ${op}의 단말에만 나옵니다. 식을 정확히 불러 주세요. 지수나 첨자도 빠뜨리지 마세요.`)}<div class="formula">${q.clue}</div>`;
+  if(t==='math')return `${XP(ex,`현재 계측값입니다. 계산식은 ${op}만 볼 수 있으니, 필요한 항목을 물어보면 알려 주세요.`)}<div class="readings">${q.labels.map((l,i)=>`<span>${l}<b>${q.vals[i]}</b></span>`).join('')}</div>`;
   return '';
 }
-function opHTML(t,q,blk,sys,tm){
+function opHTML(t,q,blk,sys,tm,ex){
   const cl=who('clue_'+sys,tm),dis=blk?'disabled':'';
-  if(t==='wire')return `<p class="hint">단자를 누를 때마다 색이 바뀝니다 (빨강 → 파랑 → 노랑 → 초록 → 비움). 정답은 ${cl}가 보는 배선도에만 있습니다.</p><div class="sockets five">`+
+  if(t==='wire')return XP(ex,`단자를 누를 때마다 색이 바뀝니다 (빨강 → 파랑 → 노랑 → 초록 → 비움). 정답은 ${cl}가 보는 배선도에만 있습니다.`)+`<div class="sockets five">`+
     q.pOrd.map(i=>{const c=panel.sel[i];return`<button class="socket" data-p="wire" data-i="${i}" style="--c:${c>=0?WCOL[c][1]:'transparent'}"><span class="sym">${SYMS[i]}</span><span class="wire"></span><small>${c>=0?WCOL[c][0]:'비움'}</small></button>`}).join('')+
     `</div><button class="btn" data-p="submit" ${dis}>배선 연결</button>`;
-  if(t==='code')return `<p class="hint">자리마다 보정값이 다릅니다. 입력값 = 문서 코드의 그 자리 숫자 + 그 자리 보정값. 합이 10 이상이면 일의 자리만 씁니다. 문서 코드는 ${cl}만 해독할 수 있습니다.</p><div class="slots offs">${q.offs.map(o=>`<span>+${o}</span>`).join('')}</div>`+keypadHTML(4,blk,'코드 입력');
-  if(t==='sig')return `<p class="hint">목표 신호와 같은 파형을 만들어 전송하세요. 목표 파형은 ${cl}가 보는 신호 분석기에만 있습니다.</p><canvas class="scope" id="scope" width="560" height="220"></canvas>
+  if(t==='code')return `${XP(ex,`자리마다 보정값이 다릅니다. 입력값 = 문서 코드의 그 자리 숫자 + 그 자리 보정값. 합이 10 이상이면 일의 자리만 씁니다. 문서 코드는 ${cl}만 해독할 수 있습니다.`)}<div class="slots offs">${q.offs.map(o=>`<span>+${o}</span>`).join('')}</div>`+keypadHTML(4,blk,'코드 입력');
+  if(t==='sig')return `${XP(ex,`목표 신호와 같은 파형을 만들어 전송하세요. 목표 파형은 ${cl}가 보는 신호 분석기에만 있습니다.`)}<canvas class="scope" id="scope" width="560" height="220"></canvas>
     <div class="seg">${SHAPES.map((n,i)=>`<button data-p="shape" data-i="${i}" aria-pressed="${panel.sig.w===i}">${n}</button>`).join('')}</div>
     <div class="sliders"><label for="sf">주파수<input type="range" id="sf" min="1" max="8" step="1" value="${panel.sig.f}"><output id="sfo">${panel.sig.f}</output></label>
     <label for="sa">진폭<input type="range" id="sa" min="1" max="5" step="1" value="${panel.sig.a}"><output id="sao">${panel.sig.a}</output></label></div>
     <button class="btn" data-p="submit" ${dis}>신호 전송</button>`;
-  if(t==='pat')return `<p class="hint">판독기 영상은 원본을 <b style="color:var(--amber)">${XF[q.t]}</b> 상태로 송출됩니다. ${cl}가 불러 주는 위치를 되돌려 <b>원본</b> 패턴을 켜고 전송하세요. 램프를 누르면 켜지고 꺼집니다.</p>${gridHTML(panel.grid,true)}<button class="btn" data-p="submit" ${dis}>패턴 전송</button>`;
-  if(t==='order')return `<p class="hint">다섯 기호를 올바른 순서로 누르세요. 순서 조건은 ${cl}가 보는 절차 기록에 있습니다.</p>
+  if(t==='pat')return `${XP(ex,`판독기 영상은 원본을 <b style="color:var(--amber)">${XF[q.t]}</b> 상태로 송출됩니다. ${cl}가 불러 주는 위치를 되돌려 <b>원본</b> 패턴을 켜고 전송하세요. 램프를 누르면 켜지고 꺼집니다.`,`판독기 송출: <b style="color:var(--amber)">${XF[q.t]}</b> 영상`)}${gridHTML(panel.grid,true)}<button class="btn" data-p="submit" ${dis}>패턴 전송</button>`;
+  if(t==='order')return `${XP(ex,`다섯 기호를 올바른 순서로 누르세요. 순서 조건은 ${cl}가 보는 절차 기록에 있습니다.`)}
     <div class="slots five">${[0,1,2,3,4].map(i=>`<span>${panel.seq[i]!=null?OSY[panel.seq[i]]:''}</span>`).join('')}</div>
     <div class="seg">${OSY.map((y,i)=>`<button data-p="seq" data-i="${i}" ${panel.seq.includes(i)?'disabled':''} style="font-size:20px;min-width:48px">${y}</button>`).join('')}<button data-p="clr">지움</button></div>
     <button class="btn" data-p="submit" ${blk||panel.seq.length!==5?'disabled':''}>순서 입력</button>`;
-  if(t==='morse')return `<p class="hint">· 은 짧은 빛, − 는 긴 빛입니다. ${cl}가 불러 주는 빛의 순서를 이 표로 숫자로 바꿔 입력하세요.</p><div class="mtable">${q.table.map((p,d)=>`<span><b>${d}</b>${p}</span>`).join('')}</div>`+keypadHTML(3,blk,'숫자 입력');
-  if(t==='calc')return `<p class="hint">아래 문제를 풀어 답을 입력하세요. 식 f(x), h(x), aₙ 은 ${cl}가 보는 수식 기록에만 있습니다.</p><div class="formula">${q.ask}</div>`+keypadHTML(3,blk,'답 입력',true);
-  if(t==='math')return `<p class="hint">아래 식을 계산해 입력하세요. 계측값은 ${cl}가 보는 계측 기록에만 있습니다.</p><div class="formula">${q.text}</div>`+keypadHTML(3,blk,'결과 입력',true);
+  if(t==='morse')return `${XP(ex,`· 은 짧은 빛, − 는 긴 빛입니다. ${cl}가 불러 주는 빛의 순서를 이 표로 숫자로 바꿔 입력하세요.`,'· 짧게 − 길게')}<div class="mtable">${q.table.map((p,d)=>`<span><b>${d}</b>${p}</span>`).join('')}</div>`+keypadHTML(3,blk,'숫자 입력');
+  if(t==='calc')return `${XP(ex,`아래 문제를 풀어 답을 입력하세요. 식 f(x), h(x), aₙ 은 ${cl}가 보는 수식 기록에만 있습니다.`)}<div class="formula">${q.ask}</div>`+keypadHTML(3,blk,'답 입력',true);
+  if(t==='math')return `${XP(ex,`아래 식을 계산해 입력하세요. 계측값은 ${cl}가 보는 계측 기록에만 있습니다.`)}<div class="formula">${q.text}</div>`+keypadHTML(3,blk,'결과 입력',true);
   return '';
+}
+/* ---- chain stage views ---- */
+const BLKX={
+  phone:'조작 장치의 영어 단어를 전화 키패드 숫자로 바꿔 한 글자씩 차례대로 입력합니다. 예: CAB → 222. 키패드 배열은 단서 장치에만 있습니다.',
+  roman:'조작 장치의 로마 숫자를 보통 숫자로 바꿉니다. 큰 값부터 더하되, 작은 값이 큰 값 바로 앞에 오면 뺍니다 (IX = 9, XL = 40). 값표는 단서 장치에 있습니다.',
+  shift:'조작 장치의 네 자리 숫자를 단서 장치의 다이얼 규칙대로 자리마다 같은 만큼 돌립니다. 9 다음은 0입니다.',
+  a1z:'조작 장치의 세 글자를 알파벳 순번(A=1, B=2 … Z=26)으로 바꾼 뒤 모두 더한 값을 입력합니다.',
+  mirror:'조작 장치의 숫자는 180° 뒤집혀 표시됩니다. 화면을 거꾸로 돌려 바로 읽은 숫자를 입력하세요. 뒤집으면 순서가 반대가 되고 6과 9가 서로 바뀝니다.',
+  trace:'조작 장치의 두 조건을 모두 만족하는 물체는 시설에 있는 세 개 중 하나뿐입니다. 나머지 둘은 조건 하나씩을 어깁니다. 물체에 다가가 E로 살펴보고, 그 값을 단서 장치의 식에 넣어 계산하세요. 어두운 방에서는 손전등이 필요합니다.'
+};
+function critText(K,cr){return cr.map((c,i)=>`${'①②'[i]} ${K.d[c.d][0]} <b>${c.neg?'≠':'='} ${K.d[c.d][1][c.v]}</b>`).join('<br>')}
+function blockOutHTML(d,ex){
+  let h=XP(ex,BLKX[d.b]);
+  if(d.b==='phone')h+=`<div class="enc">${d.w}</div>`;
+  else if(d.b==='roman')h+=`<div class="enc">${d.r}</div>`;
+  else if(d.b==='shift')h+=`<div class="enc">${d.d.join('')}</div>`;
+  else if(d.b==='a1z')h+=`<div class="enc">${d.l.join(' ')}</div>`;
+  else if(d.b==='mirror')h+=`<div class="enc"><span class="flip180">${d.s}</span></div>`;
+  else if(d.b==='trace'){const K=TRK[d.kind];h+=`<div class="pointer">흔적 · <b>${K.n}</b> 셋 중 진짜 하나<br>${critText(K,d.fake?d.fcrit:d.crit)}</div>`}
+  return h;
+}
+function blockRefHTML(d,ex){
+  let h=XP(ex,BLKX[d.b]);
+  if(d.b==='phone')h+=`<div class="ref"><span class="big">☎</span><div class="ref-grid">${[1,2,3,4,5,6,7,8,9].map(n=>`<span><b>${n}</b>${PHONE[n]||'·'}</span>`).join('')}</div></div>`;
+  else if(d.b==='roman')h+=`<div class="ref"><div class="ref-grid">${[['I',1],['V',5],['X',10],['L',50],['C',100],['IV',4],['IX',9],['XL',40],['XC',90]].map(([r,v])=>`<span><b>${r}</b>${v}</span>`).join('')}</div></div>`;
+  else if(d.b==='shift')h+=`<div class="ref"><span class="big">0 ▸ ${d.k} · 1 ▸ ${(1+d.k)%10} · 2 ▸ ${(2+d.k)%10} · …</span></div>`;
+  else if(d.b==='a1z')h+=`<div class="ref"><span class="big">A=1 · B=2 · … · Z=26</span><span class="big">Σ</span></div>`;
+  else if(d.b==='mirror')h+=`<div class="ref"><span class="big" style="font-size:44px">↻ 180°</span></div>`;
+  else if(d.b==='trace')h+=`<div class="ref"><span class="muted">흔적 판독값</span><span class="big">${TROP[d.kind].t(d.p)}</span></div>`;
+  return h;
+}
+/* overseer's fake clue for a chain stage: a different encoded message, or a sentence that points at a decoy */
+function fakeDef(d,k){
+  if(d.b==='trace')return Object.assign({},d,{fake:1});
+  const R=rng((S.seed*53+sysKeys().indexOf(k)*911+((S.fq&&S.fq[k])|0)*389+stg(0,k)*31)>>>0);let f;do{f=genBlock(d.b,R)}while(f.ans===d.ans);return f;
+}
+function stageBar(tm,k){const n=nStg();if(n<2)return'';const j=stg(tm,k),done=S.sys[tm]&&S.sys[tm][k];
+  return`<div class="stage-bar">${Array.from({length:n},(_,i)=>`<i class="${done||i<j?'on':i===j?'cur':''}"></i>`).join('')}<span>${done?'완료':(j+1)+'/'+n+' 단계'}${!done&&j&&hinted(tm,k)?' · '+BLKN[curDef(tm,k).b]:''}</span></div>`}
+function hintBtn(tm,k){
+  if(dfv()<1||hinted(tm,k)||(S.sys[tm]&&S.sys[tm][k]))return'';const left=(S.hl&&S.hl[tm])|0;
+  return`<button class="hint-btn" data-p="hint" ${left>0?'':'disabled'}>힌트 보기 · 남은 ${left}개${S.mode==='vs22'?' · 상대에게 알림':' · −30초'}</button>`;
+}
+/* ---- trace inspection ---- */
+function openTrace(tm,oi){panel={tr:{tm,oi},key:''};$('#panel').hidden=false;renderTrace(true);beep(420,.05)}
+function renderTrace(force){
+  const t=puz(panel.tr.tm).trace;if(!t){closePanel();return}const o=t.objs[panel.tr.oi],K=TRK[t.kind];
+  const sig=[darkHere(o.rm),o.v,rvMark(t.k),JSON.stringify(S.rv||{})].join('|');if(!force&&sig===panel.key)return;panel.key=sig;stopAnim();
+  let h=`<header class="sheet-h"><div><p class="eyebrow">${L.codes[o.rm]} · ${L.names[o.rm]} · 흔적</p><h3>${K.n}</h3></div><button class="btn ghost sm" data-p="close">닫기</button></header>`;
+  if(darkHere(o.rm))h+='<div class="role-lock"><b>너무 어둡습니다</b><span class="hint">손전등을 들고 다시 살펴보세요.</span></div>';
+  else{
+    if(rvMark(t.k))h+='<div class="stamp">조작 흔적 · 방금 값이 바뀌었습니다</div>';
+    h+=`<canvas id="trc" width="520" height="300"></canvas><div class="tr-attr">${K.d.map((dm,i)=>`<span>${dm[0]} · ${dm[1][o.a[i]]}</span>`).join('')}</div>`;
+    h+=dfv()&&!hinted(t.tm,t.k)?'':'<p class="hint">시설에는 같은 종류의 물체가 세 개 있습니다. 조작 장치에 뜬 조건을 모두 만족하는 것만 진짜입니다.</p>';
+  }
+  $('#panel-sheet').innerHTML=h;
+  if(!darkHere(o.rm)){const t0=now();const draw=()=>{const cv=$('#trc');if(!cv){stopAnim();return}drawTrace(cv.getContext('2d'),t.kind,o,cv.width,cv.height,now(),now()-((loc.rvFx||{})[t.k]||0)<2600)};draw();anim=setInterval(draw,60)}
+}
+function drawTrace(ctx,kind,o,W,H,t,fx){
+  const K=TRK[kind],A=o.a,col=v=>TRCOL[v]||'#ccc';
+  ctx.fillStyle='#0b1218';ctx.fillRect(0,0,W,H);const cx=W/2,cy=H/2;
+  ctx.save();if(fx&&kind==='crate')ctx.translate((Math.random()-.5)*8,(Math.random()-.5)*5);
+  if(kind==='clock'){const r=110;ctx.fillStyle='#e9edf0';ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fill();ctx.lineWidth=12;ctx.strokeStyle=col(K.d[0][1][A[0]]);ctx.stroke();
+    ctx.fillStyle='#1a222a';ctx.font='bold 20px '+FONT;ctx.textAlign='center';ctx.textBaseline='middle';
+    for(let i=1;i<=12;i++){const a=i/12*Math.PI*2-Math.PI/2;ctx.fillText(String(i),cx+Math.cos(a)*(r-28),cy+Math.sin(a)*(r-28))}
+    const hh=Math.floor(o.v/100),mm=o.v%100,spin=fx?t/40:0;
+    const hand=(a,len,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a-Math.PI/2)*len,cy+Math.sin(a-Math.PI/2)*len);ctx.stroke()};
+    hand(fx?spin*.3:((hh%12)+mm/60)/12*Math.PI*2,56,8,'#1a222a');hand(fx?spin:mm/60*Math.PI*2,84,5,'#1a222a');
+    hand(A[1]===0?(t/1000%60)/60*Math.PI*2:1.2,90,2,'#d23');ctx.fillStyle='#1a222a';ctx.beginPath();ctx.arc(cx,cy,6,0,7);ctx.fill()}
+  else if(kind==='lamp'){const mark=K.d[0][1][A[0]];ctx.fillStyle='#16212b';ctx.fillRect(40,50,W-80,H-90);ctx.strokeStyle='#3d5568';ctx.lineWidth=2;ctx.strokeRect(40,50,W-80,H-90);
+    ctx.fillStyle=A[1]===0?(Math.sin(t/180)>0?'#ff5d5d':'#5a1a1a'):'#3a1515';ctx.beginPath();ctx.arc(cx,36,12,0,7);ctx.fill();
+    ctx.fillStyle='#8b9fb0';ctx.font='bold 26px '+FONT;ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(mark,52,58);
+    [16,8,4,2,1].forEach((w,i)=>{const x=95+i*(W-190)/4,on=fx?Math.random()<.5:(o.v&w)>0;ctx.fillStyle=on?'#f2d14a':'#2b2a1c';ctx.beginPath();ctx.arc(x,cy+10,24,0,7);ctx.fill();
+      ctx.fillStyle='#8b9fb0';ctx.font='16px '+FONT;ctx.textAlign='center';ctx.fillText(String(w),x,cy+46)})}
+  else if(kind==='gauge'){const r=120,by=cy+70;ctx.fillStyle='#24313c';ctx.beginPath();ctx.arc(cx,by,r,Math.PI,0);ctx.closePath();ctx.fill();ctx.strokeStyle='#5a6b78';ctx.lineWidth=4;ctx.stroke();
+    ctx.fillStyle='#c9d3db';ctx.font='15px '+FONT;ctx.textAlign='center';ctx.textBaseline='middle';
+    for(let v=0;v<=100;v+=10){const a=Math.PI+v/100*Math.PI;ctx.strokeStyle='#c9d3db';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(cx+Math.cos(a)*(r-4),by+Math.sin(a)*(r-4));ctx.lineTo(cx+Math.cos(a)*(r-16),by+Math.sin(a)*(r-16));ctx.stroke();ctx.fillText(String(v),cx+Math.cos(a)*(r-32),by+Math.sin(a)*(r-32))}
+    const vv=fx?Math.random()*100:o.v,a=Math.PI+vv/100*Math.PI;ctx.strokeStyle=col(K.d[0][1][A[0]]);ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(cx,by);ctx.lineTo(cx+Math.cos(a)*(r-24),by+Math.sin(a)*(r-24));ctx.stroke();
+    ctx.fillStyle='#5a6b78';ctx.beginPath();ctx.arc(cx,by,8,0,7);ctx.fill();
+    if(A[1]===0){ctx.strokeStyle='rgba(230,240,248,.7)';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(cx-70,by-90);ctx.lineTo(cx-30,by-50);ctx.lineTo(cx-38,by-20);ctx.moveTo(cx-30,by-50);ctx.lineTo(cx+5,by-62);ctx.stroke()}}
+  else if(kind==='crate'){const tape=col(K.d[0][1][A[0]]),n=o.v,cols=Math.ceil(n/3),bw=62,bh=46,x0=cx-cols*bw/2;let i=0;
+    for(let c=0;c<cols;c++)for(let r=0;r<3&&i<n;r++,i++){const x=x0+c*bw,y=H-30-(r+1)*bh;ctx.fillStyle='#8a6a3f';ctx.fillRect(x+2,y+2,bw-4,bh-4);ctx.strokeStyle='#5a4426';ctx.lineWidth=2;ctx.strokeRect(x+2,y+2,bw-4,bh-4);ctx.fillStyle=tape;ctx.fillRect(x+bw/2-5,y+2,10,bh-4)}
+    const topX=x0+(cols-1)*bw,topR=Math.min(3,n-(cols-1)*3),topY=H-30-topR*bh;
+    if(A[1]===0){ctx.fillStyle='#6b5030';ctx.save();ctx.translate(topX+4,topY+4);ctx.rotate(-.5);ctx.fillRect(0,-8,bw-8,8);ctx.restore();ctx.fillStyle='#1a1208';ctx.fillRect(topX+6,topY+4,bw-12,6)}
+    if(fx){ctx.fillStyle='rgba(200,190,170,.35)';for(let k=0;k<40;k++){ctx.beginPath();ctx.arc(Math.random()*W,H-20-Math.random()*H*.7,2+Math.random()*4,0,7);ctx.fill()}}}
+  else{const c=col(K.d[0][1][A[0]]),blink=A[1]===0&&Math.sin(t/220)>0;ctx.fillStyle='#050807';ctx.fillRect(60,70,W-120,H-140);ctx.lineWidth=6;ctx.strokeStyle=A[1]===0?(blink?c:'#1c2a24'):'#46525c';ctx.strokeRect(60,70,W-120,H-140);
+    ctx.fillStyle=c;ctx.font='bold 92px '+FONT;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(fx?String(100+Math.floor(Math.random()*900)):String(o.v),cx,cy+4);
+    if(fx){for(let k=0;k<30;k++){ctx.fillStyle='rgba(255,255,255,'+Math.random()*.3+')';ctx.fillRect(60,70+Math.random()*(H-140),W-120,2)}}}
+  ctx.restore();
 }
 function renderPanel(force){
   if(!panel||!S||S.ph!=='play'){closePanel();return}
+  if(panel.tr)return renderTrace(force);
   const s=STN[panel.id],P=myP();if(!s||!P){closePanel();return}
-  const tm=stTeam(s,P),sys=S.sys[tm]||{};
-  const keySig=[stnBlock(s,tm),isSolved(s,tm),allowed(s.k,tm,P.ro),darkHere(s.rm),JSON.stringify(sys.lv||{}),sys.g,S.tc?S.tc.blk[tm]>0&&Math.ceil(S.tc.blk[tm]/1000):0,S.tc?S.tc.spy[tm]>0&&Math.ceil(S.tc.spy[tm]/1000):0,needRole(s.k,tm)].join('|');
+  const tm=stTeam(s,P),sys=S.sys[tm]||{},K0=KIND[s.k],sk0=K0.sys&&K0.sys!=='g'?K0.sys:null;
+  const keySig=[stnBlock(s,tm),isSolved(s,tm),allowed(s.k,tm,P.ro),darkHere(s.rm),JSON.stringify(sys.lv||{}),sys.g,S.tc?S.tc.blk[tm]>0&&Math.ceil(S.tc.blk[tm]/1000):0,S.tc?S.tc.spy[tm]>0&&Math.ceil(S.tc.spy[tm]/1000):0,needRole(s.k,tm),JSON.stringify(S.rv||{}),sk0?[stg(tm,sk0),hinted(tm,sk0),(S.hl||[])[tm],S.fk&&S.fk[sk0]>0,rvMark(sk0)].join(','):''].join('|');
   if(!force&&keySig===panel.key)return;panel.key=keySig;
   stopAnim();
   const pz=puz(tm),blk=stnBlock(s,tm),solved=isSolved(s,tm),ok=allowed(s.k,tm,P.ro),K=KIND[s.k];
-  const sk=K.sys&&K.sys!=='g'?K.sys:null,type=sk?pz.types[sk]:null,q=sk?pz[sk]:null;
-  let h=`<header class="sheet-h"><div><p class="eyebrow">${L.codes[s.rm]} · ${L.names[s.rm]}${sk?' · '+SYSN[sk]+' · '+PTYPE[type].n:''}</p><h3>${esc(stName(s))}</h3></div><button class="btn ghost sm" data-p="close">닫기</button></header>`;
-  const fragIdx={w:0,c:1,s:2}[K.sys];
+  const sk=K.sys&&K.sys!=='g'?K.sys:null,type=sk?pz.types[sk]:null;let q=sk?pz[sk]:null;
+  const def=sk?curDef(tm,sk):null,fk=!!(sk&&S.fk&&S.fk[sk]>0),ex=sk?hinted(tm,sk):true;
+  if(sk&&!def&&K.clue&&fk)q=genPuzzle(type,rng((S.seed*53+sysKeys().indexOf(sk)*911+((S.fq&&S.fq[sk])|0)*389)>>>0));
+  let h=`<header class="sheet-h"><div><p class="eyebrow">${L.codes[s.rm]} · ${L.names[s.rm]}${sk?' · '+SYSN[sk]+(def?'':' · '+PTYPE[type].n):''}</p><h3>${esc(stName(s))}</h3></div><button class="btn ghost sm" data-p="close">닫기</button></header>`;
+  const fragIdx=K.sys&&K.sys!=='g'?sysKeys().indexOf(K.sys):null;
   let live=false;
   if(solved&&!K.clue&&s.k!=='block'&&s.k!=='spy'){
     h+='<div class="done">✓ 완료</div>';
-    if(fragIdx!=null&&sys[K.sys]===ME)h+=`<p class="frag">코드 조각 #${fragIdx+1} · <b>${pz.frag[fragIdx]}</b></p><p class="hint">이 조각은 당신에게만 보입니다. 게이트 코드는 #1 전력, #2 보안, #3 데이터 순서입니다. 채팅으로 팀에 알리세요.</p>`;
+    if(fragIdx!=null&&sys[K.sys]===ME)h+=`<p class="frag">코드 조각 #${fragIdx+1} · <b>${pz.frag[fragIdx]}</b></p><p class="hint">이 조각은 당신에게만 보입니다. 게이트 코드는 ${fragOrder()} 순서입니다. 채팅으로 팀에 알리세요.</p>`;
     else if(fragIdx!=null)h+='<p class="hint">이 시스템의 코드 조각은 해결한 팀원만 볼 수 있습니다. 채팅으로 물어보세요.</p>';
   }else if(darkHere(s.rm)){
     h+='<div class="role-lock"><b>너무 어둡습니다</b><span class="hint">화면도 버튼도 보이지 않습니다. 이 방의 장치는 손전등을 든 사람만 쓸 수 있습니다. 손전등을 찾거나, 가진 동료에게 넘겨 달라고 하세요.</span></div>';
@@ -1317,10 +1722,20 @@ function renderPanel(force){
   }else{
     live=true;
     if(blk)h+=`<div class="warn">${blk}</div>`;
-    if(sk)h+=K.clue?clueHTML(type,q,sk,tm):opHTML(type,q,blk,sk,tm);
+    if(sk){
+      h+=stageBar(tm,sk);
+      if(rvMark(sk))h+='<div class="stamp">보안 프로토콜 변경 · 데이터 갱신됨</div>';
+      let body;
+      if(!def)body=K.clue?clueHTML(type,q,sk,tm,ex):opHTML(type,q,blk,sk,tm,ex);
+      else if(K.clue)body=blockRefHTML(def,ex);
+      else{const shown=fk?fakeDef(def,sk):def;body=blockOutHTML(shown,ex)+keypadHTML(def.len||4,blk,'입력',!def.len)}
+      const fakeHere=fk&&(def?!K.clue:K.clue);
+      h+=fakeHere?`<div class="fx-fake" style="display:grid;gap:14px">${body}</div>`:body;
+      h+=hintBtn(tm,sk);
+    }
     else switch(s.k){
-      case'gate':{const mine=['w','c','s'].map((k,i)=>sys[k]===ME?'#'+(i+1)+' = '+pz.frag[i]:null).filter(Boolean);
-        h+=`<p class="hint">코드 조각을 #1 전력, #2 보안, #3 데이터 순서로 입력하세요. 각 조각은 그 시스템을 해결한 요원에게만 보입니다.</p>${mine.length?`<p class="frag">내 조각 ${mine.join(' · ')}</p>`:''}`+keypadHTML(3,blk,s.k==='gate'&&S.mode==='vs22'?'코드 승인':'코드 승인');break}
+      case'gate':{const mine=sysKeys().map((k,i)=>sys[k]===ME?'#'+(i+1)+' = '+pz.frag[i]:null).filter(Boolean);
+        h+=`<p class="hint">코드 조각을 ${fragOrder()} 순서로 입력하세요. 각 조각은 그 시스템을 해결한 요원에게만 보입니다.</p>${mine.length?`<p class="frag">내 조각 ${mine.join(' · ')}</p>`:''}`+keypadHTML(sysKeys().length,blk,'코드 승인');break}
       case'levA':case'levB':{
         const lv=sys.lv||{},on=k=>lv[k]&&lv[k][0]>0,solo=teamRoles(tm).length<2;
         h+=`<p class="hint">${solo?'팀에 혼자 남아 있어 레버 하나로 열립니다.':'두 레버를 2.5초 안에 서로 다른 요원이 당겨야 열립니다. 채팅으로 "셋 하면 당기기"처럼 신호를 맞추세요.'}</p>
@@ -1333,8 +1748,8 @@ function renderPanel(force){
     }
   }
   $('#panel-sheet').innerHTML=h;
-  if(live&&type==='sig'){const sc=$('#scope');if(sc){if(K.clue)drawWave(sc,q.f,q.a,false,q.w);else drawWave(sc,panel.sig.f,panel.sig.a,false,panel.sig.w)}}
-  if(live&&type==='morse'&&K.clue)startMorse(q);
+  if(live&&!def&&type==='sig'){const sc=$('#scope');if(sc){if(K.clue)drawWave(sc,q.f,q.a,false,q.w);else drawWave(sc,panel.sig.f,panel.sig.a,false,panel.sig.w)}}
+  if(live&&!def&&type==='morse'&&K.clue)startMorse(q);
 }
 function waveY(th,w){if(w===1)return Math.sin(th)>=0?1:-1;if(w===2)return 2/Math.PI*Math.asin(Math.sin(th));return Math.sin(th)}
 function drawWave(cv,f,a,noise,w){
@@ -1366,12 +1781,13 @@ function startMorse(q){
 $('#panel').addEventListener('click',e=>{
   if(e.target===$('#panel')){closePanel();return}
   const b=e.target.closest('[data-p]');if(!b||!panel||b.disabled)return;
+  if(b.dataset.p==='close')return closePanel();
   const s=STN[panel.id],P=myP();if(!s||!P)return;const tm=stTeam(s,P);
-  const K=KIND[s.k],sk=K.sys&&K.sys!=='g'?K.sys:null,type=sk?puz(tm).types[sk]:null;
+  const K=KIND[s.k],sk=K.sys&&K.sys!=='g'?K.sys:null,def=sk?curDef(tm,sk):null,type=def?'chain':sk?puz(tm).types[sk]:null;
   const act=b.dataset.p;
-  if(act==='close')return closePanel();
+  if(act==='hint'){gemit('act',{a:'hint',id:s.id});beep(600,.08,'triangle');return}
   if(act==='wire'){const i=+b.dataset.i;panel.sel[i]=panel.sel[i]>=3?-1:panel.sel[i]+1;beep(400+(panel.sel[i]+1)*80,.04);return renderPanel(true)}
-  if(act==='key'){const n=s.k==='gate'?3:type==='code'?4:3;if(panel.code.length<n)panel.code+=b.dataset.n;beep(700,.03);return renderPanel(true)}
+  if(act==='key'){const n=s.k==='gate'?sysKeys().length:def?(def.len||4):type==='code'?4:3;if(panel.code.length<n)panel.code+=b.dataset.n;beep(700,.03);return renderPanel(true)}
   if(act==='clr'){panel.code='';panel.seq=[];return renderPanel(true)}
   if(act==='bk'){panel.code=panel.code.slice(0,-1);return renderPanel(true)}
   if(act==='shape'){panel.sig.w=+b.dataset.i;return renderPanel(true)}
@@ -1388,8 +1804,8 @@ $('#panel').addEventListener('click',e=>{
     else if(type==='pat')ans=panel.grid.join('');
     else if(type==='order')ans=panel.seq.join('');
     else ans=panel.code;
-    const right=check(s.k,tm,ans);gemit('act',{a:'solve',id:s.id,ans});
-    if(right){beep(880,.15,'triangle',.05)}else{beep(140,.3,'sawtooth',.05);const sh=$('#panel-sheet');sh.classList.remove('shake');void sh.offsetWidth;sh.classList.add('shake');toast('오답입니다. 장치가 8초간 잠깁니다','bad')}
+    const right=check(s.k,tm,ans),lt=LOCKS[Math.min(((S.wc&&S.wc[s.id])|0)+1,3)-1];gemit('act',{a:'solve',id:s.id,ans});
+    if(right){beep(880,.15,'triangle',.05)}else{beep(140,.3,'sawtooth',.05);const sh=$('#panel-sheet');sh.classList.remove('shake');void sh.offsetWidth;sh.classList.add('shake');toast('오답입니다. 장치가 '+lt/1000+'초간 잠깁니다','bad')}
     panel.code='';panel.seq=[];renderPanel(true);
   }
 });
@@ -1407,6 +1823,7 @@ const joy={x:0,y:0,id:null};
 const typing=()=>{const a=document.activeElement;return a&&(a.tagName==='INPUT'&&a.type==='text'||a.tagName==='TEXTAREA')};
 addEventListener('keydown',e=>{
   if(typing()){if(e.key==='Escape')document.activeElement.blur();return}
+  if(!$('#manual').hidden){if(e.key==='Escape')closeManual();return}
   if(screen!=='game')return;
   if(e.key==='Escape'){if(panel)closePanel();else if(!$('#brief').hidden)$('#brief').hidden=true;return}
   if(e.key==='Enter'){if(!$('#brief').hidden){$('#brief').hidden=true;return}$('#game-chat-slot').classList.remove('closed');$('#chat-in').focus();e.preventDefault();return}
@@ -1414,6 +1831,7 @@ addEventListener('keydown',e=>{
   keys[e.code]=1;
   if(e.code==='KeyE'||e.code==='Space'){e.preventDefault();interact()}
   else if(e.code==='KeyQ')ability();
+  else if(e.code==='KeyR')sabotage();
   else if(e.code==='Digit1')useSlot(0);
   else if(e.code==='Digit2')useSlot(1);
   if(e.code.startsWith('Arrow'))e.preventDefault();
@@ -1434,7 +1852,7 @@ $('#t-q').addEventListener('click',()=>ability());
 $('#prompt').addEventListener('click',()=>interact());
 
 /* ================= player actions ================= */
-function free(x,y){const r=8;for(const[dx,dy]of[[-r,-r],[r,-r],[-r,r],[r,r]]){const tx=Math.floor((x+dx)/TS),ty=Math.floor((y+dy)/TS);const g=GRID[ty]&&GRID[ty][tx];if(g===undefined||g===-1)return false;if(g>=100&&doorLocked(g-100))return false}return true}
+function free(x,y,master){const r=8;for(const[dx,dy]of[[-r,-r],[r,-r],[-r,r],[r,r]]){const tx=Math.floor((x+dx)/TS),ty=Math.floor((y+dy)/TS);const g=GRID[ty]&&GRID[ty][tx];if(g===undefined||g===-1)return false;if(g>=100&&!master&&doorLocked(g-100))return false}return true}
 function nearTarget(){
   const P=myP();if(!P||P.ro==='ADM')return null;
   const ri=roomAt(me.x,me.y);let best=null,bd=1e9;
@@ -1442,19 +1860,26 @@ function nearTarget(){
     if(d<56&&d<bd){bd=d;best={t:'st',s,label:s.k==='sw'?'스위치: '+doorName(s.door)+' 열기':stName(s)}}}
   S.it.forEach((it,i)=>{if(it.h||it.u||roomAt(it.x,it.y)!==ri)return;const d=Math.hypot(it.x-me.x,it.y-me.y);if(d<36&&d<bd){bd=d;best={t:'it',i,label:ITEM[it.k].n+' 줍기'}}});
   L.vents.forEach(pair=>pair.forEach((v,vi)=>{if(v.rm!==ri)return;const c=tc(v.rm,v.lx,v.ly);const d=Math.hypot(c.x-me.x,c.y-me.y);if(d<32&&d<bd){bd=d;best={t:'vent',to:pair[1-vi],label:'환기구 → '+L.names[pair[1-vi].rm]}}}));
+  allTraces().forEach(tr=>{if(S.mode==='vs22'&&tr.tm!==P.tm)return;tr.objs.forEach((o,oi)=>{if(o.rm!==ri)return;const c=tc(o.rm,o.lx,o.ly),d=Math.hypot(c.x-me.x,c.y-me.y);if(d<48&&d<bd){bd=d;best={t:'tr',tm:tr.tm,oi,label:'살펴보기: '+TRK[tr.kind].n}}})});
   return best;
 }
 function interact(){
-  if(!S||S.ph!=='play'||panel||loc.ventUntil)return;
+  if(!S||S.ph!=='play')return;
+  {const P=myP();if(P&&P.ro==='ADM'){if(amInv())attack();return}}
+  if(stunMs(ME)>0)return toast('기절 상태입니다. 채팅은 할 수 있습니다','bad');
+  if(panel||loc.ventUntil)return;
   const t=nearTarget();if(!t)return;
   if(t.t==='st'){if(t.s.k==='sw'){gemit('act',{a:'sw',id:t.s.id});beep(420,.08,'square')}else openPanel(t.s)}
   else if(t.t==='it'){if(S.it.filter(x=>x.h===ME&&!x.u).length>=2)return toast('아이템은 두 개까지 들 수 있습니다','bad');gemit('act',{a:'pick',i:t.i});beep(990,.06,'triangle')}
+  else if(t.t==='tr')openTrace(t.tm,t.oi);
   else if(t.t==='vent'){const P=myP();if(P.ro==='SCO'){ventGo(t.to)}else{loc.ventUntil=now()+1500;loc.ventTo=t.to;toast('환기구로 기어가는 중… (1.5초)')}}
 }
 function ventGo(v){const c=tc(v.rm,v.lx,v.ly);me.x=c.x+(v.lx<4?20:-20);me.y=c.y;loc.ventUntil=0;loc.ventTo=null;beep(260,.1,'triangle')}
 function nearDoor(pred){let best=-1,bd=80;DOORS.forEach((d,i)=>{if(pred&&!pred(i))return;const m=doorMid(i);const dd=Math.hypot(m.x-me.x,m.y-me.y);if(dd<bd){bd=dd;best=i}});return best}
 function ability(){
-  const P=myP();if(!P||P.ro==='ADM'||!S||S.ph!=='play')return;
+  const P=myP();if(!P||!S||S.ph!=='play')return;
+  if(P.ro==='ADM'){if(amInv())gemit('act',{a:'ret'});return}
+  if(stunMs(ME)>0)return;
   const R=ROLE[P.ro],t=now();
   if(t<loc.cd)return toast(R.ab+' 재사용까지 '+Math.ceil((loc.cd-t)/1000)+'초','bad');
   if(P.ro==='ENG'){const d=nearDoor(i=>!sysLocked(i)&&doorLocked(i));if(d<0){const sd=DOORS.findIndex((x,i)=>sysLocked(i)&&Math.hypot(doorMid(i).x-me.x,doorMid(i).y-me.y)<80);return toast(sd>=0?'탈출구 봉쇄는 세 시스템을 복구해야 풀립니다':'근처에 잠긴 문이 없습니다','bad')}gemit('act',{a:'unlock',d})}
@@ -1465,11 +1890,12 @@ function ability(){
 }
 function useSlot(n){const mine=S.it.map((it,i)=>({it,i})).filter(o=>o.it.h===ME&&!o.it.u);if(mine[n])useItem(mine[n].i)}
 function useItem(i){
-  const it=S.it[i];if(!it||it.h!==ME)return;
+  const it=S.it[i];if(!it||it.h!==ME||stunMs(ME)>0)return;
   if(it.k==='flash')return toast('손전등은 들고만 있으면 자동으로 켜집니다');
   if(it.k==='key'){const d=nearDoor(i=>S.dc[i]||S.dr[i]>0);if(d<0)return toast('근처에 키카드로 열 문이 없습니다 (보라색 보안 문이나 시간 잠금 문)','bad');gemit('act',{a:'use',i,d})}
   else if(it.k==='emp'){
-    if(S.mode==='vs12'){const rm=roomAt(me.x,me.y);if(!L.cams.some(c=>c.rm===rm))return toast('이 방에는 카메라가 없습니다','bad');gemit('act',{a:'use',i,rm})}
+    if(S.mode==='vs12'){const af=adminFigure();if(af&&roomAt(af.x,af.y)===roomAt(me.x,me.y)&&Math.hypot(af.x-me.x,af.y-me.y)<100){gemit('act',{a:'use',i,adm:1});return}
+      const rm=roomAt(me.x,me.y);if(!L.cams.some(c=>c.rm===rm))return toast('이 방에는 카메라가 없습니다','bad');gemit('act',{a:'use',i,rm})}
     else if(S.mode==='vs22'){const P=myP();let best=null,bd=96;L.stations.forEach(s=>{if(s.tm<0||s.tm===P.tm)return;const c=tc(s.rm,s.lx,s.ly);const d=Math.hypot(c.x-me.x,c.y-me.y);if(d<bd){bd=d;best=s}});if(!best)return toast('근처에 상대 팀 장치가 없습니다','bad');gemit('act',{a:'use',i,st:best.id})}
     else toast('이 모드에서는 쓸 곳이 없습니다');
   }
@@ -1486,32 +1912,36 @@ function frame(t){
 }
 function step(dt){
   const P=myP();if(!P)return;
-  if(P.ro==='ADM'){admTrack();return}
+  const isAdm=P.ro==='ADM';
+  if(isAdm&&!amInv()){admTrack();return}
+  const stunned=!isAdm&&stunMs(ME)>0;if(stunned&&panel)closePanel();
   const t=now(),ri=roomAt(me.x,me.y);
   let vx=0,vy=0;
-  if(!typing()&&!panel&&$('#brief').hidden&&!loc.ventUntil){vx=(K('KeyD')||K('ArrowRight'))-(K('KeyA')||K('ArrowLeft'))+joy.x;vy=(K('KeyS')||K('ArrowDown'))-(K('KeyW')||K('ArrowUp'))+joy.y}
+  if(!stunned&&!typing()&&!panel&&$('#brief').hidden&&!loc.ventUntil){vx=(K('KeyD')||K('ArrowRight'))-(K('KeyA')||K('ArrowLeft'))+joy.x;vy=(K('KeyS')||K('ArrowDown'))-(K('KeyW')||K('ArrowUp'))+joy.y}
   const m=Math.hypot(vx,vy);if(m>1){vx/=m;vy/=m}
-  const sp=112*(P.ro==='SCO'?1.25:1)*(t<loc.dash?1.7:1)*(S.rg[ri]>0?.5:1);
+  const sp=isAdm?122:112*(P.ro==='SCO'?1.25:1)*(t<loc.dash?1.7:1)*(S.rg[ri]>0?.4:1);
   if(m>.08){
-    const stuck=!free(me.x,me.y);
-    const nx=me.x+vx*sp*dt;if(stuck||free(nx,me.y))me.x=nx;
-    const ny=me.y+vy*sp*dt;if(stuck||free(me.x,ny))me.y=ny;
+    const stuck=!free(me.x,me.y,isAdm);
+    const nx=me.x+vx*sp*dt;if(stuck||free(nx,me.y,isAdm))me.x=nx;
+    const ny=me.y+vy*sp*dt;if(stuck||free(me.x,ny,isAdm))me.y=ny;
     me.w=1;me.ph+=dt*sp*.12;if(Math.abs(vx)>.1)me.f=vx>0?1:-1;
   }else me.w=0;
   me.x=clamp(me.x,TS,(GW-1)*TS);me.y=clamp(me.y,TS,(GH-1)*TS);
   if(loc.ventUntil&&t>=loc.ventUntil&&loc.ventTo)ventGo(loc.ventTo);
   if(loc.peek>=0&&t>loc.peekUntil){loc.peek=-1;$('#peek').hidden=true}
-  if(L.hatch&&S.sys[0].o&&!loc.escSent){const c=tc(L.hatch.rm,L.hatch.lx,L.hatch.ly);if(Math.hypot(c.x-me.x,c.y-me.y)<26){loc.escSent=true;gemit('act',{a:'esc'})}}
+  if(!isAdm&&!stunned&&L.hatch&&S.sys[0].o&&!loc.escSent){const c=tc(L.hatch.rm,L.hatch.lx,L.hatch.ly);if(Math.hypot(c.x-me.x,c.y-me.y)<26){loc.escSent=true;gemit('act',{a:'esc'})}}
   const X=Math.round(me.x),Y=Math.round(me.y);
   if(X!==lastSent.x||Y!==lastSent.y||me.f!==lastSent.f||me.w!==lastSent.w){lastSent={x:X,y:Y,f:me.f,w:me.w};setPres(lastSent)}
-  if(panel){const s=STN[panel.id];if(s){const c=tc(s.rm,s.lx,s.ly);if(Math.hypot(c.x-me.x,c.y-me.y)>90)closePanel()}}
-  const tg=panel?null:nearTarget(),pb=$('#prompt'),te=$('#t-e');
+  if(panel){const s=panel.tr?((puz(panel.tr.tm).trace||{objs:[]}).objs[panel.tr.oi]):STN[panel.id];if(s){const c=tc(s.rm,s.lx,s.ly);if(Math.hypot(c.x-me.x,c.y-me.y)>90)closePanel()}}
+  const pb=$('#prompt'),te=$('#t-e');
+  if(isAdm){const near=playersList().some(p=>roomAt(p.x,p.y)===ri&&Math.hypot(p.x-me.x,p.y-me.y)<HIT_R&&!(stunMs(p.peer)>0));pb.hidden=!near;if(near)pb.textContent='[E] 공격';te.disabled=false;return}
+  const tg=(panel||stunned)?null:nearTarget();
   if(tg){pb.hidden=false;pb.textContent='[E] '+tg.label;te.disabled=false}else{pb.hidden=true;te.disabled=true}
 }
 
 /* ================= drawing ================= */
 function sizeCanvas(cv){const dpr=Math.min(2,window.devicePixelRatio||1);const w=Math.max(1,Math.round(cv.clientWidth*dpr)),h=Math.max(1,Math.round(cv.clientHeight*dpr));if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}return dpr}
-function resize(){['#cv','#mini','#mon','#amap','#peek-cv'].forEach(s=>{const c=$(s);if(c&&c.clientWidth)sizeCanvas(c)})}
+function resize(){['#cv','#mini','#amap','#peek-cv'].forEach(s=>{const c=$(s);if(c&&c.clientWidth)sizeCanvas(c)})}
 addEventListener('resize',resize);
 function rr2(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 function label(ctx,t,x,y,size,color){ctx.font='600 '+size+'px '+FONT;ctx.textAlign='center';ctx.lineWidth=3;ctx.strokeStyle='rgba(5,9,13,.85)';ctx.strokeText(t,x,y);ctx.fillStyle=color||COL.ink;ctx.fillText(t,x,y)}
@@ -1551,6 +1981,18 @@ function drawStation(ctx,s,P,t){
   if(P&&P.ro!=='ADM'&&DUTY[s.k]&&needRole(s.k,tm)===P.ro&&!solved&&(s.tm<0||s.tm===P.tm)){ctx.strokeStyle=COL.amber;ctx.globalAlpha=.35+.35*Math.sin(t/250);ctx.lineWidth=2;ctx.beginPath();ctx.arc(c.x,c.y,19,0,7);ctx.stroke();ctx.globalAlpha=1}
   label(ctx,stName(s),c.x,c.y+21,8,COL.ink);
 }
+/* small in-room marker for a trace object; it rattles/flickers right after the overseer swaps the data */
+function drawTraceIcon(ctx,tr,o,t){
+  const c=tc(o.rm,o.lx,o.ly),fx=now()-((loc.rvFx||{})[tr.k]||0)<2600,j=fx?(Math.random()-.5)*5:0,x=c.x+j,y=c.y+(fx?(Math.random()-.5)*3:0);
+  ctx.fillStyle='rgba(92,200,230,.10)';ctx.beginPath();ctx.arc(c.x,c.y,15,0,7);ctx.fill();
+  if(tr.kind==='clock'){ctx.fillStyle='#d9dee3';ctx.beginPath();ctx.arc(x,y,10,0,7);ctx.fill();ctx.strokeStyle='#56636e';ctx.lineWidth=2;ctx.stroke();const a=fx?t/30:1;ctx.strokeStyle='#1a222a';ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x+Math.cos(a)*7,y+Math.sin(a)*7);ctx.moveTo(x,y);ctx.lineTo(x,y-5);ctx.stroke()}
+  else if(tr.kind==='lamp'){ctx.fillStyle='#16212b';ctx.fillRect(x-12,y-7,24,14);for(let k=0;k<5;k++){ctx.fillStyle=fx?(Math.random()<.5?'#f2d14a':'#2b2a1c'):(k%2?'#f2d14a':'#2b2a1c');ctx.beginPath();ctx.arc(x-9+k*4.5,y,1.8,0,7);ctx.fill()}}
+  else if(tr.kind==='gauge'){ctx.fillStyle='#d9dee3';ctx.beginPath();ctx.arc(x,y+4,11,Math.PI,0);ctx.fill();const a=Math.PI+(fx?Math.random():.6)*Math.PI;ctx.strokeStyle='#d23';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,y+4);ctx.lineTo(x+Math.cos(a)*9,y+4+Math.sin(a)*9);ctx.stroke()}
+  else if(tr.kind==='crate'){ctx.fillStyle='#8a6a3f';ctx.fillRect(x-11,y-2,10,9);ctx.fillRect(x+1,y-2,10,9);ctx.fillRect(x-5,y-11,10,9);ctx.strokeStyle='#5a4426';ctx.lineWidth=1;ctx.strokeRect(x-11,y-2,10,9);ctx.strokeRect(x+1,y-2,10,9);ctx.strokeRect(x-5,y-11,10,9)}
+  else{ctx.fillStyle='#050807';ctx.fillRect(x-13,y-8,26,16);ctx.strokeStyle='#46525c';ctx.lineWidth=1.5;ctx.strokeRect(x-13,y-8,26,16);ctx.fillStyle=fx?'#fff':'#5fd38d';ctx.font='bold 8px '+FONT;ctx.textAlign='center';ctx.fillText(fx?'▒▒▒':'###',x,y+3)}
+  label(ctx,TRK[tr.kind].n,c.x,c.y+21,7,COL.info);
+  if(rvMark(tr.k))label(ctx,'조작 흔적',c.x,c.y-18,7,COL.alert);
+}
 function drawItem(ctx,it,t){
   const c={x:it.x,y:it.y},b=Math.sin(t/300+it.x)*2;
   ctx.fillStyle='rgba(242,177,52,.12)';ctx.beginPath();ctx.arc(c.x,c.y,13,0,7);ctx.fill();
@@ -1567,6 +2009,7 @@ function drawRoomStuff(ctx,ri,P,t,o){
   if(L.hatch&&L.hatch.rm===ri){const c=tc(ri,L.hatch.lx,L.hatch.ly),open=S.sys[0]&&S.sys[0].o;ctx.save();rr2(ctx,c.x-16,c.y-16,32,32,3);ctx.clip();for(let k=-32;k<32;k+=8){ctx.fillStyle=(k/8)&1?'#111':(open?COL.ok:COL.amber);ctx.beginPath();ctx.moveTo(c.x+k,c.y-16);ctx.lineTo(c.x+k+8,c.y-16);ctx.lineTo(c.x+k-24,c.y+16);ctx.lineTo(c.x+k-32,c.y+16);ctx.fill()}ctx.restore();
     ctx.fillStyle=open?'rgba(95,211,141,.85)':'rgba(9,16,23,.85)';rr2(ctx,c.x-11,c.y-11,22,22,2);ctx.fill();label(ctx,open?'EXIT':'잠김',c.x,c.y+4,8,open?'#062010':COL.dim);label(ctx,'탈출 해치',c.x,c.y+27,8,COL.amber)}
   L.stations.forEach(s=>{if(s.rm===ri)drawStation(ctx,s,P,t)});
+  allTraces().forEach(tr=>tr.objs.forEach(o=>{if(o.rm===ri)drawTraceIcon(ctx,tr,o,t)}));
   S.it.forEach(it=>{if(!it.h&&!it.u&&roomAt(it.x,it.y)===ri)drawItem(ctx,it,t)});
 }
 function drawPlayer(ctx,p,t){
@@ -1579,8 +2022,10 @@ function drawPlayer(ctx,p,t){
   ctx.moveTo(x,y-7);ctx.lineTo(x-6-sw*.4,y-1);ctx.moveTo(x,y-7);ctx.lineTo(x+6+sw*.4,y-1);ctx.stroke();
   ctx.fillStyle='#0b1218';ctx.beginPath();ctx.arc(x,y-14,4.8,0,7);ctx.fill();ctx.stroke();
   ctx.fillStyle=p.c;ctx.beginPath();ctx.arc(x+(p.f||1)*2,y-14.5,1.3,0,7);ctx.fill();
-  const tag=(p.ro&&ROLE[p.ro]?ROLE[p.ro].n[0]+' ':'')+p.n;
-  label(ctx,tag,x,y-24,8,p.me?COL.amber:COL.ink);
+  const tag=p.adm?'관리자':(p.ro&&ROLE[p.ro]?ROLE[p.ro].n[0]+' ':'')+p.n;
+  label(ctx,tag,x,y-24,8,p.adm?COL.alert:p.me?COL.amber:COL.ink);
+  if(p.adm&&p.me&&now()-(loc.swing||0)<260){const k=(now()-loc.swing)/260;ctx.strokeStyle='rgba(255,93,93,'+(1-k)+')';ctx.lineWidth=3;ctx.beginPath();ctx.arc(x,y-4,HIT_R*.75,-1.2+k,0.6+k);ctx.stroke()}
+  if(!p.adm&&p.peer&&stunMs(p.peer)>0){ctx.fillStyle=COL.alert;for(let k=0;k<3;k++){const a=now()/300+k*2.1;ctx.beginPath();ctx.arc(x+Math.cos(a)*9,y-20+Math.sin(a)*3,1.8,0,7);ctx.fill()}label(ctx,'기절 '+Math.ceil(stunMs(p.peer)/1000)+'초',x,y-34,8,COL.alert)}
   if(p.me){ctx.fillStyle=COL.amber;ctx.beginPath();ctx.moveTo(x-3,y-37);ctx.lineTo(x+3,y-37);ctx.lineTo(x,y-33);ctx.fill()}
 }
 function playersList(){
@@ -1594,12 +2039,12 @@ function playersList(){
   }
   return out;
 }
-function selfPlayer(){const P=myP();return{peer:ME,x:me.x,y:me.y,w:me.w,f:me.f,ph:me.ph,c:PCOL[myCol%PCOL.length],n:myName,ro:P.ro,tm:P.tm,me:true}}
+function selfPlayer(){const P=myP(),adm=P.ro==='ADM';return{peer:ME,x:me.x,y:me.y,w:me.w,f:me.f,ph:me.ph,c:adm?COL.alert:PCOL[myCol%PCOL.length],n:adm?'관리자':myName,ro:P.ro,tm:P.tm,me:true,adm}}
 function roomFit(W,H,ri,fit){const bw=11*TS,bh=9*TS;const sc=Math.min(W/bw,H/bh)*fit;const cx=(ox(ri)-1)*TS+bw/2,cy=(oy(ri)-1)*TS+bh/2;return{sc,tx:W/2-cx*sc,ty:H/2-cy*sc}}
 function draw(t){
   const P=myP();
   if(!P){const cv=$('#cv'),ctx=cv.getContext('2d');sizeCanvas(cv);ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=COL.void;ctx.fillRect(0,0,cv.width,cv.height);return}
-  if(P.ro==='ADM'){drawAdmin(t);return}
+  if(P.ro==='ADM'&&!amInv()){drawAdmin(t);return}
   const cv=$('#cv'),ctx=cv.getContext('2d'),dpr=sizeCanvas(cv),W=cv.width,Hh=cv.height;
   const ri=roomAt(me.x,me.y);
   const wide=W>900*dpr;
@@ -1607,14 +2052,15 @@ function draw(t){
   const cx=(ox(ri)-1)*TS+bw/2,cy=(oy(ri)-1)*TS+bh/2;
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=COL.void;ctx.fillRect(0,0,W,Hh);
   ctx.setTransform(sc,0,0,sc,W/2-cx*sc,Hh/2-cy*sc+(wide?0:Hh*.04));
-  drawTiles(ctx,[0,1,2,3,4,5,6,7,8]);
+  drawTiles(ctx,allRooms());
   ctx.fillStyle='rgba(9,16,23,.86)';
-  for(let i=0;i<9;i++)if(i!==ri)ctx.fillRect((ox(i)-1)*TS,(oy(i)-1)*TS,(RW+2)*TS,(RH+2)*TS);
+  for(let i=0;i<NROOM;i++)if(i!==ri)ctx.fillRect((ox(i)-1)*TS,(oy(i)-1)*TS,(RW+2)*TS,(RH+2)*TS);
   drawTiles(ctx,[ri]);
   const scanning=now()<loc.scan;
   drawRoomStuff(ctx,ri,P,t,{cov:scanning});
   const dark=isDark(ri),rad=hasItem('flash')?150:56;
-  const others=playersList().filter(p=>roomAt(p.x,p.y)===ri&&(!dark||Math.hypot(p.x-me.x,p.y-me.y)<rad));
+  const af=adminFigure();
+  const others=playersList().concat(af?[af]:[]).filter(p=>roomAt(p.x,p.y)===ri&&(!dark||Math.hypot(p.x-me.x,p.y-me.y)<rad));
   others.concat([selfPlayer()]).sort((a,b)=>a.y-b.y).forEach(p=>drawPlayer(ctx,p,t));
   const bx=(ox(ri)-1)*TS,by=(oy(ri)-1)*TS,BW=(RW+2)*TS,BH=(RH+2)*TS;
   if(S.rg[ri]>0){ctx.fillStyle='rgba(95,211,141,.12)';ctx.fillRect(bx,by,BW,BH);for(let k=0;k<7;k++){const gx=bx+((k*97+t/40)%BW),gy=by+((k*53+Math.sin(t/900+k)*30+BH)%BH);ctx.fillStyle='rgba(120,230,160,.08)';ctx.beginPath();ctx.arc(gx,gy,40,0,7);ctx.fill()}}
@@ -1627,7 +2073,7 @@ function mapXform(W,H){const sc=Math.min(W/(GW*TS),H/(GH*TS));return{sc,tx:(W-GW
 function drawMapBase(ctx,W,H,dpr,o){
   const m=mapXform(W,H);ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle=COL.void;ctx.fillRect(0,0,W,H);ctx.setTransform(m.sc,0,0,m.sc,m.tx,m.ty);
   ctx.fillStyle=COL.wall;ctx.fillRect(0,0,GW*TS,GH*TS);
-  for(let i=0;i<9;i++){const x=ox(i)*TS,y=oy(i)*TS;ctx.fillStyle=o.cur===i?'#2c4256':COL.floor;ctx.fillRect(x,y,RW*TS,RH*TS);
+  for(let i=0;i<NROOM;i++){const x=ox(i)*TS,y=oy(i)*TS;ctx.fillStyle=o.cur===i?'#2c4256':COL.floor;ctx.fillRect(x,y,RW*TS,RH*TS);
     if(o.hz(i)||L.dark.includes(i)){if(isDark(i)){ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(x,y,RW*TS,RH*TS)}if(S.rg[i]>0){ctx.fillStyle='rgba(95,211,141,.25)';ctx.fillRect(x,y,RW*TS,RH*TS)}if(S.rp[i]>0){ctx.strokeStyle=COL.alert;ctx.lineWidth=10;ctx.strokeRect(x+5,y+5,RW*TS-10,RH*TS-10)}}
     if(o.sel===i){ctx.strokeStyle=COL.amber;ctx.lineWidth=12;ctx.strokeRect(x,y,RW*TS,RH*TS)}}
   DOORS.forEach((d,i)=>{const a=d.t[0],b=d.t[2];const x=a[0]*TS,y=a[1]*TS,w=(b[0]-a[0]+1)*TS,h=(b[1]-a[1]+1)*TS;
@@ -1635,7 +2081,7 @@ function drawMapBase(ctx,W,H,dpr,o){
     if(o.selDoor===i){ctx.strokeStyle=COL.amber;ctx.lineWidth=10;ctx.strokeRect(x-6,y-6,w+12,h+12)}
     if(o.sensor&&L.sensor.includes(i)){ctx.fillStyle=COL.info;ctx.beginPath();ctx.arc(x+w/2,y+h/2,9,0,7);ctx.fill()}});
   const fs=Math.max(8,9*dpr)/m.sc;ctx.font='600 '+fs+'px '+FONT;ctx.textAlign='center';ctx.fillStyle=COL.dim;
-  for(let i=0;i<9;i++)ctx.fillText(L.short[i],(ox(i)+RW/2)*TS,(oy(i)+1.4)*TS);
+  for(let i=0;i<NROOM;i++)ctx.fillText(L.short[i],(ox(i)+RW/2)*TS,(oy(i)+1.4)*TS);
   return m;
 }
 function dot(ctx,m,dpr,x,y,c,r,ring){const rad=(r||3.6)*dpr/m.sc;ctx.fillStyle=c;ctx.beginPath();ctx.arc(x,y,rad,0,7);ctx.fill();if(ring){ctx.strokeStyle=COL.ink;ctx.lineWidth=1.5*dpr/m.sc;ctx.stroke()}}
@@ -1673,14 +2119,17 @@ function admTrack(){
   }
 }
 function admLog(t,hot){const ts=fmt(MODES[S.mode].tl-(S.el||0));admin.log.unshift({t:ts+'  '+t,hot});admin.log=admin.log.slice(0,8)}
-function drawAdmin(t){
-  admTrack();
-  const mv=$('#mon'),ctx=mv.getContext('2d'),dpr=sizeCanvas(mv),W=mv.width,Hh=mv.height;
-  const cam=L.cams[admin.cam]||L.cams[0];if(!cam)return;
-  const ri=cam.rm,broken=S.cb[admin.cam]>0,dark=isDark(ri);
+function ensureCamGrid(){
+  const g=$('#camgrid'),k=S.seed+':'+L.mode;if(g.dataset.k===k)return;g.dataset.k=k;
+  g.innerHTML=L.cams.map((c,i)=>`<figure class="camtile" data-cam="${i}"><figcaption><span>CAM-0${i+1} · ${L.names[c.rm]}</span><b id="camst-${i}">감시 중</b></figcaption><canvas id="camcv-${i}"></canvas></figure>`).join('');
+}
+function drawCam(i,t){
+  const cam=L.cams[i],mv=$('#camcv-'+i);if(!cam||!mv)return;
+  const ctx=mv.getContext('2d'),dpr=sizeCanvas(mv),W=mv.width,Hh=mv.height;
+  const ri=cam.rm,broken=S.cb[i]>0,dark=isDark(ri);
   const f=roomFit(W,Hh,ri,.98);ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,W,Hh);
-  if(broken){for(let k=0;k<500;k++){const v=Math.random()*90|0;ctx.fillStyle=`rgb(${v},${v},${v})`;ctx.fillRect(Math.random()*W,Math.random()*Hh,3*dpr,2*dpr)}
-    ctx.fillStyle=COL.alert;ctx.font='700 '+(18*dpr)+'px '+FONT;ctx.textAlign='center';ctx.fillText('신호 없음',W/2,Hh/2)}
+  if(broken){for(let k=0;k<160;k++){const v=Math.random()*90|0;ctx.fillStyle=`rgb(${v},${v},${v})`;ctx.fillRect(Math.random()*W,Math.random()*Hh,3*dpr,2*dpr)}
+    ctx.fillStyle=COL.alert;ctx.font='700 '+(13*dpr)+'px '+FONT;ctx.textAlign='center';ctx.fillText('신호 없음',W/2,Hh/2)}
   else{
     ctx.setTransform(f.sc,0,0,f.sc,f.tx,f.ty);drawTiles(ctx,[ri]);drawRoomStuff(ctx,ri,null,t,{cov:true});
     const cv2=cam.cov;
@@ -1689,37 +2138,45 @@ function drawAdmin(t){
     const bx=(ox(ri)-1)*TS,by=(oy(ri)-1)*TS;
     if(S.rg[ri]>0){ctx.fillStyle='rgba(95,211,141,.14)';ctx.fillRect(bx,by,(RW+2)*TS,(RH+2)*TS)}
     ctx.setTransform(1,0,0,1,0,0);
-    if(dark){ctx.fillStyle='rgba(0,0,0,.88)';ctx.fillRect(0,0,W,Hh);ctx.fillStyle=COL.dim;ctx.font='700 '+(15*dpr)+'px '+FONT;ctx.textAlign='center';ctx.fillText('저조도 · 식별 불가',W/2,Hh/2)}
+    if(dark){ctx.fillStyle='rgba(0,0,0,.88)';ctx.fillRect(0,0,W,Hh);ctx.fillStyle=COL.dim;ctx.font='700 '+(11*dpr)+'px '+FONT;ctx.textAlign='center';ctx.fillText('저조도 · 식별 불가',W/2,Hh/2)}
     ctx.fillStyle='rgba(255,255,255,.04)';for(let y=0;y<Hh;y+=4*dpr)ctx.fillRect(0,y,W,1*dpr);
   }
-  ctx.setTransform(1,0,0,1,0,0);ctx.font='600 '+(11*dpr)+'px "IBM Plex Mono",monospace';ctx.textAlign='left';ctx.fillStyle=COL.alert;
-  ctx.fillText((Math.sin(t/300)>0?'● ':'  ')+'REC  CAM-0'+(admin.cam+1)+'  '+L.codes[ri],10*dpr,18*dpr);
-  $('#mon-title').textContent='CAM-0'+(admin.cam+1)+' · '+L.names[ri];
-  $('#mon-state').textContent=broken?'고장':dark?'정전':'감시 중';
+  ctx.setTransform(1,0,0,1,0,0);ctx.font='600 '+(9*dpr)+'px "IBM Plex Mono",monospace';ctx.textAlign='left';ctx.fillStyle=COL.alert;
+  ctx.fillText((Math.sin(t/300)>0?'● ':'  ')+'REC '+L.codes[ri],6*dpr,13*dpr);
+  const st=broken?'고장 '+Math.ceil(S.cb[i]/1000)+'초':dark?'어두움':'감시 중',el=$('#camst-'+i);if(el&&el.textContent!==st)el.textContent=st;
+  const tile=mv.parentNode;tile.classList.toggle('bad',broken||dark);tile.classList.toggle('sel',!!(admin.sel&&admin.sel.type==='room'&&admin.sel.i===ri));
+}
+function drawAdmin(t){
+  admTrack();ensureCamGrid();
+  L.cams.forEach((c,i)=>drawCam(i,t));
+  $('#mon-state').textContent=L.cams.filter((c,i)=>S.cb[i]>0).length?'고장 카메라 있음':'';
   const am=$('#amap'),c2=am.getContext('2d'),d2=sizeCanvas(am);
   const sel=admin.sel;
   const m=drawMapBase(c2,am.width,am.height,d2,{cur:-1,hz:()=>true,doorKnown:()=>true,sel:sel&&sel.type==='room'?sel.i:null,selDoor:sel&&sel.type==='door'?sel.i:null,flash:admin.flash,sensor:true});
-  L.cams.forEach((c,ci)=>{const x=(ox(c.rm)+RW-1.2)*TS,y=(oy(c.rm)+.9)*TS;dot(c2,m,d2,x,y,S.cb[ci]>0?'#555':ci===admin.cam?COL.amber:COL.alert,4.5,ci===admin.cam)});
+  L.cams.forEach((c,ci)=>{const x=(ox(c.rm)+RW-1.2)*TS,y=(oy(c.rm)+.9)*TS;dot(c2,m,d2,x,y,S.cb[ci]>0?'#555':COL.alert,4.5,false)});
   if(S.scan>0)playersList().forEach(p=>dot(c2,m,d2,p.x,p.y,p.c,4,true));
 }
 function renderAdmin(){
   $('#en-val').textContent=Math.floor(S.en);$('#en-bar').style.width=Math.min(100,S.en)+'%';
-  setHTML('#cams',L.cams.map((c,i)=>`<button data-cam="${i}" aria-pressed="${i===admin.cam}" class="${S.cb[i]>0?'broken':''}">CAM-0${i+1} ${L.names[c.rm]}<small>${S.cb[i]>0?'고장 '+Math.ceil(S.cb[i]/1000)+'초':S.rd[c.rm]>0?'정전':'정상'}</small></button>`).join(''));
+  const invRm=admin.sel?(admin.sel.type==='room'?admin.sel.i:DOORS[admin.sel.i].a):4;
+  setHTML('#inv-card',`<div class="row"><div><p class="eyebrow">직접 개입</p><span class="inv-count">${S.invLeft|0}/${S.invMax||INV_MAX}${S.fin===1?' + 최종 추격':''}</span></div><button class="btn danger" data-inv="${invRm}" ${((S.invLeft|0)>0||S.fin===1)?'':'disabled'}>${((S.invLeft|0)>0||S.fin===1)?L.names[invRm]+' 진입':'횟수 소진'}</button></div><p class="hint">최대 20초 동안 직접 들어가 근거리 공격으로 탈출자를 15초 기절시킵니다. 개입 중에는 CCTV와 시설 제어를 쓸 수 없습니다. 지도나 카메라 화면에서 방을 골라 진입 위치를 정하세요.</p>`);
   const sel=admin.sel;let h='';
-  const opBtn=(op,t,extra)=>{const o=ADMOP[op];const key=op==='scan'?'scan':op+':'+t;const cd=S.acd[key]||0;const lockT=o.unlock&&S.el<o.unlock?o.unlock-S.el:0;
+  const opBtn=(op,t,extra)=>{const o=ADMOP[op];const key=ADM_GLOBAL.includes(op)?op:op+':'+t;const cd=S.acd[key]||0;const lockT=o.unlock&&S.el<o.unlock?o.unlock-S.el:0;
     const disabled=S.en<o.c||cd>0||lockT>0||extra;const sub=lockT>0?fmt(lockT)+' 후 해금':cd>0?'재사용 '+Math.ceil(cd/1000)+'초':'에너지 '+o.c+(o.d?' · '+o.d/1000+'초':'');
     return`<button data-op="${op}" data-t="${t}" ${disabled?'disabled':''}>${o.n}<small>${sub}</small></button>`};
   if(!sel)h='<h4>대상을 고르세요</h4><p class="hint">지도에서 방이나 문(작은 통로)을 누르면 제어 메뉴가 열립니다. 파란 점은 통과 센서입니다.</p>';
   else if(sel.type==='room'){const ci=L.cams.findIndex(c=>c.rm===sel.i);
     h=`<h4>${L.names[sel.i]}${ci<0?' · 카메라 없음':''}</h4><div class="ops">${opBtn('dark',sel.i)}${opBtn('gas',sel.i)}${opBtn('pwr',sel.i)}${ci>=0&&S.cb[ci]>0?opBtn('fix',ci):''}</div>`}
-  else{const sd=L.sysDoors.includes(sel.i);h=`<h4>문 · ${doorName(sel.i)}</h4>${sd?'<p class="hint">탈출구 봉쇄 문은 시스템이 관리합니다.</p>':''}<div class="ops">${opBtn('lock',sel.i,sd||S.dr[sel.i]>0||S.dr.filter(v=>v>0).length>=2)}</div><p class="hint">동시에 잠글 수 있는 문은 2개까지입니다.</p>`}
-  h+=`<div class="ops" style="margin-top:6px">${opBtn('scan',0)}</div>`;
+  else{const sd=L.sysDoors.includes(sel.i);h=`<h4>문 · ${doorName(sel.i)}</h4>${sd?'<p class="hint">탈출구 봉쇄 문은 시스템이 관리합니다.</p>':''}<div class="ops">${opBtn('lock',sel.i,sd||S.dr[sel.i]>0||S.dr.filter(v=>v>0).length>=2)}</div><p class="hint">동시에 잠글 수 있는 문은 3개까지입니다. 기술자가 풀어도 4초는 더 버팁니다.</p>`}
+  h+=`<div class="ops" style="margin-top:6px">${opBtn('scan',0)}${opBtn('jam',0)}</div><h4 style="margin-top:6px">암호 교체 · 남은 ${S.rvLeft|0}/2</h4><p class="hint">아직 안 풀린 시스템의 <b>지금 단계</b> 데이터를 새로 만듭니다(흔적 단계면 같은 종류 물체 셋의 값이 모두 바뀜). 탈출자에게 경보가 울리고 장치에 변경 도장이 찍힙니다.</p><div class="ops">${sysKeys().map((k,n)=>opBtn('reset',n,!!(S.sys[0]&&S.sys[0][k])||!(S.rvLeft>0)).replace(ADMOP.reset.n+'<small>',SYSN[k]+' · '+(stg(0,k)+1)+'/'+nStg()+'단계<small>')).join('')}</div>`;
+  h+=`<h4 style="margin-top:6px">가짜 단서</h4><p class="hint">1분 뒤 해금. 20초 동안 지금 단계의 정보를 그럴듯하게 바꿔 보여 줍니다(1단계는 단서 장치, 그 뒤 단계는 조작 장치의 신호, 흔적 단계는 가짜 물체를 가리키는 조건). 화면에 미세한 노이즈가 섞입니다.</p><div class="ops">${sysKeys().map((k,n)=>opBtn('fake',n,!!(S.sys[0]&&S.sys[0][k])).replace(ADMOP.fake.n+'<small>',SYSN[k]+'<small>')).join('')}</div>`;
   setHTML('#adm-target',h);
   setHTML('#adm-log',admin.log.length?admin.log.map(l=>`<li class="${l.hot?'hot':''}">${esc(l.t)}</li>`).join(''):'<li>아직 기록이 없습니다.</li>');
 }
 const htmlCache={};
 function setHTML(sel,h){if(htmlCache[sel]===h)return;htmlCache[sel]=h;$(sel).innerHTML=h}
-$('#cams').addEventListener('click',e=>{const b=e.target.closest('[data-cam]');if(b){admin.cam=+b.dataset.cam;renderAdmin()}});
+$('#camgrid').addEventListener('click',e=>{const f=e.target.closest('[data-cam]');if(!f||!L)return;const c=L.cams[+f.dataset.cam];if(c){admin.sel={type:'room',i:c.rm};renderAdmin()}});
+$('#inv-card').addEventListener('click',e=>{const b=e.target.closest('[data-inv]');if(!b||b.disabled)return;gemit('act',{a:'inv',rm:+b.dataset.inv});beep(120,.3,'sawtooth',.05)});
 $('#adm-target').addEventListener('click',e=>{const b=e.target.closest('[data-op]');if(!b||b.disabled)return;gemit('act',{a:'adm',op:b.dataset.op,t:+b.dataset.t});beep(240,.1,'sawtooth',.03)});
 $('#amap').addEventListener('click',e=>{
   if(!S||!L)return;const cv=$('#amap'),dpr=Math.min(2,window.devicePixelRatio||1),r=cv.getBoundingClientRect(),m=mapXform(cv.width,cv.height);
@@ -1734,32 +2191,43 @@ function renderHUD(){
   const P=myP();if(!P||!S)return;
   const tl=S.ph==='play'?Math.max(0,tlRef.tl-(now()-tlRef.at)):S.tl;
   $('#tl').textContent=fmt(tl);$('#hud-timer').classList.toggle('low',tl<60000);$('#hud-mode').textContent=MODES[S.mode].tag;
-  const adm=P.ro==='ADM';
+  const isAdm=P.ro==='ADM',adm=isAdm&&!amInv();
   $('#sign').hidden=adm;$('#mini').hidden=adm;$('#touch').hidden=adm;
   if(!adm){const ri=roomAt(me.x,me.y);$('#sign-code').textContent=L.codes[ri];$('#sign-nm').textContent=L.names[ri];
     const hz=[S.rd[ri]>0?'정전':'',S.rg[ri]>0?'가스':'',S.rp[ri]>0?'전력 차단':''].filter(Boolean).join(' · ');$('#sign-hz').hidden=!hz;$('#sign-hz').textContent=hz}
-  const tm=adm?0:P.tm,sys=S.sys[tm]||{};
+  const tm=isAdm?0:P.tm,sys=S.sys[tm]||{};
   const row=(k,n,done,fr)=>`<li class="${done?'done':''}"><span class="st">${done?'✓':'·'}</span><span class="t">${n}</span>${fr!=null?`<span class="fr">#${fr[0]}=${fr[1]}</span>`:''}</li>`;
   const pz=S.seed?puz(tm):null;
-  let h=`<h4>${adm?'시설 상태':S.mode==='vs22'?TEAMN[P.tm]+' 팀 목표':'목표'}</h4><ul>`;
-  ['w','c','s'].forEach((k,i)=>{h+=row(k,SYSN[k]+(pz?' · '+PTYPE[pz.types[k]].n:''),!!sys[k],!adm&&sys[k]===ME?[i+1,pz.frag[i]]:null)});
+  let h=`<h4>${isAdm?'시설 상태':S.mode==='vs22'?TEAMN[P.tm]+' 팀 목표':'목표'}</h4><ul>`;
+  sysKeys().forEach((k,i)=>{h+=row(k,SYSN[k]+(pz?' · '+PTYPE[pz.types[k]].n:'')+(nStg()>1?` <span class="mono" style="color:var(--dim)">${sys[k]?nStg():stg(tm,k)}/${nStg()}</span>`:''),!!sys[k],!adm&&sys[k]===ME?[i+1,pz.frag[i]]:null)});
   const gName=S.mode==='vs22'?'메인 코어 동기화':'탈출 게이트';
-  const gs=sys.o?'개방':sys.g?'레버 대기':(sys.w&&sys.c&&sys.s)?'코드 입력 대기':'봉쇄 중';
+  const gs=sys.o?'개방':sys.g?'레버 대기':allSys(sys)?'코드 입력 대기':'봉쇄 중';
   h+=`<li class="${sys.o?'done':''}"><span class="st">${sys.o?'✓':'·'}</span><span class="t">${gName}</span><span class="fr" style="color:var(--dim)">${gs}</span></li></ul>`;
-  if(S.mode==='vs22'){const o=S.sys[1-P.tm]||{};h+=`<p class="enemy">상대 ${TEAMN[1-P.tm]} 팀 ${['w','c','s'].filter(k=>o[k]).length}/3${o.g?' · 코드 승인':''}</p>`}
+  if(S.mode==='vs22'){const o=S.sys[1-P.tm]||{};h+=`<p class="enemy">상대 ${TEAMN[1-P.tm]} 팀 ${sysKeys().filter(k=>o[k]).length}/${sysKeys().length}${o.g?' · 코드 승인':''}</p>`}
+  if(!isAdm&&dfv()>0)h+=`<p class="enemy">${DIFF[dfv()].n} · 힌트 ${(S.hl&&S.hl[P.tm])|0}개 남음</p>`;
   if(!adm){const mine=S.it.filter(it=>it.h===ME&&!it.u);if(mine.length)h+=`<p class="enemy">소지품: ${mine.map(it=>ITEM[it.k].n).join(', ')}</p>`}
   const oe=adm?$('#adm-obj'):$('#hud-obj');if(oe.innerHTML!==h)oe.innerHTML=h;
-  if(!adm){
+  {const il=invLeftMs(),ib=$('#invbar');
+    if(S.ph==='play'&&S.inv>0){ib.hidden=false;ib.textContent=isAdm?'직접 개입 중 · 관리자실 복귀까지 '+Math.ceil(il/1000)+'초':'경고 · 관리자가 시설 안에 있습니다 · '+Math.ceil(il/1000)+'초';}else ib.hidden=true;
+    const sm=isAdm?0:stunMs(ME);$('#stun').hidden=!(sm>0);if(sm>0)$('#stun-t').textContent=Math.ceil(sm/1000)+'초 후 깨어납니다 · 움직일 수 없지만 채팅은 할 수 있습니다';
+    $('#t-e').textContent=isAdm?'공격':'조작';$('#t-q').textContent=isAdm?'복귀':'능력';}
+  if(isAdm&&!adm){
+    const il=invLeftMs(),cdm=Math.max(0,(loc.hitAt||0)-now());
+    const r=`<div class="rh"><b style="color:var(--alert)">직접 개입</b><span>OVERSEER · 남은 횟수 ${S.invLeft|0}/${S.invMax||INV_MAX}</span></div><p class="enemy" style="margin:0">자동 복귀까지 <b class="mono" style="color:var(--alert)">${Math.ceil(il/1000)}초</b> · 개입 중에는 CCTV와 시설 제어를 쓸 수 없습니다</p><div class="abil"><button data-hud="hit" ${cdm>0?'disabled':''} class="${cdm>0?'':'on'}"><kbd>E</kbd>${cdm>0?'공격 재정비 '+(cdm/1000).toFixed(1)+'초':'공격 가능'}</button><button data-hud="ret"><kbd>Q</kbd>관리자실 복귀</button></div>`;
+    const el=$('#hud-role');if(el.innerHTML!==r)el.innerHTML=r;
+  }
+  if(!adm&&!isAdm){
     const R=ROLE[P.ro],t=now(),cd=Math.max(0,loc.cd-t);
     const items=S.it.map((it,i)=>({it,i})).filter(o=>o.it.h===ME&&!o.it.u);
-    let r=`<div class="rh"><b style="color:${PCOL[myCol%PCOL.length]}">${R.n}</b><span>${R.e}${S.mode==='vs22'?' · '+TEAMN[P.tm]:''}</span></div><div class="abil">`+
+    let r=`<div class="rh"><b style="color:${PCOL[myCol%PCOL.length]}">${R.n}</b><span>${R.e}${S.mode==='vs22'?' · '+TEAMN[P.tm]:''}${isTraitor()?' · <b style="color:var(--alert);font-family:inherit;font-size:inherit">배신자</b>':''}</span></div><div class="abil">`+
+      (isTraitor()?`<button data-hud="sab" ${(loc.sabAt||0)>t?'disabled':''} style="border-color:var(--alert);color:var(--alert)"><kbd>R</kbd>사보타주${(loc.sabAt||0)>t?' '+Math.ceil((loc.sabAt-t)/1000)+'초':''}</button>`:'')+
       `<button data-hud="q" ${cd>0?'disabled':''} class="${loc.peekMode||t<loc.scan||t<loc.dash?'on':''}"><kbd>Q</kbd>${R.ab}${cd>0?' '+Math.ceil(cd/1000)+'초':''}</button>`+
       items.map((o,n)=>`<button data-item="${o.i}" title="${ITEM[o.it.k].d}"><kbd>${n+1}</kbd>${ITEM[o.it.k].n}</button><button data-drop="${o.i}" title="바닥에 내려놓기">내려놓기</button>`).join('')+'</div>';
     if(loc.ventUntil)r+='<p class="enemy">환기구 이동 중…</p>';
     const el=$('#hud-role');if(el.innerHTML!==r)el.innerHTML=r;
   }
 }
-$('#hud-role').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hud==='q')ability();else if(b.dataset.drop!=null){gemit('act',{a:'drop',i:+b.dataset.drop,x:Math.round(me.x),y:Math.round(me.y+6)});beep(330,.06,'triangle')}else if(b.dataset.item!=null)useItem(+b.dataset.item)});
+$('#hud-role').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hud==='hit')return attack();if(b.dataset.hud==='sab')return sabotage();if(b.dataset.hud==='ret')return gemit('act',{a:'ret'});if(b.dataset.hud==='q')ability();else if(b.dataset.drop!=null){gemit('act',{a:'drop',i:+b.dataset.drop,x:Math.round(me.x),y:Math.round(me.y+6)});beep(330,.06,'triangle')}else if(b.dataset.item!=null)useItem(+b.dataset.item)});
 
 /* ================= wiring ================= */
 $('#in-name').addEventListener('input',e=>{myName=e.target.value.trim().slice(0,12)||'요원';store.set('ep.name',myName)});
@@ -1775,7 +2243,7 @@ $('#btn-copy').addEventListener('click',()=>{
   if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(()=>toast(msg,'good'),()=>selectCode())}else selectCode()});
 function selectCode(){const r=document.createRange();r.selectNodeContents($('#lb-code'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('코드를 선택했습니다. 복사해서 보내세요')}
 $('#lb-pick').addEventListener('click',e=>{const r=e.target.closest('[data-role]');if(r){setPres({pr:r.dataset.role});renderLobby();return}const t=e.target.closest('[data-team]');if(t){setPres({pt:+t.dataset.team});renderLobby()}});
-$('#lb-host').addEventListener('click',e=>{if(!isHost||!S)return;const m=e.target.closest('[data-mode]');if(m&&!m.disabled){S.mode=m.dataset.mode;dirty();sync();return}if(e.target.id==='btn-start')startGame()});
+$('#lb-host').addEventListener('click',e=>{if(!isHost||!S)return;const df=e.target.closest('[data-diff]');if(df){S.opt=S.opt||{};S.opt.diff=+df.dataset.diff;dirty();sync();return}const o=e.target.closest('[data-opt]');if(o&&!o.disabled){S.opt=S.opt||{};S.opt.traitor=!S.opt.traitor;dirty();sync();return}const m=e.target.closest('[data-mode]');if(m&&!m.disabled){S.mode=m.dataset.mode;dirty();sync();return}if(e.target.id==='btn-start')startGame()});
 $('#chat-form').addEventListener('submit',e=>{e.preventDefault();const i=$('#chat-in');sendChat(i.value);i.value='';if(screen==='game')i.blur()});
 $('#chat-ch').addEventListener('click',()=>{loc.chan=loc.chan==='team'?'all':'team';renderChatChan()});
 $('#chat-toggle').addEventListener('click',()=>{$('#game-chat-slot').classList.toggle('closed')});
@@ -1786,7 +2254,122 @@ $('#btn-quit').addEventListener('click',e=>{const b=e.currentTarget;
   quitArm=now()+3000;b.textContent='정말 나가기';toast('한 번 더 누르면 방을 나갑니다');
   setTimeout(()=>{if(now()>=quitArm)b.textContent='나가기'},3100)});
 $('#brief').addEventListener('click',e=>{if(e.target.closest('[data-brief]')||e.target===$('#brief'))$('#brief').hidden=true});
-$('#end').addEventListener('click',e=>{const b=e.target.closest('[data-end]');if(!b)return;const a=b.dataset.end;if(a==='again')startGame();else if(a==='lobby')toLobby();else if(a==='quit')leaveGame()});
+$('#end').addEventListener('click',e=>{const vb=e.target.closest('[data-vote]');if(vb){gemit('act',{a:'vote',t:vb.dataset.vote});beep(500,.05);return}const b=e.target.closest('[data-end]');if(!b)return;const a=b.dataset.end;if(a==='again')startGame();else if(a==='lobby')toLobby();else if(a==='quit')leaveGame()});
+
+/* ================= game manual ================= */
+const MANUAL=[
+['기본',`<h4>한눈에 보기</h4>
+<p>연구 시설에 갇힌 요원들이 <b>각자 다른 화면</b>을 보며 채팅으로 정보를 맞춰 시스템을 복구하고 탈출하는 게임입니다. 내 장치의 답은 대개 <b>다른 방에 있는 동료의 장치</b>에만 있습니다.</p>
+<h4>시작하는 법</h4>
+<ul><li><b>방 만들기</b>: 모드를 골라 방을 만들면 5자리 초대 코드와 초대 링크가 생깁니다. 링크를 보내면 친구가 바로 들어옵니다.</li>
+<li><b>방 참가</b>: 받은 링크를 열거나 코드를 입력하고 참가를 누릅니다.</li>
+<li><b>혼자 연습하기</b>: 협동 모드를 오프라인으로 실행합니다. 모든 장치를 혼자 다룰 수 있습니다.</li>
+<li>방을 만든 사람(호스트)이 창을 닫으면 게임이 끝납니다. 직접 연결이 막히면 자동으로 중계 서버를 거쳐 연결됩니다.</li></ul>
+<h4>대기실</h4>
+<ul><li>원하는 역할을 고르거나 자동 배정을 고릅니다. 겹치면 시작할 때 자동으로 조정됩니다.</li>
+<li>호스트는 <b>모드</b>, <b>난이도</b>(보통 · 어려움 · 지옥), 협동 모드의 <b>배신자 모드</b>를 정하고 작전을 시작합니다.</li></ul>
+<h4>공통 흐름</h4>
+<ul><li>시스템마다 <b>단서 장치</b>(정보를 읽는 쪽)와 <b>조작 장치</b>(답을 넣는 쪽)가 서로 다른 방에 있습니다. 장치마다 담당 역할이 정해져 있고, 그 역할이 없으면 누구나 쓸 수 있습니다.</li>
+<li>시스템을 복구한 사람에게만 <b>코드 조각</b>이 보입니다. 조각을 모아 게이트 코드를 입력하고, 두 레버를 2.5초 안에 서로 다른 사람이 당기면 게이트가 열립니다. 혼자 남은 팀은 레버 하나로 열립니다.</li>
+<li>방 배치와 퍼즐 종류는 매 판 바뀝니다.</li></ul>
+<h4>역할</h4>
+<table><tr><th>역할</th><th>능력 (Q)</th><th>특징</th></tr>
+<tr><td>기술자</td><td>수동 개방 (35초): 가까운 잠긴 문을 엽니다. 시간 잠금은 즉시, 보안·스위치 문은 10초</td><td>배선반·보안 콘솔 담당</td></tr>
+<tr><td>분석가</td><td>시스템 스캔 (40초): 8초 동안 미니맵에 잠긴 문·위험 구역 표시. 1:2는 CCTV 범위, 2:2는 상대 위치까지</td><td>암호 문서·데이터 단말 담당</td></tr>
+<tr><td>정찰병</td><td>질주 (25초): 4초 동안 매우 빠르게 이동</td><td>항상 25% 빠름, 환기구 즉시 통과, 미니맵에 동료·아이템 표시</td></tr>
+<tr><td>통신사</td><td>원격 관측 (30초): 미니맵에서 방을 골라 8초 동안 들여다봄</td><td>신호 분석기 담당</td></tr></table>
+<h4>문과 아이템</h4>
+<ul><li><b>보라색 보안 문</b>: 키카드로만 영구히 열립니다. 키카드는 문보다 적습니다.</li>
+<li><b>파란색 스위치 문</b>: 다른 방의 원격 문 스위치를 누르면 20초 열립니다. 시작실 A·B의 출구가 서로의 스위치로 열립니다.</li>
+<li><b>빨간 탈출구 봉쇄</b>: 모든 시스템을 복구해야 풀립니다.</li>
+<li><b>손전등</b>: 어두운 방(보관실·실험 복도)이나 정전된 방에서 장치와 흔적을 보려면 들고 있어야 합니다.</li>
+<li><b>키카드</b>: 보안 문을 영구히 열거나 시간 잠금을 풉니다. 1회용.</li>
+<li><b>EMP</b>: 1:2에서는 그 방 CCTV를 25초 끄거나, 가까이 들어온 관리자를 쫓아냅니다. 2:2에서는 근처 상대 장치를 15초 교란합니다. 1회용.</li>
+<li>아이템은 두 개까지 들 수 있고, 내려놓아 동료에게 넘길 수 있습니다. <b>환기구</b>는 떨어진 두 방을 잇습니다(1.5초, 정찰병은 즉시).</li></ul>`],
+['협동',`<h4>CO-OP · 협동 탈출 (1–4인)</h4>
+<ul><li>전원이 한 팀입니다. 서로 다른 방에서 시작해 시스템 셋(4인이면 넷)을 복구하고 탈출 해치로 나가면 성공입니다.</li>
+<li><b>4인 확장 맵</b>: 4명이면 맵이 4×3으로 넓어지고 냉각실·관측실·자재 창고와 네 번째 시스템 <b>냉각 제어</b>가 생깁니다. 키카드 문도 하나 늘어납니다.</li>
+<li><b>오입력</b>은 남은 시간을 10초 깎습니다.</li>
+<li><b>돌발 사고</b>: 1–2분마다 무작위 방의 정전(25초)이나 문 오작동(15초)이 일어납니다.</li></ul>
+<h4>배신자 모드 (3인 이상)</h4>
+<ul><li>한 명이 몰래 시설 편이 됩니다. 본인만 브리핑에서 알 수 있습니다.</li>
+<li>배신자는 틀린 단서를 불러 주거나 일부러 오입력할 수 있고, <b>R 사보타주</b>(50초마다)로 지금 방에 정전이나 문 오작동을 일으킵니다. 무작위 사고와 똑같이 보입니다.</li>
+<li>게임이 끝나면 30초 투표로 배신자를 고릅니다. 탈출 성공 + 배신자 색출이 완전 승리입니다.</li></ul>`],
+['2:2 대전',`<h4>VERSUS 2:2 · 팀 대전 (4인)</h4>
+<ul><li>레드와 블루가 좌우 대칭 구역에서 각자의 시스템을 복구합니다. 중앙 <b>메인 코어</b>에서 동기화 코드를 넣고 두 레버를 당긴 팀이 이깁니다.</li>
+<li>팀마다 기술자와 분석가 한 명씩입니다. 채팅은 기본이 팀 채널이며, 버튼으로 전체 채널로 바꿀 수 있습니다.</li>
+<li><b>보급 구역</b>(중앙 위·아래)의 EMP로 상대 장치를 15초 교란할 수 있습니다.</li>
+<li><b>구역 봉쇄 패널</b>: 우리 구역과 중앙을 잇는 문 3개를 10초 잠급니다(45초마다). 양 팀 모두 못 지나갑니다.</li>
+<li><b>감시 단말</b>(중앙 위): 6초 동안 상대 위치를 미니맵에 표시합니다(팀마다 30초에 한 번).</li>
+<li>시간이 끝나면 푼 단계가 많은 팀, 같으면 먼저 진행한 팀이 이깁니다.</li>
+<li>어려움·지옥에서는 팀마다 힌트 2개이며 시간은 깎이지 않지만 상대 팀에 사용 사실이 알려집니다. 흔적 단서도 팀마다 자기 구역 세 방에 따로 있습니다.</li></ul>`],
+['1:2 대전',`<h4>VERSUS 1:2 · 비대칭 대전 (3인)</h4>
+<p><b>탈출자 2명</b>(기술자·분석가)은 시간 안에 탈출해야 하고, <b>관리자 1명</b>은 관리자실에서 시간을 끕니다. 탈출자의 채팅은 관리자에게 안 보이고, 관리자의 채팅은 방송으로 모두에게 보입니다.</p>
+<h4>관리자 화면</h4>
+<ul><li><b>CCTV 5대</b>가 한 화면에 모두 나옵니다. 시작실·연구실·보관실에는 카메라가 없고, 카메라마다 사각지대가 있습니다. 카메라는 가끔 오작동합니다(수리 가능).</li>
+<li>지도에서 방이나 문을 눌러 대상을 고르고 제어를 씁니다. <b>제어 에너지</b>는 60에서 시작해 차오르며, 난이도가 높을수록 천천히 찹니다(초당 1.6 · 1.1 · 0.9).</li></ul>
+<table><tr><th>제어</th><th>에너지</th><th>효과</th></tr>
+<tr><td>문 잠금</td><td>20</td><td>18초 잠금. 동시에 3개까지. 기술자가 풀어도 4초 버팀</td></tr>
+<tr><td>조명 차단</td><td>12</td><td>25초 정전. 손전등 없으면 장치 사용 불가</td></tr>
+<tr><td>환기 역류</td><td>15</td><td>20초 동안 이동 속도 크게 감소</td></tr>
+<tr><td>전력 차단</td><td>30</td><td>20초 동안 그 방 장치 사용 불가</td></tr>
+<tr><td>전체 스캔</td><td>40</td><td>5초 동안 탈출자 위치 표시 (1분 30초 뒤 해금)</td></tr>
+<tr><td>통신 교란</td><td>20</td><td>10초 동안 탈출자 채팅 글자가 깨짐</td></tr>
+<tr><td>가짜 단서</td><td>30</td><td>20초 동안 지금 단계 정보를 가짜로 바꿔 보여 줌 (1분 뒤 해금). 1단계는 단서 장치, 그 뒤는 조작 장치 신호, 흔적 단계는 가짜 물체를 가리키는 조건. 화면에 미세한 노이즈가 섞임</td></tr>
+<tr><td>암호 교체</td><td>50</td><td>한 판 2번. 지금 단계 데이터를 새로 만듦 (2분 뒤 해금). 흔적 단계면 같은 종류 물체 셋의 값이 모두 바뀜. 탈출자에게 경보·변경 도장, 입력 초기화, 물체가 요동치고 30초 동안 "조작 흔적" 표시</td></tr></table>
+<h4>직접 개입</h4>
+<ul><li>한 판에 3번(어려움 4번, 지옥 5번), 최대 20초 동안 시설 안으로 직접 들어갑니다. 개입 중에는 CCTV와 제어를 못 씁니다.</li>
+<li>E로 근거리 공격을 하면 탈출자가 15초 기절합니다(채팅은 가능). 깨어난 뒤 잠시 면역입니다.</li>
+<li>탈출자가 가까이서 EMP를 쓰면 관리자는 즉시 관리자실로 튕겨 나갑니다.</li>
+<li>게이트가 열리면 <b>최종 추격</b> 1회가 추가로 주어집니다.</li></ul>`],
+['퍼즐 · 난이도',`<h4>난이도</h4>
+<table><tr><th></th><th>보통</th><th>어려움</th><th>지옥</th></tr>
+<tr><td>시스템당 단계</td><td>1</td><td>2</td><td>3</td></tr>
+<tr><td>제한 시간</td><td>10분 (1:2 9분)</td><td>20분 (18분)</td><td>30분 (27분)</td></tr>
+<tr><td>장치 설명</td><td>모두 표시</td><td>숨김 · 힌트로 펼침</td><td>숨김 · 힌트로 펼침</td></tr>
+<tr><td>흔적 단서</td><td>없음</td><td>1개</td><td>1개</td></tr></table>
+<ul><li><b>단계 사슬</b>: 한 단계를 풀면 조작 장치에 다음 단계의 암호 신호가 뜨고, 단서 장치에는 그것을 푸는 열쇠가 뜹니다. 마지막 단계를 풀어야 시스템이 복구됩니다. 장치 화면 위의 막대가 진행도입니다.</li>
+<li><b>힌트</b>: 장치 화면의 힌트 버튼으로 지금 단계의 설명을 팀 전체에 펼칩니다. 협동·1:2는 한 판 3개, 1개당 남은 시간 −30초. 2:2는 팀당 2개.</li>
+<li><b>오입력 잠금</b>: 같은 장치에서 연속으로 틀리면 8초 → 20초 → 45초로 길어집니다. 맞히면 초기화됩니다.</li></ul>
+<h4>1단계 퍼즐 (매 판 섞임)</h4>
+<ul><li><b>배선</b>: 기호별 전선 색을 맞춰 연결. 접지 단자 하나는 비움.</li>
+<li><b>보정 코드</b>: 기호 암호문을 해독표로 숫자로 바꾸고, 자리마다 보정값을 더함.</li>
+<li><b>신호 동기화</b>: 파형 모양·주파수·진폭을 맞춤.</li>
+<li><b>패턴 복원</b>: 변형된(뒤집힌·돌아간) 램프 영상을 원래 패턴으로 되돌림.</li>
+<li><b>순서 추론</b>: 조건을 모두 만족하는 기호 순서는 하나뿐.</li>
+<li><b>점멸 신호</b>: 짧은 빛·긴 빛 순서를 표로 숫자로 바꿈.</li>
+<li><b>계측 계산</b>: 계측값을 식에 넣어 계산.</li>
+<li><b>수학 문제</b>(매 판 하나): 미분·적분·극한·수열의 합. 식과 질문이 서로 다른 장치에 있음.</li></ul>
+<h4>2·3단계 암호</h4>
+<ul><li><b>전화 키패드</b>: 영어 단어 → 키패드 숫자 (CAB → 222)</li>
+<li><b>로마 숫자</b>: XLVII → 47</li>
+<li><b>다이얼 회전</b>: 숫자마다 같은 만큼 돌림 (0 ▸ 3이면 7 → 0)</li>
+<li><b>알파벳 순번</b>: 글자를 A=1…Z=26으로 바꿔 모두 더함</li>
+<li><b>뒤집힌 표시</b>: 180° 뒤집힌 숫자를 바로 돌려 읽음</li></ul>
+<h4>흔적 단서</h4>
+<ul><li>어려움·지옥에서 한 게임에 딱 한 번, 어느 시스템의 2단계로 나옵니다.</li>
+<li>벽시계·램프 패널·압력 계기·상자 더미·전광판 중 한 종류가 <b>서로 다른 세 방</b>에 하나씩 놓입니다. 다가가 E로 살펴봅니다.</li>
+<li>조작 장치에 조건 두 개가 뜹니다 (예: ① 테두리 색 ≠ 빨강 ② 초침 = 멈춤). 셋 중 <b>두 조건을 모두 만족하는 것은 하나뿐</b>이고, 가짜 둘은 각각 조건 하나씩을 어깁니다.</li>
+<li>진짜의 값(시각·램프 값·눈금·상자 수·표시 숫자)을 단서 장치의 식에 넣어 답을 구합니다. 램프는 아래 적힌 숫자(16·8·4·2·1) 중 켜진 것을 더한 값입니다.</li></ul>`],
+['조작',`<h4>컴퓨터</h4>
+<ul><li>이동 <b>WASD</b> 또는 방향키 · 조작 <b>E</b> 또는 스페이스 · 능력 <b>Q</b> · 아이템 <b>1, 2</b> · 채팅 <b>Enter</b> · 창 닫기 <b>Esc</b></li>
+<li>배신자: <b>R</b> 사보타주</li>
+<li>관리자(직접 개입 중): WASD 이동, E 공격, Q 복귀</li></ul>
+<h4>휴대폰</h4>
+<ul><li>왼쪽 조이스틱으로 이동, 오른쪽 버튼으로 조작·능력. 화면 아래 안내 문구를 눌러도 조작됩니다.</li></ul>
+<h4>화면</h4>
+<ul><li>왼쪽 위: 목표와 진행도, 남은 힌트 · 오른쪽 위: 남은 시간, 미니맵, 브리핑·설명서·나가기</li>
+<li>왼쪽 아래: 내 역할과 능력, 소지품 · 오른쪽 아래: 채팅</li>
+<li>장치 테두리가 깜빡이면 내가 담당하는 장치입니다.</li></ul>`]
+];
+let manTab=0;
+function openManual(tab){if(tab!=null)manTab=tab;
+  $('#manual-sheet').innerHTML=`<header class="sheet-h"><div><p class="eyebrow">탈출 프로토콜 · 게임 설명서</p><h3>설명서</h3></div><button class="btn ghost sm" data-man="close">닫기</button></header>
+    <div class="man-tabs">${MANUAL.map((m,i)=>`<button data-man-tab="${i}" aria-pressed="${i===manTab}">${m[0]}</button>`).join('')}</div><div class="man-body">${MANUAL[manTab][1]}</div>`;
+  $('#manual').hidden=false;$('#manual-sheet').scrollTop=0}
+function closeManual(){$('#manual').hidden=true}
+$('#manual').addEventListener('click',e=>{if(e.target===$('#manual')||e.target.closest('[data-man="close"]'))return closeManual();const t=e.target.closest('[data-man-tab]');if(t)openManual(+t.dataset.manTab)});
+document.querySelectorAll('[data-open-manual]').forEach(b=>b.addEventListener('click',()=>{const P=myP();openManual(screen==='game'&&S&&S.mode==='vs22'?2:screen==='game'&&S&&S.mode==='vs12'?3:screen==='game'&&dfv()>0?4:null)}));
 
 boot();
 requestAnimationFrame(frame);
