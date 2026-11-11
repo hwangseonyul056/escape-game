@@ -322,6 +322,7 @@ input[type=range]{accent-color:var(--amber);width:100%}
 .stage-bar i{width:22px;height:6px;border-radius:3px;background:var(--panel-2);border:1px solid var(--line)}
 .stage-bar i.on{background:var(--ok);border-color:var(--ok)} .stage-bar i.cur{background:var(--amber);border-color:var(--amber)}
 .enc{font-family:var(--f-mono);font-size:34px;letter-spacing:.28em;text-align:center;background:var(--void);border-radius:4px;padding:14px;color:var(--ink)}
+.intg{display:inline-flex;align-items:center;font-size:1.4em;line-height:1}.intg .lim{display:inline-flex;flex-direction:column;justify-content:space-between;font-size:.5em;margin:0 4px 0 1px;height:2.1em}.intg .lim i{font-style:normal}
 .flip180{display:block;transform:rotate(180deg)}
 .pointer{background:var(--void);border:1px dashed var(--amber);border-radius:4px;padding:12px 14px;line-height:1.8;font-size:15px}
 .pointer b{color:var(--amber)}
@@ -701,7 +702,7 @@ function genPuzzle(type,R){
     if(v===0){const a=1+Math.floor(R()*3),b=Math.floor(R()*6),c=Math.floor(R()*10),d=Math.floor(R()*10),k=1+Math.floor(R()*3);
       clue='f(x) = '+poly([[a,3],[b,2],[c,1],[d,0]]);ask=`f′(${k}) 의 값은?`;ans=3*a*k*k+2*b*k+c}
     else if(v===1){const a=3*(1+Math.floor(R()*2)),b=2*(1+Math.floor(R()*3)),c=1+Math.floor(R()*9),k=1+Math.floor(R()*3);
-      clue='f(x) = '+poly([[a,2],[b,1],[c,0]]);ask=`∫₀${SUP[k]} f(x) dx 의 값은?`;ans=a*k**3/3+b*k*k/2+c*k}
+      clue='f(x) = '+poly([[a,2],[b,1],[c,0]]);ask=`<span class="intg">∫<span class="lim"><i>${k}</i><i>0</i></span></span> f(x) dx 의 값은?<br><small style="color:var(--dim);font-size:13px">(x = 0 부터 x = ${k} 까지 정적분)</small>`;ans=a*k**3/3+b*k*k/2+c*k}
     else if(v===2){const n=2+Math.floor(R()*3),k=2+Math.floor(R()*3);
       clue='h(x) = x'+SUP[n];ask=`lim t→0  { h(${k} + t) − h(${k}) } ÷ t 의 값은?`;ans=n*k**(n-1)}
     else{const p=1+Math.floor(R()*5),q=Math.floor(R()*10),N=5+Math.floor(R()*5);
@@ -1624,7 +1625,7 @@ function blockOutHTML(d,ex){
   else if(d.b==='shift')h+=`<div class="enc">${d.d.join('')}</div>`;
   else if(d.b==='a1z')h+=`<div class="enc">${d.l.join(' ')}</div>`;
   else if(d.b==='mirror')h+=`<div class="enc"><span class="flip180">${d.s}</span></div>`;
-  else if(d.b==='trace'){const K=TRK[d.kind];h+=`<div class="pointer">흔적 · <b>${K.n}</b> 셋 중 진짜 하나<br>${critText(K,d.fake?d.fcrit:d.crit)}</div>`}
+  else if(d.b==='trace'){const K=TRK[d.kind];h+=`<div class="pointer">흔적 · <b>${K.n}</b> 셋 중 진짜 하나<br>${critText(K,d.fake?d.fcrit:d.crit)}</div><p class="hint">진짜 ${K.n}에서 읽은 값을 <b style="color:var(--amber)">단서 장치의 식</b>으로 계산해 입력하세요. 읽은 값을 그대로 넣으면 틀립니다.</p>`}
   return h;
 }
 function blockRefHTML(d,ex){
@@ -1634,7 +1635,7 @@ function blockRefHTML(d,ex){
   else if(d.b==='shift')h+=`<div class="ref"><span class="big">0 ▸ ${d.k} · 1 ▸ ${(1+d.k)%10} · 2 ▸ ${(2+d.k)%10} · …</span></div>`;
   else if(d.b==='a1z')h+=`<div class="ref"><span class="big">A=1 · B=2 · … · Z=26</span><span class="big">Σ</span></div>`;
   else if(d.b==='mirror')h+=`<div class="ref"><span class="big" style="font-size:44px">↻ 180°</span></div>`;
-  else if(d.b==='trace')h+=`<div class="ref"><span class="muted">흔적 판독값</span><span class="big">${TROP[d.kind].t(d.p)}</span></div>`;
+  else if(d.b==='trace')h+=`<div class="ref"><span class="muted">진짜 ${TRK[d.kind].n}에서 읽은 값으로 계산 → 조작 장치에 입력</span><span class="big">${TROP[d.kind].t(d.p)}</span></div>`;
   return h;
 }
 /* overseer's fake clue for a chain stage: a different encoded message, or a sentence that points at a decoy */
@@ -1668,12 +1669,13 @@ function drawTrace(ctx,kind,o,W,H,t,fx){
   ctx.fillStyle='#0b1218';ctx.fillRect(0,0,W,H);const cx=W/2,cy=H/2;
   ctx.save();if(fx&&kind==='crate')ctx.translate((Math.random()-.5)*8,(Math.random()-.5)*5);
   if(kind==='clock'){const r=110;ctx.fillStyle='#e9edf0';ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.fill();ctx.lineWidth=12;ctx.strokeStyle=col(K.d[0][1][A[0]]);ctx.stroke();
-    ctx.fillStyle='#1a222a';ctx.font='bold 20px '+FONT;ctx.textAlign='center';ctx.textBaseline='middle';
-    for(let i=1;i<=12;i++){const a=i/12*Math.PI*2-Math.PI/2;ctx.fillText(String(i),cx+Math.cos(a)*(r-28),cy+Math.sin(a)*(r-28))}
+    for(let i=0;i<60;i++){const a=i/60*Math.PI*2,big=i%5===0;ctx.strokeStyle='#1a222a';ctx.lineWidth=big?3:1;ctx.beginPath();ctx.moveTo(cx+Math.sin(a)*(r-8),cy-Math.cos(a)*(r-8));ctx.lineTo(cx+Math.sin(a)*(r-(big?18:13)),cy-Math.cos(a)*(r-(big?18:13)));ctx.stroke()}
+    ctx.fillStyle='#1a222a';ctx.font='bold 19px '+FONT;ctx.textAlign='center';ctx.textBaseline='middle';
+    for(let i=1;i<=12;i++){const a=i/12*Math.PI*2-Math.PI/2;ctx.fillText(String(i),cx+Math.cos(a)*(r-34),cy+Math.sin(a)*(r-34))}
     const hh=Math.floor(o.v/100),mm=o.v%100,spin=fx?t/40:0;
     const hand=(a,len,w,c)=>{ctx.strokeStyle=c;ctx.lineWidth=w;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a-Math.PI/2)*len,cy+Math.sin(a-Math.PI/2)*len);ctx.stroke()};
-    hand(fx?spin*.3:((hh%12)+mm/60)/12*Math.PI*2,56,8,'#1a222a');hand(fx?spin:mm/60*Math.PI*2,84,5,'#1a222a');
-    hand(A[1]===0?(t/1000%60)/60*Math.PI*2:1.2,90,2,'#d23');ctx.fillStyle='#1a222a';ctx.beginPath();ctx.arc(cx,cy,6,0,7);ctx.fill()}
+    hand(fx?spin*.3:((hh%12)+mm/60)/12*Math.PI*2,40,9,'#1a222a');hand(fx?spin:mm/60*Math.PI*2,64,5,'#1a222a');
+    {const sa=A[1]===0?(t/1000%60)/60*Math.PI*2:(o.v*7%60)/60*Math.PI*2;ctx.strokeStyle='#d23';ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(cx-Math.sin(sa)*22,cy+Math.cos(sa)*22);ctx.lineTo(cx+Math.sin(sa)*68,cy-Math.cos(sa)*68);ctx.stroke();ctx.fillStyle='#d23';ctx.beginPath();ctx.arc(cx+Math.sin(sa)*50,cy-Math.cos(sa)*50,4,0,7);ctx.fill()}ctx.fillStyle='#1a222a';ctx.beginPath();ctx.arc(cx,cy,6,0,7);ctx.fill()}
   else if(kind==='lamp'){const mark=K.d[0][1][A[0]];ctx.fillStyle='#16212b';ctx.fillRect(40,50,W-80,H-90);ctx.strokeStyle='#3d5568';ctx.lineWidth=2;ctx.strokeRect(40,50,W-80,H-90);
     ctx.fillStyle=A[1]===0?(Math.sin(t/180)>0?'#ff5d5d':'#5a1a1a'):'#3a1515';ctx.beginPath();ctx.arc(cx,36,12,0,7);ctx.fill();
     ctx.fillStyle='#8b9fb0';ctx.font='bold 26px '+FONT;ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(mark,52,58);
